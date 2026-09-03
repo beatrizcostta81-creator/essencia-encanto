@@ -1,4 +1,5 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<!-- Essência & Encanto - versão com Menu e Navegação personalizáveis --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Essência & Encanto Online</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -32,8 +33,26 @@ body.layout-moderno{--raio:24px;--sombra:0 12px 32px rgba(0,0,0,.10)}body.layout
 body.layout-minimalista{--raio:8px;--sombra:none}body.layout-minimalista header,body.layout-minimalista .card,body.layout-minimalista .panel,body.layout-minimalista .box{box-shadow:none}body.layout-minimalista .tab,body.layout-minimalista button{border-radius:6px}
 body.layout-classico{--raio:12px;--sombra:0 4px 12px rgba(0,0,0,.06)}body.layout-classico h1,body.layout-classico h2,body.layout-classico header b{font-family:Georgia,serif}
 body.tema-escuro{--cor-card:#231f22;--borda:#443a40;--cor-fundo:#171417;--cor-texto:#f4edf1}body.tema-escuro .muted{color:#c0adb6}
-@media(max-width:700px){.cards,.appearance-grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}}
-@media(max-width:520px){.cards,.appearance-grid{grid-template-columns:1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+
+/* Menu e navegação personalizáveis */
+.menu-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:12px}
+.menu-order-list{display:flex;flex-direction:column;gap:8px;margin:10px 0 16px}
+.menu-order-item{display:grid;grid-template-columns:1fr auto auto auto;gap:7px;align-items:center;border:1px solid var(--borda);border-radius:12px;padding:9px 10px;background:var(--cor-card)}
+.menu-order-item .menu-label{font-weight:700}.menu-order-item button{padding:7px 10px}.menu-order-item label{display:flex;align-items:center;gap:5px;font-size:13px}.menu-order-item input[type=checkbox]{width:auto;margin:0}
+body.menu-lateral .tabs{position:fixed;left:0;top:68px;bottom:0;width:220px;z-index:40;margin:0;padding:14px;display:flex;flex-direction:column;flex-wrap:nowrap;overflow-y:auto;background:var(--cor-card);border-right:1px solid var(--borda);box-shadow:var(--sombra)}
+body.menu-lateral .tab{width:100%;text-align:left}
+body.menu-lateral main{max-width:none;margin-left:220px;padding-left:24px;padding-right:24px}
+body.menu-embaixo main{padding-bottom:95px}
+body.menu-embaixo .tabs{position:fixed;left:0;right:0;bottom:0;z-index:60;margin:0;padding:8px 10px;display:flex;flex-wrap:nowrap;overflow-x:auto;justify-content:center;background:var(--cor-card);border-top:1px solid var(--borda);box-shadow:0 -5px 18px rgba(0,0,0,.08)}
+body.menu-embaixo .tab{flex:0 0 auto;white-space:nowrap}
+body.menu-estilo-barra .tabs{gap:0}
+body.menu-estilo-barra .tab{background:transparent;border-radius:0;border-bottom:3px solid transparent;color:var(--cor-texto)}
+body.menu-estilo-barra .tab.active{background:transparent;color:var(--cor-principal);border-bottom-color:var(--cor-principal)}
+body.menu-lateral.menu-estilo-barra .tab{border-bottom:0;border-left:4px solid transparent}
+body.menu-lateral.menu-estilo-barra .tab.active{border-left-color:var(--cor-principal)}
+body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px}
+@media(max-width:700px){.cards,.appearance-grid,.menu-config-grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}body.menu-lateral .tabs{width:175px}body.menu-lateral main{margin-left:175px;padding-left:14px;padding-right:14px}}
+@media(max-width:520px){.cards,.appearance-grid,.menu-config-grid{grid-template-columns:1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu-order-item{grid-template-columns:1fr auto auto}.menu-order-item label{grid-column:1/-1}body.menu-lateral .tabs{width:150px;padding:8px}body.menu-lateral main{margin-left:150px;padding:10px}body.menu-lateral .tab{font-size:12px;padding:8px}body.menu-embaixo .tabs{justify-content:flex-start}}
 </style></head><body>
 <section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -78,8 +97,20 @@ body.tema-escuro{--cor-card:#231f22;--borda:#443a40;--cor-fundo:#171417;--cor-te
     </div>
     <div class="preview"><b>Prévia</b><div class="preview-card"><strong id="previewNome">Essência & Encanto</strong><p class="muted">Assim ficará um cartão do seu sistema.</p><span class="preview-btn">Botão principal</span></div></div>
 
-    <button class="primary" onclick="salvarConfiguracoes()">Salvar configurações e aparência</button>
-    <button class="soft" style="margin-left:6px" onclick="restaurarAparenciaPadrao()">Restaurar cores padrão</button>
+    <h3 class="section-title">🧭 Menu e Navegação</h3>
+    <p class="muted">Escolha onde o menu fica, o estilo e a ordem dos atalhos. Use as setas para mover cada item.</p>
+    <div class="menu-config-grid">
+      <div class="field"><label>Posição do menu</label><select id="cfgMenuPosicao" onchange="previsualizarMenu()"><option value="topo">No topo</option><option value="lateral">Na lateral esquerda</option><option value="embaixo">Embaixo</option></select></div>
+      <div class="field"><label>Estilo do menu</label><select id="cfgMenuEstilo" onchange="previsualizarMenu()"><option value="botoes">Botões</option><option value="barra">Barra</option><option value="compacto">Compacto</option></select></div>
+    </div>
+    <b>Ordem e visibilidade</b>
+    <div id="cfgMenuOrdem" class="menu-order-list"></div>
+    <button class="soft" type="button" onclick="restaurarMenuPadrao()">Restaurar menu padrão</button>
+
+    <div style="margin-top:18px">
+      <button class="primary" onclick="salvarConfiguracoes()">Salvar todas as configurações</button>
+      <button class="soft" style="margin-left:6px" onclick="restaurarAparenciaPadrao()">Restaurar cores padrão</button>
+    </div>
     <p class="muted" id="cfgMsg"></p>
   </div>
 </section>
@@ -88,6 +119,9 @@ body.tema-escuro{--cor-card:#231f22;--borda:#443a40;--cor-fundo:#171417;--cor-te
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
 const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],despesas=[],categorias=[],configLoja=null;
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},clientes:{label:'Clientes',icone:'👥'},financeiro:{label:'Financeiro',icone:'💳'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','produtos','clientes','financeiro','configuracoes'];
+let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
 function telaNovaSenha(){
@@ -127,16 +161,50 @@ function aplicarTemaVisual(cfg){
   document.body.classList.remove('layout-moderno','layout-minimalista','layout-classico','tema-escuro');
   const lay=cfg?.layout_estilo||'elegante'; if(lay!=='elegante')document.body.classList.add('layout-'+lay); if((cfg?.modo_tema||'claro')==='escuro')document.body.classList.add('tema-escuro');
 }
+function lerArrayJson(v,padrao=[]){
+  if(Array.isArray(v))return v;
+  if(typeof v==='string'){try{const a=JSON.parse(v);return Array.isArray(a)?a:padrao}catch(e){return padrao}}
+  return padrao;
+}
+function normalizarMenuOrdem(v){
+  const recebido=lerArrayJson(v,[]).filter(k=>MENU_INFO[k]);
+  const unicos=[];for(const k of recebido)if(!unicos.includes(k))unicos.push(k);
+  for(const k of MENU_PADRAO)if(!unicos.includes(k))unicos.push(k);
+  return unicos;
+}
+function normalizarMenuOcultos(v){return lerArrayJson(v,[]).filter(k=>MENU_INFO[k]&&k!=='configuracoes')}
+function aplicarMenuVisual(cfg){
+  const pos=['topo','lateral','embaixo'].includes(cfg?.menu_posicao)?cfg.menu_posicao:'topo';
+  const estilo=['botoes','barra','compacto'].includes(cfg?.menu_estilo)?cfg.menu_estilo:'botoes';
+  const ordem=normalizarMenuOrdem(cfg?.menu_ordem);const ocultos=normalizarMenuOcultos(cfg?.menu_ocultos);
+  document.body.classList.remove('menu-topo','menu-lateral','menu-embaixo','menu-estilo-botoes','menu-estilo-barra','menu-estilo-compacto');
+  document.body.classList.add('menu-'+pos,'menu-estilo-'+estilo);
+  const tabs=document.querySelector('.tabs');if(!tabs)return;
+  ordem.forEach(k=>{const b=tabs.querySelector(`[data-v="${k}"]`);if(b){tabs.appendChild(b);b.style.display=ocultos.includes(k)?'none':''}});
+  tabs.querySelectorAll('.tab').forEach(b=>{if(!ordem.includes(b.dataset.v))b.style.display='none'});
+  const ativa=tabs.querySelector('.tab.active');if(ativa&&ativa.style.display==='none')ativarAba(ordem.find(k=>!ocultos.includes(k))||'configuracoes');
+}
+function renderMenuControles(){
+  const box=document.getElementById('cfgMenuOrdem');if(!box)return;
+  box.innerHTML=menuOrdemRascunho.map((k,i)=>{const info=MENU_INFO[k],travado=k==='configuracoes',mostrar=!menuOcultosRascunho.includes(k);return `<div class="menu-order-item"><span class="menu-label">${info.icone} ${info.label}</span><button class="soft" type="button" onclick="moverMenuItem('${k}',-1)" ${i===0?'disabled':''}>↑</button><button class="soft" type="button" onclick="moverMenuItem('${k}',1)" ${i===menuOrdemRascunho.length-1?'disabled':''}>↓</button><label><input type="checkbox" ${mostrar?'checked':''} ${travado?'disabled':''} onchange="alternarMenuItem('${k}',this.checked)"> ${travado?'Sempre visível':'Mostrar'}</label></div>`}).join('');
+}
+function moverMenuItem(k,dir){const i=menuOrdemRascunho.indexOf(k),j=i+dir;if(i<0||j<0||j>=menuOrdemRascunho.length)return;[menuOrdemRascunho[i],menuOrdemRascunho[j]]=[menuOrdemRascunho[j],menuOrdemRascunho[i]];renderMenuControles();previsualizarMenu()}
+function alternarMenuItem(k,mostrar){if(k==='configuracoes')return;if(mostrar)menuOcultosRascunho=menuOcultosRascunho.filter(x=>x!==k);else if(!menuOcultosRascunho.includes(k))menuOcultosRascunho.push(k);previsualizarMenu()}
+function previsualizarMenu(){aplicarMenuVisual({menu_posicao:document.getElementById('cfgMenuPosicao')?.value||'topo',menu_estilo:document.getElementById('cfgMenuEstilo')?.value||'botoes',menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho})}
+function restaurarMenuPadrao(){menuOrdemRascunho=[...MENU_PADRAO];menuOcultosRascunho=[];document.getElementById('cfgMenuPosicao').value='topo';document.getElementById('cfgMenuEstilo').value='botoes';renderMenuControles();previsualizarMenu()}
+function ativarAba(chave){const alvo=document.querySelector(`.tab[data-v="${chave}"]`);if(!alvo||alvo.style.display==='none')return;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));alvo.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));const sec=document.getElementById(chave);if(sec)sec.classList.add('active')}
 function aplicarConfiguracoes(){
   const nome=(configLoja?.nome_loja||'Essência & Encanto').trim()||'Essência & Encanto';
   document.getElementById('loginNomeLoja').textContent=nome;document.getElementById('headerNomeLoja').textContent=nome;document.title=nome+' Online';
   aplicarTemaVisual(configLoja||{});
+  aplicarMenuVisual(configLoja||{});
   const logo=document.getElementById('headerLogo'); if(configLoja?.logo_url){logo.src=configLoja.logo_url;logo.style.display='block';logo.onerror=()=>logo.style.display='none'}else{logo.style.display='none';logo.removeAttribute('src')}
   if(document.getElementById('cfgNome')){
     document.getElementById('cfgNome').value=configLoja?.nome_loja||'';document.getElementById('cfgWhats').value=configLoja?.whatsapp||'';document.getElementById('cfgInstagram').value=configLoja?.instagram||'';document.getElementById('cfgEndereco').value=configLoja?.endereco||'';document.getElementById('cfgMensagem').value=configLoja?.mensagem||'';document.getElementById('cfgLogo').value=configLoja?.logo_url||'';
     const vals={cfgCorPrincipal:configLoja?.cor_principal||'#d98fa3',cfgCorSecundaria:configLoja?.cor_secundaria||'#f6dfe7',cfgCorFundo:configLoja?.cor_fundo||'#fffafc',cfgCorTexto:configLoja?.cor_texto||'#3d2b32'};
     for(const [id,val] of Object.entries(vals)){document.getElementById(id).value=val;document.getElementById(id+'Hex').value=val}
     document.getElementById('cfgLayout').value=configLoja?.layout_estilo||'elegante';document.getElementById('cfgTema').value=configLoja?.modo_tema||'claro';document.getElementById('previewNome').textContent=nome;
+    document.getElementById('cfgMenuPosicao').value=configLoja?.menu_posicao||'topo';document.getElementById('cfgMenuEstilo').value=configLoja?.menu_estilo||'botoes';menuOrdemRascunho=normalizarMenuOrdem(configLoja?.menu_ordem);menuOcultosRascunho=normalizarMenuOcultos(configLoja?.menu_ocultos);renderMenuControles();
   }
 }
 function sincronizarCor(corId,hexId){document.getElementById(hexId).value=document.getElementById(corId).value;previsualizarAparencia()}
@@ -148,8 +216,8 @@ function previsualizarAparencia(){
 }
 function restaurarAparenciaPadrao(){document.getElementById('cfgCorPrincipal').value='#d98fa3';document.getElementById('cfgCorPrincipalHex').value='#d98fa3';document.getElementById('cfgCorSecundaria').value='#f6dfe7';document.getElementById('cfgCorSecundariaHex').value='#f6dfe7';document.getElementById('cfgCorFundo').value='#fffafc';document.getElementById('cfgCorFundoHex').value='#fffafc';document.getElementById('cfgCorTexto').value='#3d2b32';document.getElementById('cfgCorTextoHex').value='#3d2b32';document.getElementById('cfgLayout').value='elegante';document.getElementById('cfgTema').value='claro';previsualizarAparencia()}
 async function salvarConfiguracoes(){
-  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:document.getElementById('cfgLogo').value.trim()||null,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,updated_at:new Date().toISOString()};
-  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;aplicarConfiguracoes();document.getElementById('cfgMsg').textContent='✅ Configurações e aparência salvas com sucesso.';
+  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:document.getElementById('cfgLogo').value.trim()||null,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,menu_posicao:document.getElementById('cfgMenuPosicao').value,menu_estilo:document.getElementById('cfgMenuEstilo').value,menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho,updated_at:new Date().toISOString()};
+  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;aplicarConfiguracoes();document.getElementById('cfgMsg').textContent='✅ Configurações, aparência e menu salvos com sucesso.';
 }
 
 function render(){document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);document.getElementById('listaProdutos').innerHTML=produtos.length?'<table><tr><th>Produto</th><th>Estoque</th><th>Preço</th></tr>'+produtos.map(p=>`<tr><td>${p.nome}</td><td>${p.estoque}</td><td>${money(p.preco)}</td></tr>`).join('')+'</table>':'Nenhum produto.';document.getElementById('listaClientes').innerHTML=clientes.length?'<table><tr><th>Nome</th><th>WhatsApp</th></tr>'+clientes.map(c=>`<tr><td>${c.nome}</td><td>${c.whatsapp||''}</td></tr>`).join('')+'</table>':'Nenhum cliente.';let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)}
@@ -158,7 +226,7 @@ function novoProduto(){openModal(`<h2>Novo produto</h2><input id="pn" placeholde
 async function salvarProduto(){let o={user_id:user.id,nome:pn.value.trim(),categoria_id:pc.value||null,preco:+pp.value||0,estoque:+pe.value||0};let r=await sb.from('produtos').insert(o);if(r.error)return alert(r.error.message);closeModal();await carregar()}
 function novoCliente(){openModal(`<h2>Novo cliente</h2><input id="cn" placeholder="Nome"><input id="cw" placeholder="WhatsApp"><button class="soft" onclick="closeModal()">Cancelar</button> <button class="primary" onclick="salvarCliente()">Salvar</button>`)}
 async function salvarCliente(){let o={user_id:user.id,nome:cn.value.trim(),whatsapp:cw.value.trim()};let r=await sb.from('clientes').insert(o);if(r.error)return alert(r.error.message);closeModal();await carregar()}
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(b.dataset.v).classList.add('active')})
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>ativarAba(b.dataset.v))
 ;
 sb.auth.onAuthStateChange(async (event, session)=>{
   if(event==='PASSWORD_RECOVERY'){
