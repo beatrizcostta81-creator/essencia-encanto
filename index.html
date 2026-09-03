@@ -85,12 +85,27 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 
 @media(max-width:700px){.cards,.appearance-grid,.menu-config-grid,.product-stats,.client-stats{grid-template-columns:1fr 1fr}.product-grid,.client-grid{grid-template-columns:1fr}.product-filters,.client-filters{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}body.menu-lateral .tabs{width:175px}body.menu-lateral main{margin-left:175px;padding-left:14px;padding-right:14px}}
 @media(max-width:520px){.photo-upload-box{grid-template-columns:1fr}.photo-preview,.photo-preview-placeholder{width:100%;height:190px}.cards,.appearance-grid,.menu-config-grid,.product-stats,.product-filters,.client-stats,.client-filters,.form-grid{grid-template-columns:1fr}.client-values{grid-template-columns:1fr 1fr}.product-card{grid-template-columns:74px 1fr}.product-photo,.product-photo-placeholder{width:74px;height:74px}.product-values{grid-template-columns:1fr 1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu-order-item{grid-template-columns:1fr auto auto}.menu-order-item label{grid-column:1/-1}body.menu-lateral .tabs{width:150px;padding:8px}body.menu-lateral main{margin-left:150px;padding:10px}body.menu-lateral .tab{font-size:12px;padding:8px}body.menu-embaixo .tabs{justify-content:flex-start}}
+
+/* Vendas completas */
+.sales-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.sales-stat{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:14px;box-shadow:var(--sombra)}
+.sales-stat span{display:block;font-size:12px;color:#88766f;margin-bottom:6px}.sales-stat b{font-size:20px;color:var(--cor-principal)}
+.sales-toolbar{display:grid;grid-template-columns:2fr 1fr;gap:9px;margin-bottom:14px}.sales-toolbar input,.sales-toolbar select{margin:0}
+.sale-list{display:flex;flex-direction:column;gap:10px}.sale-card{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:14px}
+.sale-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.sale-title{font-weight:800;font-size:16px}.sale-meta{font-size:12px;color:#88766f;margin-top:3px}
+.sale-values{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.sale-value{padding:8px;border-radius:10px;background:var(--cor-fundo);border:1px solid var(--borda)}.sale-value small{display:block;font-size:10px;color:#88766f}.sale-value b{font-size:13px}
+.sale-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.sale-actions button{padding:7px 9px;font-size:12px}
+.cart-table{width:100%;border-collapse:collapse;margin:8px 0 12px}.cart-table th,.cart-table td{padding:8px;border-bottom:1px solid var(--borda);vertical-align:middle}.cart-table input{margin:0;padding:8px}.cart-table select{margin:0;padding:8px}
+.cart-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.cart-summary>div{background:var(--cor-fundo);border:1px solid var(--borda);padding:10px;border-radius:10px}.cart-summary small{display:block;color:#88766f;font-size:11px}.cart-summary b{display:block;margin-top:3px}
+.pay-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.pay-grid .full{grid-column:1/-1}.pay-grid label{font-weight:700;font-size:13px}.pay-grid textarea{width:100%;min-height:70px;padding:12px;border:1px solid var(--borda);border-radius:10px;background:var(--cor-card);color:var(--cor-texto);font-family:inherit;margin:6px 0 12px}
+@media(max-width:760px){.sales-stats,.sale-values,.cart-summary{grid-template-columns:repeat(2,1fr)}.sales-toolbar{grid-template-columns:1fr}.cart-wrap{overflow-x:auto}.cart-table{min-width:650px}.pay-grid{grid-template-columns:1fr}.pay-grid .full{grid-column:auto}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active"><div class="cards"><div class="card">Produtos<b id="qProd">0</b></div><div class="card">Clientes<b id="qCli">0</b></div><div class="card">Vendas<b id="qVen">0</b></div><div class="card">A receber<b id="qRec">R$ 0,00</b></div></div><div class="panel" style="margin-top:15px"><b>Status</b><p id="status">Conectando...</p></div></section>
 <section id="produtos" class="view">
   <div class="top"><div><h2>🛍️ Produtos</h2><p class="muted">Cadastre preços, estoque, lucro, fotos e organize seus produtos.</p></div><div class="category-actions"><button class="soft" onclick="novaCategoria()">+ Categoria</button><button class="primary" onclick="novoProduto()">+ Novo produto</button></div></div>
@@ -126,6 +141,21 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div id="listaClientes"></div>
   </div>
 </section>
+
+<section id="vendas" class="view">
+  <div class="top"><div><h2>🧾 Vendas</h2><p class="muted">Registre vendas, pagamentos, parcelas e baixa automática no estoque.</p></div><button class="primary" onclick="novaVenda()">+ Nova venda</button></div>
+  <div class="sales-stats">
+    <div class="sales-stat"><span>Vendas registradas</span><b id="venQtd">0</b></div>
+    <div class="sales-stat"><span>Faturamento</span><b id="venFat">R$ 0,00</b></div>
+    <div class="sales-stat"><span>Recebido</span><b id="venPago">R$ 0,00</b></div>
+    <div class="sales-stat"><span>Em aberto</span><b id="venAberto">R$ 0,00</b></div>
+  </div>
+  <div class="panel">
+    <div class="sales-toolbar"><input id="vendaBusca" placeholder="🔎 Buscar por cliente, número ou pagamento" oninput="renderVendas()"><select id="vendaStatus" onchange="renderVendas()"><option value="">Todas</option><option value="pago">Pagas</option><option value="aberto">Em aberto</option></select></div>
+    <div id="listaVendas"></div>
+  </div>
+</section>
+
 <section id="financeiro" class="view"><h2>Financeiro</h2><div class="cards"><div class="card">Faturamento<b id="fat">R$ 0,00</b></div><div class="card">A receber<b id="rec">R$ 0,00</b></div><div class="card">Despesas<b id="desp">R$ 0,00</b></div><div class="card">Resultado<b id="res">R$ 0,00</b></div></div></section>
 
 <section id="configuracoes" class="view">
@@ -182,9 +212,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],despesas=[],categorias=[],configLoja=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},clientes:{label:'Clientes',icone:'👥'},financeiro:{label:'Financeiro',icone:'💳'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','produtos','clientes','financeiro','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],configLoja=null;let carrinhoVenda=[];
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},financeiro:{label:'Financeiro',icone:'💳'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','produtos','clientes','financeiro','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -216,7 +246,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,d,cat,cfg]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle()]);let e=p.error||c.error||v.error||d.error||cat.error||cfg.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];despesas=d.data||[];categorias=cat.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};aplicarConfiguracoes();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,cfg]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle()]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||cfg.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};aplicarConfiguracoes();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -327,9 +357,9 @@ function atualizarResumoProdutos(){
 }
 function render(){
   document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;
-  let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);
+  let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
-  atualizarResumoClientes();renderClientes();
+  atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();
   let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)
 }
 function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
@@ -384,7 +414,7 @@ function resumoCliente(c){
   return {
     qtd:vs.length,
     total:vs.reduce((s,v)=>s+num(v.total),0),
-    aberto:vs.reduce((s,v)=>s+num(v.valor_pendente),0)
+    aberto:vs.reduce((s,v)=>s+num(v.valor_aberto ?? v.valor_pendente),0)
   };
 }
 function clienteBuscaTexto(c){return [c.nome,c.whatsapp,c.telefone,c.email,c.cpf,c.endereco,c.cidade,c.observacoes].filter(Boolean).join(' ').toLowerCase()}
@@ -399,7 +429,7 @@ function atualizarResumoClientes(){
   const ativos=clientes.filter(c=>c.ativo!==false);
   const comCompras=clientes.filter(c=>vendasDoCliente(c.id).length>0);
   const total=vendas.reduce((s,v)=>s+num(v.total),0);
-  const aberto=vendas.reduce((s,v)=>s+num(v.valor_pendente),0);
+  const aberto=vendas.reduce((s,v)=>s+num(v.valor_aberto ?? v.valor_pendente),0);
   if(document.getElementById('cliAtivos'))document.getElementById('cliAtivos').textContent=ativos.length;
   if(document.getElementById('cliCompraram'))document.getElementById('cliCompraram').textContent=comCompras.length;
   if(document.getElementById('cliTotalVendido'))document.getElementById('cliTotalVendido').textContent=money(total);
@@ -441,7 +471,7 @@ async function salvarCliente(id=null){
 function verCliente(id){
   const c=clientes.find(x=>x.id===id);if(!c)return;const r=resumoCliente(c);
   const hist=vendasDoCliente(id).slice().sort((a,b)=>new Date(b.data_venda||b.created_at||0)-new Date(a.data_venda||a.created_at||0));
-  const histHtml=hist.length?`<div class="history-list">${hist.map(v=>`<div class="history-item"><div><b>Venda ${v.numero?'#'+esc(v.numero):''}</b><small>${formatarDataHora(v.data_venda||v.created_at)} • ${esc(v.forma_pagamento||'Pagamento não informado')}</small></div><div style="text-align:right"><b>${money(v.total)}</b><small>${num(v.valor_pendente)>0?'Em aberto: '+money(v.valor_pendente):'Pago'}</small></div></div>`).join('')}</div>`:'<p class="muted">Este cliente ainda não possui compras registradas.</p>';
+  const histHtml=hist.length?`<div class="history-list">${hist.map(v=>`<div class="history-item"><div><b>Venda ${v.numero?'#'+esc(v.numero):''}</b><small>${formatarDataHora(v.data_venda||v.created_at)} • ${esc(v.forma_pagamento||'Pagamento não informado')}</small></div><div style="text-align:right"><b>${money(v.total)}</b><small>${num(v.valor_aberto ?? v.valor_pendente)>0?'Em aberto: '+money(v.valor_pendente):'Pago'}</small></div></div>`).join('')}</div>`:'<p class="muted">Este cliente ainda não possui compras registradas.</p>';
   openModal(`<h2>👤 ${esc(c.nome||'Cliente')}</h2><div class="badges"><span class="badge ${c.ativo===false?'off':''}">${c.ativo===false?'Inativo':'Ativo'}</span>${r.aberto>0?'<span class="badge low">Possui valor em aberto</span>':''}</div><div class="client-values"><div class="client-value"><small>Compras</small><b>${r.qtd}</b></div><div class="client-value"><small>Total comprado</small><b>${money(r.total)}</b></div><div class="client-value"><small>Em aberto</small><b>${money(r.aberto)}</b></div></div><div style="margin-top:14px"><p>${c.whatsapp?'<b>WhatsApp:</b> '+esc(c.whatsapp)+'<br>':''}${c.telefone?'<b>Telefone:</b> '+esc(c.telefone)+'<br>':''}${c.email?'<b>E-mail:</b> '+esc(c.email)+'<br>':''}${c.cpf?'<b>CPF:</b> '+esc(c.cpf)+'<br>':''}${c.aniversario?'<b>Aniversário:</b> '+esc(formatarData(c.aniversario))+'<br>':''}${c.endereco?'<b>Endereço:</b> '+esc(c.endereco)+'<br>':''}${c.cidade?'<b>Cidade:</b> '+esc(c.cidade)+'<br>':''}</p>${c.observacoes?`<p><b>Observações:</b><br>${esc(c.observacoes)}</p>`:''}</div><h3>🧾 Histórico de compras</h3>${histHtml}<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="success" onclick="abrirWhatsCliente('${c.id}')">💬 WhatsApp</button><button class="soft" onclick="editarCliente('${c.id}')">✏️ Editar</button><button class="primary" onclick="closeModal()">Fechar</button></div>`);
 }
 function formatarDataHora(v){
@@ -454,6 +484,56 @@ async function excluirCliente(id){
   if(!confirm(`Excluir o cliente "${c.nome}"?`))return;
   const {error}=await sb.from('clientes').delete().eq('id',id).eq('user_id',user.id);if(error)return alert('Não foi possível excluir: '+error.message);await carregar();
 }
+
+function clienteNome(id){return clientes.find(c=>c.id===id)?.nome||'Cliente não informado'}
+function vendaAberto(v){return num(v.valor_aberto ?? v.valor_pendente)}
+function vendaPago(v){return num(v.valor_pago)}
+function atualizarResumoVendas(){
+  const fat=vendas.reduce((s,v)=>s+num(v.total),0),pago=vendas.reduce((s,v)=>s+vendaPago(v),0),aberto=vendas.reduce((s,v)=>s+vendaAberto(v),0);
+  if(document.getElementById('venQtd'))document.getElementById('venQtd').textContent=vendas.length;
+  if(document.getElementById('venFat'))document.getElementById('venFat').textContent=money(fat);
+  if(document.getElementById('venPago'))document.getElementById('venPago').textContent=money(pago);
+  if(document.getElementById('venAberto'))document.getElementById('venAberto').textContent=money(aberto);
+}
+function renderVendas(){
+  const alvo=document.getElementById('listaVendas');if(!alvo)return;
+  const busca=(document.getElementById('vendaBusca')?.value||'').trim().toLowerCase(),filtro=document.getElementById('vendaStatus')?.value||'';
+  let lista=[...vendas].filter(v=>{const aberto=vendaAberto(v);if(filtro==='pago'&&aberto>0.005)return false;if(filtro==='aberto'&&aberto<=0.005)return false;const txt=[v.numero,clienteNome(v.cliente_id),v.forma_pagamento,v.status_pagamento,v.status].join(' ').toLowerCase();return !busca||txt.includes(busca)}).sort((a,b)=>new Date(b.data_venda||b.created_at||0)-new Date(a.data_venda||a.created_at||0));
+  if(!lista.length){alvo.innerHTML='<div class="empty-state"><div class="icon">🧾</div><h3>Nenhuma venda encontrada</h3><p class="muted">Clique em Nova venda para registrar a primeira.</p></div>';return}
+  alvo.innerHTML='<div class="sale-list">'+lista.map(v=>{const aberto=vendaAberto(v),pago=vendaPago(v),status=aberto>0.005?'Em aberto':'Pago',qtd=itensVenda.filter(i=>i.venda_id===v.id).reduce((s,i)=>s+num(i.quantidade),0);return `<article class="sale-card"><div class="sale-head"><div><div class="sale-title">Venda ${v.numero?'#'+esc(v.numero):''} • ${esc(clienteNome(v.cliente_id))}</div><div class="sale-meta">${formatarDataHora(v.data_venda||v.created_at)} • ${esc(v.forma_pagamento||'Pagamento não informado')} • ${qtd} item(ns)</div></div><span class="badge ${aberto>0.005?'low':''}">${status}</span></div><div class="sale-values"><div class="sale-value"><small>Total</small><b>${money(v.total)}</b></div><div class="sale-value"><small>Pago</small><b>${money(pago)}</b></div><div class="sale-value"><small>Em aberto</small><b>${money(aberto)}</b></div><div class="sale-value"><small>Parcelas</small><b>${num(v.quantidade_parcelas||v.parcelas)||1}x</b></div></div><div class="sale-actions"><button class="soft" onclick="verVenda('${v.id}')">👁️ Detalhes</button></div></article>`}).join('')+'</div>';
+}
+function novaVenda(){
+  carrinhoVenda=[];
+  const cliOpts='<option value="">Consumidor / sem cliente</option>'+clientes.filter(c=>c.ativo!==false).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('');
+  openModal(`<h2>🧾 Nova venda</h2><p class="muted">Escolha o cliente, adicione os produtos e informe o pagamento.</p><div class="pay-grid"><div class="full"><label>Cliente</label><select id="vCliente">${cliOpts}</select></div></div><h3>Produtos</h3><div class="cart-wrap"><table class="cart-table"><thead><tr><th>Produto</th><th>Qtd.</th><th>Preço</th><th>Subtotal</th><th></th></tr></thead><tbody id="vCarrinho"></tbody></table></div><button class="soft" type="button" onclick="adicionarItemVenda()">+ Adicionar produto</button><div class="cart-summary"><div><small>Subtotal</small><b id="vSubtotal">R$ 0,00</b></div><div><small>Desconto</small><b id="vDescResumo">R$ 0,00</b></div><div><small>Total</small><b id="vTotal">R$ 0,00</b></div><div><small>Em aberto</small><b id="vAberto">R$ 0,00</b></div></div><div class="pay-grid"><div><label>Desconto (R$)</label><input id="vDesconto" type="number" min="0" step="0.01" value="0" oninput="calcularVenda()"></div><div><label>Forma de pagamento</label><select id="vForma"><option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option><option value="Cartão de débito">Cartão de débito</option><option value="Cartão de crédito">Cartão de crédito</option><option value="Fiado / a receber">Fiado / a receber</option><option value="Outro">Outro</option></select></div><div><label>Tipo</label><select id="vTipo" onchange="ajustarPagamentoVenda()"><option value="avista">À vista</option><option value="parcelado">Parcelado</option></select></div><div><label>Quantidade de parcelas</label><input id="vParcelas" type="number" min="1" max="36" step="1" value="1" oninput="calcularVenda()"></div><div><label>Valor pago agora</label><input id="vPago" type="number" min="0" step="0.01" value="0" oninput="calcularVenda()"></div><div><label>Primeiro vencimento</label><input id="vVencimento" type="date"></div><div class="full"><label>Observações</label><textarea id="vObs" placeholder="Observações da venda"></textarea></div></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap"><button class="soft" onclick="closeModal()">Cancelar</button><button id="btnSalvarVenda" class="primary" onclick="salvarVenda()">Finalizar venda</button></div>`);
+  adicionarItemVenda();ajustarPagamentoVenda();
+}
+function produtoOptionsVenda(sel=''){return '<option value="">Selecione</option>'+produtos.filter(p=>p.ativo!==false&&num(p.estoque)>0).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.nome)} • estoque ${num(p.estoque)} • ${money(precoVendaProduto(p))}</option>`).join('')}
+function adicionarItemVenda(){carrinhoVenda.push({produto_id:'',quantidade:1,preco:0});renderCarrinhoVenda()}
+function removerItemVenda(i){carrinhoVenda.splice(i,1);if(!carrinhoVenda.length)carrinhoVenda.push({produto_id:'',quantidade:1,preco:0});renderCarrinhoVenda()}
+function alterarProdutoVenda(i,id){const p=produtos.find(x=>x.id===id);carrinhoVenda[i].produto_id=id;carrinhoVenda[i].preco=p?precoVendaProduto(p):0;carrinhoVenda[i].quantidade=Math.max(1,Math.min(num(carrinhoVenda[i].quantidade)||1,p?num(p.estoque):1));renderCarrinhoVenda()}
+function alterarQtdVenda(i,v){const p=produtos.find(x=>x.id===carrinhoVenda[i].produto_id),max=p?num(p.estoque):999999;carrinhoVenda[i].quantidade=Math.max(1,Math.min(parseInt(v||1,10)||1,max));renderCarrinhoVenda()}
+function alterarPrecoVenda(i,v){carrinhoVenda[i].preco=Math.max(0,num(v));calcularVenda()}
+function renderCarrinhoVenda(){const tb=document.getElementById('vCarrinho');if(!tb)return;tb.innerHTML=carrinhoVenda.map((it,i)=>{const p=produtos.find(x=>x.id===it.produto_id),max=p?num(p.estoque):999999;return `<tr><td><select onchange="alterarProdutoVenda(${i},this.value)">${produtoOptionsVenda(it.produto_id)}</select></td><td style="width:90px"><input type="number" min="1" max="${max}" value="${num(it.quantidade)||1}" onchange="alterarQtdVenda(${i},this.value)"></td><td style="width:130px"><input type="number" min="0" step="0.01" value="${num(it.preco).toFixed(2)}" oninput="alterarPrecoVenda(${i},this.value)"></td><td style="white-space:nowrap">${money(num(it.quantidade)*num(it.preco))}</td><td><button class="danger" type="button" onclick="removerItemVenda(${i})">✕</button></td></tr>`}).join('');calcularVenda()}
+function calcularVenda(){const sub=carrinhoVenda.reduce((s,it)=>s+num(it.quantidade)*num(it.preco),0),desc=Math.max(0,num(document.getElementById('vDesconto')?.value)),total=Math.max(0,sub-desc),pago=Math.min(total,Math.max(0,num(document.getElementById('vPago')?.value))),aberto=Math.max(0,total-pago);if(document.getElementById('vSubtotal'))document.getElementById('vSubtotal').textContent=money(sub);if(document.getElementById('vDescResumo'))document.getElementById('vDescResumo').textContent=money(desc);if(document.getElementById('vTotal'))document.getElementById('vTotal').textContent=money(total);if(document.getElementById('vAberto'))document.getElementById('vAberto').textContent=money(aberto);return{sub,desc,total,pago,aberto}}
+function ajustarPagamentoVenda(){const tipo=document.getElementById('vTipo')?.value||'avista',par=document.getElementById('vParcelas');if(par){par.disabled=tipo==='avista';if(tipo==='avista')par.value=1}calcularVenda()}
+function proximoNumeroVenda(){return vendas.reduce((m,v)=>Math.max(m,parseInt(v.numero||0,10)||0),0)+1}
+async function salvarVenda(){
+  const validos=carrinhoVenda.filter(it=>it.produto_id&&num(it.quantidade)>0);if(!validos.length)return alert('Adicione pelo menos um produto à venda.');
+  const repetidos=new Set();for(const it of validos){if(repetidos.has(it.produto_id))return alert('O mesmo produto foi adicionado mais de uma vez. Junte a quantidade em uma única linha.');repetidos.add(it.produto_id);const p=produtos.find(x=>x.id===it.produto_id);if(!p)return alert('Produto não encontrado.');if(num(it.quantidade)>num(p.estoque))return alert(`Estoque insuficiente para ${p.nome}. Disponível: ${num(p.estoque)}.`)}
+  const calc=calcularVenda(),cliente_id=document.getElementById('vCliente').value||null,tipo=document.getElementById('vTipo').value,parcelas=Math.max(1,parseInt(document.getElementById('vParcelas').value||1,10)||1),forma=document.getElementById('vForma').value,obs=document.getElementById('vObs').value.trim()||null;
+  if(calc.total<=0)return alert('O total da venda precisa ser maior que zero.');if(calc.aberto>0.005&&!cliente_id)return alert('Selecione um cliente para uma venda com valor em aberto.');
+  const btn=document.getElementById('btnSalvarVenda');btn.disabled=true;btn.textContent='Salvando...';
+  const vendaObj={user_id:user.id,cliente_id,numero:proximoNumeroVenda(),subtotal:calc.sub,desconto:calc.desc,total:calc.total,valor_pago:calc.pago,valor_pendente:calc.aberto,valor_aberto:calc.aberto,forma_pagamento:forma,parcelas:tipo==='avista'?1:parcelas,quantidade_parcelas:tipo==='avista'?1:parcelas,tipo_pagamento:tipo,status:calc.aberto>0.005?'pendente':'paga',status_pagamento:calc.aberto>0.005?'pendente':'pago',observacoes:obs,data_venda:new Date().toISOString(),updated_at:new Date().toISOString()};
+  const vr=await sb.from('vendas').insert(vendaObj).select().single();if(vr.error){btn.disabled=false;btn.textContent='Finalizar venda';return alert('Não foi possível salvar a venda: '+vr.error.message)}const venda=vr.data;
+  const itens=validos.map(it=>{const p=produtos.find(x=>x.id===it.produto_id),st=num(it.quantidade)*num(it.preco),custo=precoCustoProduto(p);return{user_id:user.id,venda_id:venda.id,produto_id:p.id,quantidade:num(it.quantidade),preco_unitario:num(it.preco),custo_unitario:custo,preco_custo:custo,desconto:0,total:st,subtotal:st}});
+  const ir=await sb.from('itens_venda').insert(itens);if(ir.error){await sb.from('vendas').delete().eq('id',venda.id);btn.disabled=false;btn.textContent='Finalizar venda';return alert('Não foi possível salvar os itens: '+ir.error.message)}
+  for(const it of validos){const p=produtos.find(x=>x.id===it.produto_id),ant=num(p.estoque),novo=ant-num(it.quantidade);const ur=await sb.from('produtos').update({estoque:novo,updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);if(ur.error){btn.disabled=false;btn.textContent='Finalizar venda';return alert('A venda foi registrada, mas ocorreu erro ao baixar o estoque de '+p.nome+': '+ur.error.message)}await sb.from('movimentacoes_estoque').insert({user_id:user.id,produto_id:p.id,tipo:'saida',quantidade:num(it.quantidade),estoque_anterior:ant,estoque_novo:novo,motivo:'Venda',referencia_id:venda.id})}
+  if(calc.aberto>0.005){const qtd=tipo==='parcelado'?parcelas:1,base=Math.floor((calc.aberto/qtd)*100)/100;let restante=Math.round(calc.aberto*100)/100;const venc=document.getElementById('vVencimento').value;const ps=[];for(let i=1;i<=qtd;i++){let valor=i===qtd?restante:base;restante=Math.round((restante-valor)*100)/100;let data=null;if(venc){const d=new Date(venc+'T12:00:00');d.setMonth(d.getMonth()+i-1);data=d.toISOString().slice(0,10)}ps.push({user_id:user.id,venda_id:venda.id,cliente_id,numero_parcela:i,valor,vencimento:data,pago:false,forma_pagamento:forma})}const pr=await sb.from('parcelas_receber').insert(ps);if(pr.error)alert('Venda salva, mas não foi possível criar as parcelas: '+pr.error.message)}
+  closeModal();await carregar();ativarAba('vendas');alert('✅ Venda registrada com sucesso e estoque atualizado.');
+}
+function verVenda(id){const v=vendas.find(x=>x.id===id);if(!v)return;const its=itensVenda.filter(i=>i.venda_id===id),pars=parcelasReceber.filter(p=>p.venda_id===id).sort((a,b)=>num(a.numero_parcela)-num(b.numero_parcela));const itensHtml=its.length?its.map(i=>{const p=produtos.find(x=>x.id===i.produto_id);return `<div class="history-item"><div><b>${esc(p?.nome||'Produto')}</b><small>${num(i.quantidade)} x ${money(i.preco_unitario)}</small></div><b>${money(i.total??i.subtotal)}</b></div>`}).join(''):'<p class="muted">Itens não encontrados.</p>';const parHtml=pars.length?`<h3>💳 Parcelas</h3><div class="history-list">${pars.map(p=>`<div class="history-item"><div><b>Parcela ${num(p.numero_parcela)}</b><small>${p.vencimento?'Vence em '+formatarData(p.vencimento):'Sem vencimento'} • ${p.pago?'Pago':'Pendente'}</small></div><b>${money(p.valor)}</b></div>`).join('')}</div>`:'';openModal(`<h2>🧾 Venda ${v.numero?'#'+esc(v.numero):''}</h2><p><b>Cliente:</b> ${esc(clienteNome(v.cliente_id))}<br><b>Data:</b> ${formatarDataHora(v.data_venda||v.created_at)}<br><b>Pagamento:</b> ${esc(v.forma_pagamento||'Não informado')}</p><h3>Produtos</h3><div class="history-list">${itensHtml}</div><div class="cart-summary"><div><small>Total</small><b>${money(v.total)}</b></div><div><small>Pago</small><b>${money(vendaPago(v))}</b></div><div><small>Em aberto</small><b>${money(vendaAberto(v))}</b></div><div><small>Status</small><b>${vendaAberto(v)>0.005?'Em aberto':'Pago'}</b></div></div>${parHtml}<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="primary" onclick="closeModal()">Fechar</button></div>`)}
+
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>ativarAba(b.dataset.v))
 ;
 sb.auth.onAuthStateChange(async (event, session)=>{
