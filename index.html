@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Essência & Encanto - versão com Produtos completos + upload de fotos + Menu e Aparência personalizáveis --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Essência & Encanto - Produtos e Clientes completos + fotos + Menu e Aparência personalizáveis --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Essência & Encanto Online</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -70,8 +70,21 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .check-row{display:flex;align-items:center;gap:8px;margin:8px 0 16px}.check-row input{width:auto;margin:0}.modal .box{width:min(760px,100%)}
 .category-actions{display:flex;gap:8px;flex-wrap:wrap}.category-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.category-pill{display:inline-flex;align-items:center;gap:6px;background:var(--cor-secundaria);border-radius:999px;padding:6px 9px;font-size:12px}
 .photo-upload-box{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;padding:12px;border:1px dashed var(--borda);border-radius:14px;background:var(--cor-fundo);margin:6px 0 12px}.photo-preview{width:120px;height:120px;border-radius:14px;object-fit:cover;border:1px solid var(--borda);background:var(--cor-secundaria)}.photo-preview-placeholder{width:120px;height:120px;border-radius:14px;border:1px dashed var(--borda);display:grid;place-items:center;font-size:38px;background:var(--cor-secundaria)}.photo-upload-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.photo-help{font-size:12px;color:#88766f;margin-top:6px}.upload-progress{font-size:12px;font-weight:700;margin-top:6px;color:var(--cor-principal)}
-@media(max-width:700px){.cards,.appearance-grid,.menu-config-grid,.product-stats{grid-template-columns:1fr 1fr}.product-grid{grid-template-columns:1fr}.product-filters{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}body.menu-lateral .tabs{width:175px}body.menu-lateral main{margin-left:175px;padding-left:14px;padding-right:14px}}
-@media(max-width:520px){.photo-upload-box{grid-template-columns:1fr}.photo-preview,.photo-preview-placeholder{width:100%;height:190px}.cards,.appearance-grid,.menu-config-grid,.product-stats,.product-filters,.form-grid{grid-template-columns:1fr}.product-card{grid-template-columns:74px 1fr}.product-photo,.product-photo-placeholder{width:74px;height:74px}.product-values{grid-template-columns:1fr 1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu-order-item{grid-template-columns:1fr auto auto}.menu-order-item label{grid-column:1/-1}body.menu-lateral .tabs{width:150px;padding:8px}body.menu-lateral main{margin-left:150px;padding:10px}body.menu-lateral .tab{font-size:12px;padding:8px}body.menu-embaixo .tabs{justify-content:flex-start}}
+
+/* Clientes completos */
+.client-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.client-stat{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:14px;box-shadow:var(--sombra)}
+.client-stat span{display:block;font-size:12px;color:#88766f;margin-bottom:6px}.client-stat b{font-size:20px;color:var(--cor-principal)}
+.client-filters{display:grid;grid-template-columns:2fr 1fr;gap:9px;margin-bottom:14px}.client-filters input,.client-filters select{margin:0}
+.client-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.client-card{border:1px solid var(--borda);border-radius:var(--raio);padding:15px;background:var(--cor-card)}
+.client-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.client-name{font-weight:800;font-size:17px}.client-meta{font-size:12px;color:#88766f;margin-top:3px;word-break:break-word}
+.client-values{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.client-value{padding:8px;border-radius:10px;background:var(--cor-fundo);border:1px solid var(--borda)}.client-value small{display:block;font-size:10px;color:#88766f}.client-value b{display:block;font-size:13px;margin-top:3px}
+.client-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.client-actions button{padding:7px 9px;font-size:12px}
+.history-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.history-item{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid var(--borda);border-radius:10px;padding:10px;background:var(--cor-fundo)}.history-item small{display:block;color:#88766f;margin-top:3px}
+
+@media(max-width:700px){.cards,.appearance-grid,.menu-config-grid,.product-stats,.client-stats{grid-template-columns:1fr 1fr}.product-grid,.client-grid{grid-template-columns:1fr}.product-filters,.client-filters{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}body.menu-lateral .tabs{width:175px}body.menu-lateral main{margin-left:175px;padding-left:14px;padding-right:14px}}
+@media(max-width:520px){.photo-upload-box{grid-template-columns:1fr}.photo-preview,.photo-preview-placeholder{width:100%;height:190px}.cards,.appearance-grid,.menu-config-grid,.product-stats,.product-filters,.client-stats,.client-filters,.form-grid{grid-template-columns:1fr}.client-values{grid-template-columns:1fr 1fr}.product-card{grid-template-columns:74px 1fr}.product-photo,.product-photo-placeholder{width:74px;height:74px}.product-values{grid-template-columns:1fr 1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu-order-item{grid-template-columns:1fr auto auto}.menu-order-item label{grid-column:1/-1}body.menu-lateral .tabs{width:150px;padding:8px}body.menu-lateral main{margin-left:150px;padding:10px}body.menu-lateral .tab{font-size:12px;padding:8px}body.menu-embaixo .tabs{justify-content:flex-start}}
 </style></head><body>
 <section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -97,7 +110,22 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div id="listaProdutos"></div>
   </div>
 </section>
-<section id="clientes" class="view"><div class="top"><h2>Clientes</h2><button class="primary" onclick="novoCliente()">+ Novo cliente</button></div><div class="panel" id="listaClientes"></div></section>
+<section id="clientes" class="view">
+  <div class="top"><div><h2>👥 Clientes</h2><p class="muted">Cadastre, encontre e acompanhe seus clientes.</p></div><button class="primary" onclick="novoCliente()">+ Novo cliente</button></div>
+  <div class="client-stats">
+    <div class="client-stat"><span>Clientes ativos</span><b id="cliAtivos">0</b></div>
+    <div class="client-stat"><span>Com compras</span><b id="cliCompraram">0</b></div>
+    <div class="client-stat"><span>Total vendido</span><b id="cliTotalVendido">R$ 0,00</b></div>
+    <div class="client-stat"><span>Total em aberto</span><b id="cliEmAberto">R$ 0,00</b></div>
+  </div>
+  <div class="panel">
+    <div class="client-filters">
+      <input id="clienteBusca" placeholder="🔎 Buscar por nome, WhatsApp, CPF, e-mail ou cidade" oninput="renderClientes()">
+      <select id="clienteStatus" onchange="renderClientes()"><option value="">Todos os clientes</option><option value="ativo">Ativos</option><option value="inativo">Inativos</option><option value="devendo">Com valor em aberto</option></select>
+    </div>
+    <div id="listaClientes"></div>
+  </div>
+</section>
 <section id="financeiro" class="view"><h2>Financeiro</h2><div class="cards"><div class="card">Faturamento<b id="fat">R$ 0,00</b></div><div class="card">A receber<b id="rec">R$ 0,00</b></div><div class="card">Despesas<b id="desp">R$ 0,00</b></div><div class="card">Resultado<b id="res">R$ 0,00</b></div></div></section>
 
 <section id="configuracoes" class="view">
@@ -301,7 +329,7 @@ function render(){
   document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;
   let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
-  document.getElementById('listaClientes').innerHTML=clientes.length?'<table><tr><th>Nome</th><th>WhatsApp</th></tr>'+clientes.map(c=>`<tr><td>${esc(c.nome)}</td><td>${esc(c.whatsapp||'')}</td></tr>`).join('')+'</table>':'Nenhum cliente.';
+  atualizarResumoClientes();renderClientes();
   let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)
 }
 function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
@@ -349,8 +377,83 @@ async function ajustarEstoque(id,direcao){const p=produtos.find(x=>x.id===id);if
 async function excluirProduto(id){const p=produtos.find(x=>x.id===id);if(!p)return;if(!confirm(`Excluir o produto "${p.nome}"? Essa ação não pode ser desfeita.`))return;const {error}=await sb.from('produtos').delete().eq('id',id).eq('user_id',user.id);if(error)return alert('Não foi possível excluir: '+error.message);await carregar()}
 function novaCategoria(){openModal(`<h2>🏷️ Nova categoria</h2><label>Nome da categoria</label><input id="catNome" placeholder="Ex.: Perfumes, Semijoias, Maquiagem"><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarCategoria()">Salvar categoria</button></div>`)}
 async function salvarCategoria(){const nome=document.getElementById('catNome').value.trim();if(!nome)return alert('Digite o nome da categoria.');const {error}=await sb.from('categorias').insert({user_id:user.id,nome});if(error)return alert('Não foi possível salvar a categoria: '+error.message);closeModal();await carregar()}
-function novoCliente(){openModal(`<h2>Novo cliente</h2><input id="cn" placeholder="Nome"><input id="cw" placeholder="WhatsApp"><button class="soft" onclick="closeModal()">Cancelar</button> <button class="primary" onclick="salvarCliente()">Salvar</button>`)}
-async function salvarCliente(){let o={user_id:user.id,nome:cn.value.trim(),whatsapp:cw.value.trim()};let r=await sb.from('clientes').insert(o);if(r.error)return alert(r.error.message);closeModal();await carregar()}
+
+function vendasDoCliente(id){return vendas.filter(v=>v.cliente_id===id)}
+function resumoCliente(c){
+  const vs=vendasDoCliente(c.id);
+  return {
+    qtd:vs.length,
+    total:vs.reduce((s,v)=>s+num(v.total),0),
+    aberto:vs.reduce((s,v)=>s+num(v.valor_pendente),0)
+  };
+}
+function clienteBuscaTexto(c){return [c.nome,c.whatsapp,c.telefone,c.email,c.cpf,c.endereco,c.cidade,c.observacoes].filter(Boolean).join(' ').toLowerCase()}
+function whatsappNumero(v){return String(v||'').replace(/\D/g,'')}
+function abrirWhatsCliente(id){
+  const c=clientes.find(x=>x.id===id);if(!c)return;
+  let n=whatsappNumero(c.whatsapp||c.telefone);if(!n)return alert('Este cliente não tem WhatsApp cadastrado.');
+  if(n.length===10||n.length===11)n='55'+n;
+  window.open('https://wa.me/'+n,'_blank','noopener');
+}
+function atualizarResumoClientes(){
+  const ativos=clientes.filter(c=>c.ativo!==false);
+  const comCompras=clientes.filter(c=>vendasDoCliente(c.id).length>0);
+  const total=vendas.reduce((s,v)=>s+num(v.total),0);
+  const aberto=vendas.reduce((s,v)=>s+num(v.valor_pendente),0);
+  if(document.getElementById('cliAtivos'))document.getElementById('cliAtivos').textContent=ativos.length;
+  if(document.getElementById('cliCompraram'))document.getElementById('cliCompraram').textContent=comCompras.length;
+  if(document.getElementById('cliTotalVendido'))document.getElementById('cliTotalVendido').textContent=money(total);
+  if(document.getElementById('cliEmAberto'))document.getElementById('cliEmAberto').textContent=money(aberto);
+}
+function renderClientes(){
+  const alvo=document.getElementById('listaClientes');if(!alvo)return;
+  const termo=(document.getElementById('clienteBusca')?.value||'').trim().toLowerCase();
+  const filtro=document.getElementById('clienteStatus')?.value||'';
+  let lista=clientes.filter(c=>{
+    const rs=resumoCliente(c),ativo=c.ativo!==false;
+    if(termo&&!clienteBuscaTexto(c).includes(termo))return false;
+    if(filtro==='ativo'&&!ativo)return false;
+    if(filtro==='inativo'&&ativo)return false;
+    if(filtro==='devendo'&&rs.aberto<=0)return false;
+    return true;
+  }).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR'));
+  if(!lista.length){alvo.innerHTML=`<div class="empty-state"><div class="icon">👥</div><h3>Nenhum cliente encontrado</h3><p class="muted">Cadastre um cliente ou altere os filtros.</p></div>`;return}
+  alvo.innerHTML='<div class="client-grid">'+lista.map(c=>{
+    const r=resumoCliente(c),ativo=c.ativo!==false,contato=c.whatsapp||c.telefone||'',cidade=c.cidade||'';
+    return `<article class="client-card"><div class="client-head"><div><div class="client-name">${esc(c.nome||'Sem nome')}</div><div class="client-meta">${contato?'📱 '+esc(contato):'Sem telefone'}${cidade?' • 📍 '+esc(cidade):''}</div></div><span class="badge ${ativo?'':'off'}">${ativo?'Ativo':'Inativo'}</span></div><div class="badges">${r.aberto>0?'<span class="badge low">Valor em aberto</span>':''}${c.aniversario?`<span class="badge">🎂 ${esc(formatarData(c.aniversario))}</span>`:''}</div><div class="client-values"><div class="client-value"><small>Compras</small><b>${r.qtd}</b></div><div class="client-value"><small>Total comprado</small><b>${money(r.total)}</b></div><div class="client-value"><small>Em aberto</small><b>${money(r.aberto)}</b></div></div><div class="client-actions"><button class="soft" onclick="verCliente('${c.id}')">👁️ Ver</button><button class="soft" onclick="editarCliente('${c.id}')">✏️ Editar</button><button class="success" onclick="abrirWhatsCliente('${c.id}')">💬 WhatsApp</button><button class="danger" onclick="excluirCliente('${c.id}')">🗑️ Excluir</button></div></article>`
+  }).join('')+'</div>';
+}
+function formatarData(v){
+  if(!v)return '';const d=String(v).slice(0,10).split('-');return d.length===3?`${d[2]}/${d[1]}/${d[0]}`:v;
+}
+function clienteForm(c={}){
+  const editar=!!c.id;
+  return `<h2>${editar?'✏️ Editar cliente':'👥 Novo cliente'}</h2><p class="muted">Preencha os dados que desejar. Apenas o nome é obrigatório.</p><div class="form-grid"><div class="full"><label>Nome *</label><input id="cn" value="${esc(c.nome||'')}" placeholder="Nome do cliente"></div><div><label>WhatsApp</label><input id="cw" value="${esc(c.whatsapp||'')}" placeholder="Ex.: 16999999999"></div><div><label>Telefone</label><input id="ctel" value="${esc(c.telefone||'')}" placeholder="Telefone alternativo"></div><div><label>E-mail</label><input id="cemail" type="email" value="${esc(c.email||'')}" placeholder="cliente@email.com"></div><div><label>CPF</label><input id="ccpf" value="${esc(c.cpf||'')}" placeholder="Somente se desejar cadastrar"></div><div><label>Aniversário</label><input id="caniv" type="date" value="${esc((c.aniversario||'').toString().slice(0,10))}"></div><div class="full"><label>Endereço</label><input id="cend" value="${esc(c.endereco||'')}" placeholder="Rua, número, bairro"></div><div><label>Cidade</label><input id="ccidade" value="${esc(c.cidade||'')}" placeholder="Cidade"></div><div class="full"><label>Observações</label><textarea id="cobs" placeholder="Preferências, referências de entrega, anotações...">${esc(c.observacoes||'')}</textarea></div><div class="full check-row"><input id="cativo" type="checkbox" ${c.ativo!==false?'checked':''}><label for="cativo">Cliente ativo</label></div></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarCliente(${editar?`'${c.id}'`:'null'})">${editar?'Salvar alterações':'Cadastrar cliente'}</button></div>`;
+}
+function novoCliente(){openModal(clienteForm())}
+function editarCliente(id){const c=clientes.find(x=>x.id===id);if(c)openModal(clienteForm(c))}
+async function salvarCliente(id=null){
+  const nome=document.getElementById('cn').value.trim();if(!nome)return alert('Digite o nome do cliente.');
+  const o={user_id:user.id,nome,whatsapp:document.getElementById('cw').value.trim()||null,telefone:document.getElementById('ctel').value.trim()||null,email:document.getElementById('cemail').value.trim()||null,cpf:document.getElementById('ccpf').value.trim()||null,endereco:document.getElementById('cend').value.trim()||null,cidade:document.getElementById('ccidade').value.trim()||null,observacoes:document.getElementById('cobs').value.trim()||null,aniversario:document.getElementById('caniv').value||null,ativo:document.getElementById('cativo').checked,updated_at:new Date().toISOString()};
+  const q=id?sb.from('clientes').update(o).eq('id',id).eq('user_id',user.id):sb.from('clientes').insert(o);
+  const {error}=await q;if(error)return alert('Não foi possível salvar: '+error.message);closeModal();await carregar();
+}
+function verCliente(id){
+  const c=clientes.find(x=>x.id===id);if(!c)return;const r=resumoCliente(c);
+  const hist=vendasDoCliente(id).slice().sort((a,b)=>new Date(b.data_venda||b.created_at||0)-new Date(a.data_venda||a.created_at||0));
+  const histHtml=hist.length?`<div class="history-list">${hist.map(v=>`<div class="history-item"><div><b>Venda ${v.numero?'#'+esc(v.numero):''}</b><small>${formatarDataHora(v.data_venda||v.created_at)} • ${esc(v.forma_pagamento||'Pagamento não informado')}</small></div><div style="text-align:right"><b>${money(v.total)}</b><small>${num(v.valor_pendente)>0?'Em aberto: '+money(v.valor_pendente):'Pago'}</small></div></div>`).join('')}</div>`:'<p class="muted">Este cliente ainda não possui compras registradas.</p>';
+  openModal(`<h2>👤 ${esc(c.nome||'Cliente')}</h2><div class="badges"><span class="badge ${c.ativo===false?'off':''}">${c.ativo===false?'Inativo':'Ativo'}</span>${r.aberto>0?'<span class="badge low">Possui valor em aberto</span>':''}</div><div class="client-values"><div class="client-value"><small>Compras</small><b>${r.qtd}</b></div><div class="client-value"><small>Total comprado</small><b>${money(r.total)}</b></div><div class="client-value"><small>Em aberto</small><b>${money(r.aberto)}</b></div></div><div style="margin-top:14px"><p>${c.whatsapp?'<b>WhatsApp:</b> '+esc(c.whatsapp)+'<br>':''}${c.telefone?'<b>Telefone:</b> '+esc(c.telefone)+'<br>':''}${c.email?'<b>E-mail:</b> '+esc(c.email)+'<br>':''}${c.cpf?'<b>CPF:</b> '+esc(c.cpf)+'<br>':''}${c.aniversario?'<b>Aniversário:</b> '+esc(formatarData(c.aniversario))+'<br>':''}${c.endereco?'<b>Endereço:</b> '+esc(c.endereco)+'<br>':''}${c.cidade?'<b>Cidade:</b> '+esc(c.cidade)+'<br>':''}</p>${c.observacoes?`<p><b>Observações:</b><br>${esc(c.observacoes)}</p>`:''}</div><h3>🧾 Histórico de compras</h3>${histHtml}<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="success" onclick="abrirWhatsCliente('${c.id}')">💬 WhatsApp</button><button class="soft" onclick="editarCliente('${c.id}')">✏️ Editar</button><button class="primary" onclick="closeModal()">Fechar</button></div>`);
+}
+function formatarDataHora(v){
+  if(!v)return 'Data não informada';const d=new Date(v);if(Number.isNaN(d.getTime()))return formatarData(v);
+  return d.toLocaleDateString('pt-BR');
+}
+async function excluirCliente(id){
+  const c=clientes.find(x=>x.id===id);if(!c)return;
+  const hist=vendasDoCliente(id);if(hist.length)return alert(`Este cliente possui ${hist.length} venda(s) registrada(s). Para preservar o histórico, deixe-o como inativo em vez de excluir.`);
+  if(!confirm(`Excluir o cliente "${c.nome}"?`))return;
+  const {error}=await sb.from('clientes').delete().eq('id',id).eq('user_id',user.id);if(error)return alert('Não foi possível excluir: '+error.message);await carregar();
+}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>ativarAba(b.dataset.v))
 ;
 sb.auth.onAuthStateChange(async (event, session)=>{
