@@ -4,19 +4,46 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f7f3f0;color:#342c2a}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.box{background:white;border:1px solid #eadfd8;border-radius:22px;padding:28px;width:min(420px,100%)}h1{font-family:Georgia;text-align:center}input,select{width:100%;padding:12px;border:1px solid #ddd0c8;border-radius:10px;margin:6px 0 12px}button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.primary{background:#342c2a;color:white}.soft{background:#efe3da}.app{display:none}header{height:66px;background:#fff;border-bottom:1px solid #eadfd8;display:flex;justify-content:space-between;align-items:center;padding:0 20px}main{padding:22px;max-width:1100px;margin:auto}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab.active{background:#342c2a;color:#fff}.view{display:none}.view.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#fff;border:1px solid #eadfd8;border-radius:16px;padding:17px}.card b{display:block;font-size:22px;margin-top:7px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #eee;text-align:left}.modal{display:none;position:fixed;inset:0;background:#0006;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal .box{max-height:90vh;overflow:auto}.muted{color:#88766f;font-size:13px}@media(max-width:700px){.cards{grid-template-columns:1fr 1fr}}
 </style></head><body>
-<section id="login" class="login"><div class="box"><h1>Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
+<section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
-<section id="app" class="app"><header><b>Essência & Encanto</b><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="financeiro">💳 Financeiro</button></div>
+<section id="app" class="app"><header><b id="headerNomeLoja">Essência & Encanto</b><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active"><div class="cards"><div class="card">Produtos<b id="qProd">0</b></div><div class="card">Clientes<b id="qCli">0</b></div><div class="card">Vendas<b id="qVen">0</b></div><div class="card">A receber<b id="qRec">R$ 0,00</b></div></div><div class="panel" style="margin-top:15px"><b>Status</b><p id="status">Conectando...</p></div></section>
 <section id="produtos" class="view"><div class="top"><h2>Produtos</h2><button class="primary" onclick="novoProduto()">+ Novo produto</button></div><div class="panel" id="listaProdutos"></div></section>
 <section id="clientes" class="view"><div class="top"><h2>Clientes</h2><button class="primary" onclick="novoCliente()">+ Novo cliente</button></div><div class="panel" id="listaClientes"></div></section>
 <section id="financeiro" class="view"><h2>Financeiro</h2><div class="cards"><div class="card">Faturamento<b id="fat">R$ 0,00</b></div><div class="card">A receber<b id="rec">R$ 0,00</b></div><div class="card">Despesas<b id="desp">R$ 0,00</b></div><div class="card">Resultado<b id="res">R$ 0,00</b></div></div></section>
+
+<section id="configuracoes" class="view">
+  <div class="top"><div><h2>⚙️ Configurações da Loja</h2><p class="muted">Altere a identidade da sua loja quando quiser.</p></div></div>
+  <div class="panel">
+    <label>Nome da loja</label>
+    <input id="cfgNome" placeholder="Nome da loja">
+
+    <label>WhatsApp</label>
+    <input id="cfgWhats" placeholder="Ex.: 16996529134">
+
+    <label>Instagram</label>
+    <input id="cfgInstagram" placeholder="Ex.: @minhaloja">
+
+    <label>Endereço</label>
+    <input id="cfgEndereco" placeholder="Cidade / endereço">
+
+    <label>Mensagem da loja</label>
+    <input id="cfgMensagem" placeholder="Mensagem curta da loja">
+
+    <label>URL da logo</label>
+    <input id="cfgLogo" placeholder="Link da imagem da logo">
+
+    <button class="primary" onclick="salvarConfiguracoes()">Salvar configurações</button>
+    <p class="muted" id="cfgMsg"></p>
+  </div>
+</section>
+
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],despesas=[],categorias=[];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],despesas=[],categorias=[],configLoja=null;
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
 function telaNovaSenha(){
@@ -47,7 +74,41 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,d,cat]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id)]);let e=p.error||c.error||v.error||d.error||cat.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];despesas=d.data||[];categorias=cat.data||[];render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,d,cat,cfg]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle()]);let e=p.error||c.error||v.error||d.error||cat.error||cfg.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];despesas=d.data||[];categorias=cat.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};aplicarConfiguracoes();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+
+function aplicarConfiguracoes(){
+  const nome=(configLoja?.nome_loja||'Essência & Encanto').trim()||'Essência & Encanto';
+  document.getElementById('loginNomeLoja').textContent=nome;
+  document.getElementById('headerNomeLoja').textContent=nome;
+  document.title=nome+' Online';
+
+  if(document.getElementById('cfgNome')){
+    document.getElementById('cfgNome').value=configLoja?.nome_loja||'';
+    document.getElementById('cfgWhats').value=configLoja?.whatsapp||'';
+    document.getElementById('cfgInstagram').value=configLoja?.instagram||'';
+    document.getElementById('cfgEndereco').value=configLoja?.endereco||'';
+    document.getElementById('cfgMensagem').value=configLoja?.mensagem||'';
+    document.getElementById('cfgLogo').value=configLoja?.logo_url||'';
+  }
+}
+async function salvarConfiguracoes(){
+  const obj={
+    user_id:user.id,
+    nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',
+    whatsapp:document.getElementById('cfgWhats').value.trim()||null,
+    instagram:document.getElementById('cfgInstagram').value.trim()||null,
+    endereco:document.getElementById('cfgEndereco').value.trim()||null,
+    mensagem:document.getElementById('cfgMensagem').value.trim()||null,
+    logo_url:document.getElementById('cfgLogo').value.trim()||null,
+    updated_at:new Date().toISOString()
+  };
+  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();
+  if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}
+  configLoja=data;
+  aplicarConfiguracoes();
+  document.getElementById('cfgMsg').textContent='✅ Configurações salvas com sucesso.';
+}
+
 function render(){document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);document.getElementById('listaProdutos').innerHTML=produtos.length?'<table><tr><th>Produto</th><th>Estoque</th><th>Preço</th></tr>'+produtos.map(p=>`<tr><td>${p.nome}</td><td>${p.estoque}</td><td>${money(p.preco)}</td></tr>`).join('')+'</table>':'Nenhum produto.';document.getElementById('listaClientes').innerHTML=clientes.length?'<table><tr><th>Nome</th><th>WhatsApp</th></tr>'+clientes.map(c=>`<tr><td>${c.nome}</td><td>${c.whatsapp||''}</td></tr>`).join('')+'</table>':'Nenhum cliente.';let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)}
 function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
 function novoProduto(){openModal(`<h2>Novo produto</h2><input id="pn" placeholder="Nome"><select id="pc"><option value="">Sem categoria</option>${categorias.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select><input id="pp" type="number" step=".01" placeholder="Preço"><input id="pe" type="number" placeholder="Estoque"><button class="soft" onclick="closeModal()">Cancelar</button> <button class="primary" onclick="salvarProduto()">Salvar</button>`)}
