@@ -2,12 +2,43 @@
 <title>Essência & Encanto Online</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f7f3f0;color:#342c2a}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.box{background:white;border:1px solid #eadfd8;border-radius:22px;padding:28px;width:min(420px,100%)}h1{font-family:Georgia;text-align:center}input,select{width:100%;padding:12px;border:1px solid #ddd0c8;border-radius:10px;margin:6px 0 12px}button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.primary{background:#342c2a;color:white}.soft{background:#efe3da}.app{display:none}header{height:66px;background:#fff;border-bottom:1px solid #eadfd8;display:flex;justify-content:space-between;align-items:center;padding:0 20px}main{padding:22px;max-width:1100px;margin:auto}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab.active{background:#342c2a;color:#fff}.view{display:none}.view.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#fff;border:1px solid #eadfd8;border-radius:16px;padding:17px}.card b{display:block;font-size:22px;margin-top:7px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #eee;text-align:left}.modal{display:none;position:fixed;inset:0;background:#0006;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal .box{max-height:90vh;overflow:auto}.muted{color:#88766f;font-size:13px}@media(max-width:700px){.cards{grid-template-columns:1fr 1fr}}
+:root{
+  --cor-principal:#d98fa3;
+  --cor-secundaria:#f6dfe7;
+  --cor-fundo:#fffafc;
+  --cor-texto:#3d2b32;
+  --cor-card:#ffffff;
+  --borda:#eadfd8;
+  --raio:16px;
+  --sombra:0 8px 24px rgba(60,35,45,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--cor-fundo);color:var(--cor-texto);transition:.25s}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(145deg,var(--cor-fundo),var(--cor-secundaria))}
+.box{background:var(--cor-card);border:1px solid var(--borda);border-radius:22px;padding:28px;width:min(420px,100%);box-shadow:var(--sombra)}
+h1{font-family:Georgia,serif;text-align:center;color:var(--cor-texto)}
+input,select{width:100%;padding:12px;border:1px solid var(--borda);border-radius:10px;margin:6px 0 12px;background:var(--cor-card);color:var(--cor-texto)}
+button{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-1px)}
+.primary{background:var(--cor-principal);color:#fff}.soft{background:var(--cor-secundaria);color:var(--cor-texto)}
+.app{display:none}
+header{height:68px;background:var(--cor-card);border-bottom:1px solid var(--borda);display:flex;justify-content:space-between;align-items:center;padding:0 20px;box-shadow:0 2px 10px rgba(0,0,0,.03)}
+.brand{display:flex;align-items:center;gap:10px}.brand img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid var(--borda);display:none}
+main{padding:22px;max-width:1100px;margin:auto}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{background:var(--cor-secundaria);color:var(--cor-texto)}.tab.active{background:var(--cor-principal);color:#fff}
+.view{display:none}.view.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:17px;box-shadow:var(--sombra)}.card b{display:block;font-size:22px;margin-top:7px;color:var(--cor-principal)}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid var(--borda);text-align:left}.modal{display:none;position:fixed;inset:0;background:#0006;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal .box{max-height:90vh;overflow:auto}.muted{color:#88766f;font-size:13px}
+.appearance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column}.field label{font-weight:700;margin-bottom:2px}.color-row{display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center}.color-row input[type=color]{height:44px;padding:3px;margin:6px 0 12px}.preview{border:1px dashed var(--borda);border-radius:var(--raio);padding:14px;margin:8px 0 18px;background:var(--cor-fundo)}.preview-card{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:16px;box-shadow:var(--sombra)}.preview-btn{display:inline-block;background:var(--cor-principal);color:#fff;border-radius:10px;padding:9px 14px;font-weight:700;margin-top:8px}.section-title{margin-top:24px;margin-bottom:8px}
+body.layout-moderno{--raio:24px;--sombra:0 12px 32px rgba(0,0,0,.10)}body.layout-moderno header{height:76px}body.layout-moderno .tab{border-radius:999px}body.layout-moderno .card{padding:21px}
+body.layout-minimalista{--raio:8px;--sombra:none}body.layout-minimalista header,body.layout-minimalista .card,body.layout-minimalista .panel,body.layout-minimalista .box{box-shadow:none}body.layout-minimalista .tab,body.layout-minimalista button{border-radius:6px}
+body.layout-classico{--raio:12px;--sombra:0 4px 12px rgba(0,0,0,.06)}body.layout-classico h1,body.layout-classico h2,body.layout-classico header b{font-family:Georgia,serif}
+body.tema-escuro{--cor-card:#231f22;--borda:#443a40;--cor-fundo:#171417;--cor-texto:#f4edf1}body.tema-escuro .muted{color:#c0adb6}
+@media(max-width:700px){.cards,.appearance-grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}}
+@media(max-width:520px){.cards,.appearance-grid{grid-template-columns:1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 </style></head><body>
 <section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
-<section id="app" class="app"><header><b id="headerNomeLoja">Essência & Encanto</b><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
+<section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
 <div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active"><div class="cards"><div class="card">Produtos<b id="qProd">0</b></div><div class="card">Clientes<b id="qCli">0</b></div><div class="card">Vendas<b id="qVen">0</b></div><div class="card">A receber<b id="qRec">R$ 0,00</b></div></div><div class="panel" style="margin-top:15px"><b>Status</b><p id="status">Conectando...</p></div></section>
 <section id="produtos" class="view"><div class="top"><h2>Produtos</h2><button class="primary" onclick="novoProduto()">+ Novo produto</button></div><div class="panel" id="listaProdutos"></div></section>
@@ -33,9 +64,22 @@
     <input id="cfgMensagem" placeholder="Mensagem curta da loja">
 
     <label>URL da logo</label>
-    <input id="cfgLogo" placeholder="Link da imagem da logo">
+    <input id="cfgLogo" placeholder="Link da imagem da logo" oninput="previsualizarAparencia()">
 
-    <button class="primary" onclick="salvarConfiguracoes()">Salvar configurações</button>
+    <h3 class="section-title">🎨 Aparência</h3>
+    <p class="muted">Escolha as cores e o estilo. A prévia muda na hora; só fica salvo quando você clicar em salvar.</p>
+    <div class="appearance-grid">
+      <div class="field"><label>Cor principal</label><div class="color-row"><input id="cfgCorPrincipal" type="color" value="#d98fa3" oninput="sincronizarCor('cfgCorPrincipal','cfgCorPrincipalHex')"><input id="cfgCorPrincipalHex" value="#d98fa3" oninput="sincronizarHex('cfgCorPrincipalHex','cfgCorPrincipal')"></div></div>
+      <div class="field"><label>Cor secundária</label><div class="color-row"><input id="cfgCorSecundaria" type="color" value="#f6dfe7" oninput="sincronizarCor('cfgCorSecundaria','cfgCorSecundariaHex')"><input id="cfgCorSecundariaHex" value="#f6dfe7" oninput="sincronizarHex('cfgCorSecundariaHex','cfgCorSecundaria')"></div></div>
+      <div class="field"><label>Cor do fundo</label><div class="color-row"><input id="cfgCorFundo" type="color" value="#fffafc" oninput="sincronizarCor('cfgCorFundo','cfgCorFundoHex')"><input id="cfgCorFundoHex" value="#fffafc" oninput="sincronizarHex('cfgCorFundoHex','cfgCorFundo')"></div></div>
+      <div class="field"><label>Cor do texto</label><div class="color-row"><input id="cfgCorTexto" type="color" value="#3d2b32" oninput="sincronizarCor('cfgCorTexto','cfgCorTextoHex')"><input id="cfgCorTextoHex" value="#3d2b32" oninput="sincronizarHex('cfgCorTextoHex','cfgCorTexto')"></div></div>
+      <div class="field"><label>Estilo do layout</label><select id="cfgLayout" onchange="previsualizarAparencia()"><option value="elegante">Elegante</option><option value="moderno">Moderno</option><option value="minimalista">Minimalista</option><option value="classico">Clássico</option></select></div>
+      <div class="field"><label>Tema</label><select id="cfgTema" onchange="previsualizarAparencia()"><option value="claro">Claro</option><option value="escuro">Escuro</option></select></div>
+    </div>
+    <div class="preview"><b>Prévia</b><div class="preview-card"><strong id="previewNome">Essência & Encanto</strong><p class="muted">Assim ficará um cartão do seu sistema.</p><span class="preview-btn">Botão principal</span></div></div>
+
+    <button class="primary" onclick="salvarConfiguracoes()">Salvar configurações e aparência</button>
+    <button class="soft" style="margin-left:6px" onclick="restaurarAparenciaPadrao()">Restaurar cores padrão</button>
     <p class="muted" id="cfgMsg"></p>
   </div>
 </section>
@@ -76,37 +120,36 @@ async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
 async function carregar(){let [p,c,v,d,cat,cfg]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle()]);let e=p.error||c.error||v.error||d.error||cat.error||cfg.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];despesas=d.data||[];categorias=cat.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};aplicarConfiguracoes();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
+function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
+function aplicarTemaVisual(cfg){
+  const c1=corValida(cfg?.cor_principal,'#d98fa3'),c2=corValida(cfg?.cor_secundaria,'#f6dfe7'),cf=corValida(cfg?.cor_fundo,'#fffafc'),ct=corValida(cfg?.cor_texto,'#3d2b32');
+  document.documentElement.style.setProperty('--cor-principal',c1);document.documentElement.style.setProperty('--cor-secundaria',c2);document.documentElement.style.setProperty('--cor-fundo',cf);document.documentElement.style.setProperty('--cor-texto',ct);
+  document.body.classList.remove('layout-moderno','layout-minimalista','layout-classico','tema-escuro');
+  const lay=cfg?.layout_estilo||'elegante'; if(lay!=='elegante')document.body.classList.add('layout-'+lay); if((cfg?.modo_tema||'claro')==='escuro')document.body.classList.add('tema-escuro');
+}
 function aplicarConfiguracoes(){
   const nome=(configLoja?.nome_loja||'Essência & Encanto').trim()||'Essência & Encanto';
-  document.getElementById('loginNomeLoja').textContent=nome;
-  document.getElementById('headerNomeLoja').textContent=nome;
-  document.title=nome+' Online';
-
+  document.getElementById('loginNomeLoja').textContent=nome;document.getElementById('headerNomeLoja').textContent=nome;document.title=nome+' Online';
+  aplicarTemaVisual(configLoja||{});
+  const logo=document.getElementById('headerLogo'); if(configLoja?.logo_url){logo.src=configLoja.logo_url;logo.style.display='block';logo.onerror=()=>logo.style.display='none'}else{logo.style.display='none';logo.removeAttribute('src')}
   if(document.getElementById('cfgNome')){
-    document.getElementById('cfgNome').value=configLoja?.nome_loja||'';
-    document.getElementById('cfgWhats').value=configLoja?.whatsapp||'';
-    document.getElementById('cfgInstagram').value=configLoja?.instagram||'';
-    document.getElementById('cfgEndereco').value=configLoja?.endereco||'';
-    document.getElementById('cfgMensagem').value=configLoja?.mensagem||'';
-    document.getElementById('cfgLogo').value=configLoja?.logo_url||'';
+    document.getElementById('cfgNome').value=configLoja?.nome_loja||'';document.getElementById('cfgWhats').value=configLoja?.whatsapp||'';document.getElementById('cfgInstagram').value=configLoja?.instagram||'';document.getElementById('cfgEndereco').value=configLoja?.endereco||'';document.getElementById('cfgMensagem').value=configLoja?.mensagem||'';document.getElementById('cfgLogo').value=configLoja?.logo_url||'';
+    const vals={cfgCorPrincipal:configLoja?.cor_principal||'#d98fa3',cfgCorSecundaria:configLoja?.cor_secundaria||'#f6dfe7',cfgCorFundo:configLoja?.cor_fundo||'#fffafc',cfgCorTexto:configLoja?.cor_texto||'#3d2b32'};
+    for(const [id,val] of Object.entries(vals)){document.getElementById(id).value=val;document.getElementById(id+'Hex').value=val}
+    document.getElementById('cfgLayout').value=configLoja?.layout_estilo||'elegante';document.getElementById('cfgTema').value=configLoja?.modo_tema||'claro';document.getElementById('previewNome').textContent=nome;
   }
 }
+function sincronizarCor(corId,hexId){document.getElementById(hexId).value=document.getElementById(corId).value;previsualizarAparencia()}
+function sincronizarHex(hexId,corId){let v=document.getElementById(hexId).value.trim();if(/^#[0-9a-fA-F]{6}$/.test(v))document.getElementById(corId).value=v;previsualizarAparencia()}
+function previsualizarAparencia(){
+  const prev={cor_principal:document.getElementById('cfgCorPrincipalHex')?.value,cor_secundaria:document.getElementById('cfgCorSecundariaHex')?.value,cor_fundo:document.getElementById('cfgCorFundoHex')?.value,cor_texto:document.getElementById('cfgCorTextoHex')?.value,layout_estilo:document.getElementById('cfgLayout')?.value,modo_tema:document.getElementById('cfgTema')?.value};aplicarTemaVisual(prev);
+  const pn=document.getElementById('previewNome');if(pn)pn.textContent=document.getElementById('cfgNome').value.trim()||'Essência & Encanto';
+  const logo=document.getElementById('headerLogo'),url=document.getElementById('cfgLogo')?.value.trim();if(url){logo.src=url;logo.style.display='block';logo.onerror=()=>logo.style.display='none'}
+}
+function restaurarAparenciaPadrao(){document.getElementById('cfgCorPrincipal').value='#d98fa3';document.getElementById('cfgCorPrincipalHex').value='#d98fa3';document.getElementById('cfgCorSecundaria').value='#f6dfe7';document.getElementById('cfgCorSecundariaHex').value='#f6dfe7';document.getElementById('cfgCorFundo').value='#fffafc';document.getElementById('cfgCorFundoHex').value='#fffafc';document.getElementById('cfgCorTexto').value='#3d2b32';document.getElementById('cfgCorTextoHex').value='#3d2b32';document.getElementById('cfgLayout').value='elegante';document.getElementById('cfgTema').value='claro';previsualizarAparencia()}
 async function salvarConfiguracoes(){
-  const obj={
-    user_id:user.id,
-    nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',
-    whatsapp:document.getElementById('cfgWhats').value.trim()||null,
-    instagram:document.getElementById('cfgInstagram').value.trim()||null,
-    endereco:document.getElementById('cfgEndereco').value.trim()||null,
-    mensagem:document.getElementById('cfgMensagem').value.trim()||null,
-    logo_url:document.getElementById('cfgLogo').value.trim()||null,
-    updated_at:new Date().toISOString()
-  };
-  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();
-  if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}
-  configLoja=data;
-  aplicarConfiguracoes();
-  document.getElementById('cfgMsg').textContent='✅ Configurações salvas com sucesso.';
+  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:document.getElementById('cfgLogo').value.trim()||null,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,updated_at:new Date().toISOString()};
+  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;aplicarConfiguracoes();document.getElementById('cfgMsg').textContent='✅ Configurações e aparência salvas com sucesso.';
 }
 
 function render(){document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);document.getElementById('listaProdutos').innerHTML=produtos.length?'<table><tr><th>Produto</th><th>Estoque</th><th>Preço</th></tr>'+produtos.map(p=>`<tr><td>${p.nome}</td><td>${p.estoque}</td><td>${money(p.preco)}</td></tr>`).join('')+'</table>':'Nenhum produto.';document.getElementById('listaClientes').innerHTML=clientes.length?'<table><tr><th>Nome</th><th>WhatsApp</th></tr>'+clientes.map(c=>`<tr><td>${c.nome}</td><td>${c.whatsapp||''}</td></tr>`).join('')+'</table>':'Nenhum cliente.';let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)}
