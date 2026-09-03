@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Essência & Encanto - versão com Menu e Navegação personalizáveis --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Essência & Encanto - versão com Produtos completos + Menu e Aparência personalizáveis --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Essência & Encanto Online</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -51,8 +51,26 @@ body.menu-estilo-barra .tab.active{background:transparent;color:var(--cor-princi
 body.menu-lateral.menu-estilo-barra .tab{border-bottom:0;border-left:4px solid transparent}
 body.menu-lateral.menu-estilo-barra .tab.active{border-left-color:var(--cor-principal)}
 body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px}
-@media(max-width:700px){.cards,.appearance-grid,.menu-config-grid{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}body.menu-lateral .tabs{width:175px}body.menu-lateral main{margin-left:175px;padding-left:14px;padding-right:14px}}
-@media(max-width:520px){.cards,.appearance-grid,.menu-config-grid{grid-template-columns:1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu-order-item{grid-template-columns:1fr auto auto}.menu-order-item label{grid-column:1/-1}body.menu-lateral .tabs{width:150px;padding:8px}body.menu-lateral main{margin-left:150px;padding:10px}body.menu-lateral .tab{font-size:12px;padding:8px}body.menu-embaixo .tabs{justify-content:flex-start}}
+
+/* Produtos completos */
+.product-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.product-stat{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:14px;box-shadow:var(--sombra)}
+.product-stat span{display:block;font-size:12px;color:#88766f;margin-bottom:6px}.product-stat b{font-size:20px;color:var(--cor-principal)}
+.product-filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:9px;margin-bottom:14px}.product-filters input,.product-filters select{margin:0}
+.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product-card{display:grid;grid-template-columns:92px 1fr;gap:14px;border:1px solid var(--borda);border-radius:var(--raio);padding:14px;background:var(--cor-card)}
+.product-photo{width:92px;height:92px;border-radius:14px;object-fit:cover;border:1px solid var(--borda);background:var(--cor-secundaria)}
+.product-photo-placeholder{width:92px;height:92px;border-radius:14px;border:1px dashed var(--borda);background:var(--cor-secundaria);display:grid;place-items:center;font-size:32px}
+.product-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.product-name{font-size:17px;font-weight:800}.product-meta{font-size:12px;color:#88766f;margin-top:3px;word-break:break-word}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0}.badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--cor-secundaria);font-size:11px;font-weight:700}.badge.low{background:#ffe8c2;color:#7a4b00}.badge.zero{background:#ffe0e0;color:#8b1e1e}.badge.off{background:#ececec;color:#555}
+.product-values{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.product-value{padding:8px;border-radius:10px;background:var(--cor-fundo);border:1px solid var(--borda)}.product-value small{display:block;font-size:10px;color:#88766f}.product-value b{display:block;font-size:13px;margin-top:3px;color:var(--cor-texto)}
+.product-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.product-actions button{padding:7px 9px;font-size:12px}.danger{background:#fbe4e6;color:#8c2430}.success{background:#e5f5e9;color:#246b35}.warning{background:#fff1d6;color:#805700}
+.empty-state{text-align:center;padding:36px 15px}.empty-state .icon{font-size:42px}.empty-state h3{margin:8px 0 4px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.form-grid .full{grid-column:1/-1}.form-grid label{font-weight:700;font-size:13px}.form-grid textarea{width:100%;min-height:80px;resize:vertical;padding:12px;border:1px solid var(--borda);border-radius:10px;margin:6px 0 12px;background:var(--cor-card);color:var(--cor-texto);font-family:inherit}
+.check-row{display:flex;align-items:center;gap:8px;margin:8px 0 16px}.check-row input{width:auto;margin:0}.modal .box{width:min(760px,100%)}
+.category-actions{display:flex;gap:8px;flex-wrap:wrap}.category-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.category-pill{display:inline-flex;align-items:center;gap:6px;background:var(--cor-secundaria);border-radius:999px;padding:6px 9px;font-size:12px}
+@media(max-width:700px){.cards,.appearance-grid,.menu-config-grid,.product-stats{grid-template-columns:1fr 1fr}.product-grid{grid-template-columns:1fr}.product-filters{grid-template-columns:1fr 1fr}.top{align-items:flex-start;gap:8px}body.menu-lateral .tabs{width:175px}body.menu-lateral main{margin-left:175px;padding-left:14px;padding-right:14px}}
+@media(max-width:520px){.cards,.appearance-grid,.menu-config-grid,.product-stats,.product-filters,.form-grid{grid-template-columns:1fr}.product-card{grid-template-columns:74px 1fr}.product-photo,.product-photo-placeholder{width:74px;height:74px}.product-values{grid-template-columns:1fr 1fr}header{padding:0 12px}main{padding:14px}.brand b{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu-order-item{grid-template-columns:1fr auto auto}.menu-order-item label{grid-column:1/-1}body.menu-lateral .tabs{width:150px;padding:8px}body.menu-lateral main{margin-left:150px;padding:10px}body.menu-lateral .tab{font-size:12px;padding:8px}body.menu-embaixo .tabs{justify-content:flex-start}}
 </style></head><body>
 <section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -60,7 +78,24 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
 <div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active"><div class="cards"><div class="card">Produtos<b id="qProd">0</b></div><div class="card">Clientes<b id="qCli">0</b></div><div class="card">Vendas<b id="qVen">0</b></div><div class="card">A receber<b id="qRec">R$ 0,00</b></div></div><div class="panel" style="margin-top:15px"><b>Status</b><p id="status">Conectando...</p></div></section>
-<section id="produtos" class="view"><div class="top"><h2>Produtos</h2><button class="primary" onclick="novoProduto()">+ Novo produto</button></div><div class="panel" id="listaProdutos"></div></section>
+<section id="produtos" class="view">
+  <div class="top"><div><h2>🛍️ Produtos</h2><p class="muted">Cadastre preços, estoque, lucro, fotos e organize seus produtos.</p></div><div class="category-actions"><button class="soft" onclick="novaCategoria()">+ Categoria</button><button class="primary" onclick="novoProduto()">+ Novo produto</button></div></div>
+  <div class="product-stats">
+    <div class="product-stat"><span>Produtos ativos</span><b id="prodAtivos">0</b></div>
+    <div class="product-stat"><span>Estoque baixo / zerado</span><b id="prodBaixo">0</b></div>
+    <div class="product-stat"><span>Unidades em estoque</span><b id="prodUnidades">0</b></div>
+    <div class="product-stat"><span>Custo do estoque</span><b id="prodCustoEstoque">R$ 0,00</b></div>
+  </div>
+  <div class="panel">
+    <div class="product-filters">
+      <input id="produtoBusca" placeholder="🔎 Buscar por nome, código ou descrição" oninput="renderProdutos()">
+      <select id="produtoCategoria" onchange="renderProdutos()"><option value="">Todas as categorias</option></select>
+      <select id="produtoStatus" onchange="renderProdutos()"><option value="">Todos os status</option><option value="ativo">Ativos</option><option value="inativo">Inativos</option></select>
+      <select id="produtoEstoqueFiltro" onchange="renderProdutos()"><option value="">Todo estoque</option><option value="baixo">Estoque baixo</option><option value="zerado">Zerados</option><option value="disponivel">Com estoque</option></select>
+    </div>
+    <div id="listaProdutos"></div>
+  </div>
+</section>
 <section id="clientes" class="view"><div class="top"><h2>Clientes</h2><button class="primary" onclick="novoCliente()">+ Novo cliente</button></div><div class="panel" id="listaClientes"></div></section>
 <section id="financeiro" class="view"><h2>Financeiro</h2><div class="cards"><div class="card">Faturamento<b id="fat">R$ 0,00</b></div><div class="card">A receber<b id="rec">R$ 0,00</b></div><div class="card">Despesas<b id="desp">R$ 0,00</b></div><div class="card">Resultado<b id="res">R$ 0,00</b></div></div></section>
 
@@ -220,10 +255,72 @@ async function salvarConfiguracoes(){
   const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;aplicarConfiguracoes();document.getElementById('cfgMsg').textContent='✅ Configurações, aparência e menu salvos com sucesso.';
 }
 
-function render(){document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);document.getElementById('listaProdutos').innerHTML=produtos.length?'<table><tr><th>Produto</th><th>Estoque</th><th>Preço</th></tr>'+produtos.map(p=>`<tr><td>${p.nome}</td><td>${p.estoque}</td><td>${money(p.preco)}</td></tr>`).join('')+'</table>':'Nenhum produto.';document.getElementById('listaClientes').innerHTML=clientes.length?'<table><tr><th>Nome</th><th>WhatsApp</th></tr>'+clientes.map(c=>`<tr><td>${c.nome}</td><td>${c.whatsapp||''}</td></tr>`).join('')+'</table>':'Nenhum cliente.';let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)}
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function precoVendaProduto(p){return num(p?.preco_venda ?? p?.preco)}
+function precoCustoProduto(p){return num(p?.preco_custo)}
+function categoriaNome(id){return categorias.find(c=>c.id===id)?.nome||'Sem categoria'}
+function estoqueBaixo(p){return num(p.estoque)<=num(p.estoque_minimo)}
+function lucroProduto(p){return precoVendaProduto(p)-precoCustoProduto(p)}
+function margemProduto(p){const venda=precoVendaProduto(p);return venda>0?(lucroProduto(p)/venda)*100:0}
+function preencherFiltroCategorias(){const el=document.getElementById('produtoCategoria');if(!el)return;const atual=el.value;el.innerHTML='<option value="">Todas as categorias</option>'+[...categorias].sort((a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR')).map(c=>`<option value="${esc(c.id)}">${esc(c.nome)}</option>`).join('');el.value=atual}
+function renderProdutos(){
+  const busca=(document.getElementById('produtoBusca')?.value||'').trim().toLowerCase();
+  const cat=document.getElementById('produtoCategoria')?.value||'';
+  const status=document.getElementById('produtoStatus')?.value||'';
+  const filtroEstoque=document.getElementById('produtoEstoqueFiltro')?.value||'';
+  let lista=[...produtos].filter(p=>{
+    const texto=[p.nome,p.sku,p.descricao,categoriaNome(p.categoria_id)].join(' ').toLowerCase();
+    if(busca&&!texto.includes(busca))return false;
+    if(cat&&p.categoria_id!==cat)return false;
+    if(status==='ativo'&&p.ativo===false)return false;
+    if(status==='inativo'&&p.ativo!==false)return false;
+    const est=num(p.estoque),baixo=estoqueBaixo(p);
+    if(filtroEstoque==='baixo'&&!baixo)return false;
+    if(filtroEstoque==='zerado'&&est!==0)return false;
+    if(filtroEstoque==='disponivel'&&est<=0)return false;
+    return true;
+  }).sort((a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR'));
+  const alvo=document.getElementById('listaProdutos');if(!alvo)return;
+  if(!lista.length){alvo.innerHTML=`<div class="empty-state"><div class="icon">🛍️</div><h3>Nenhum produto encontrado</h3><p class="muted">Cadastre um produto ou altere os filtros.</p></div>`;return}
+  alvo.innerHTML='<div class="product-grid">'+lista.map(p=>{
+    const venda=precoVendaProduto(p),custo=precoCustoProduto(p),lucro=lucroProduto(p),margem=margemProduto(p),est=num(p.estoque),min=num(p.estoque_minimo),baixo=estoqueBaixo(p),zero=est===0,ativo=p.ativo!==false;
+    const foto=p.foto_url?`<img class="product-photo" src="${esc(p.foto_url)}" alt="${esc(p.nome)}" onerror="this.outerHTML='<div class=&quot;product-photo-placeholder&quot;>🛍️</div>'">`:'<div class="product-photo-placeholder">🛍️</div>';
+    return `<article class="product-card">${foto}<div><div class="product-head"><div><div class="product-name">${esc(p.nome||'Sem nome')}</div><div class="product-meta">${p.sku?'Código: '+esc(p.sku)+' • ':''}${esc(categoriaNome(p.categoria_id))}</div></div></div><div class="badges">${!ativo?'<span class="badge off">Inativo</span>':''}${zero?'<span class="badge zero">Sem estoque</span>':baixo?'<span class="badge low">Estoque baixo</span>':'<span class="badge">Em estoque</span>'}</div>${p.descricao?`<div class="product-meta">${esc(p.descricao)}</div>`:''}<div class="product-values"><div class="product-value"><small>Estoque</small><b>${est} ${esc(p.unidade||'un')}</b></div><div class="product-value"><small>Custo</small><b>${money(custo)}</b></div><div class="product-value"><small>Venda</small><b>${money(venda)}</b></div><div class="product-value"><small>Lucro</small><b>${money(lucro)} · ${margem.toFixed(1).replace('.',',')}%</b></div></div><div class="product-actions"><button class="soft" onclick="editarProduto('${p.id}')">✏️ Editar</button><button class="warning" onclick="abrirAjusteEstoque('${p.id}')">📦 Estoque</button><button class="danger" onclick="excluirProduto('${p.id}')">🗑️ Excluir</button></div></div></article>`
+  }).join('')+'</div>';
+}
+function atualizarResumoProdutos(){
+  const ativos=produtos.filter(p=>p.ativo!==false);const baixos=ativos.filter(estoqueBaixo);const unidades=ativos.reduce((s,p)=>s+num(p.estoque),0);const custo=ativos.reduce((s,p)=>s+num(p.estoque)*precoCustoProduto(p),0);
+  if(document.getElementById('prodAtivos'))document.getElementById('prodAtivos').textContent=ativos.length;
+  if(document.getElementById('prodBaixo'))document.getElementById('prodBaixo').textContent=baixos.length;
+  if(document.getElementById('prodUnidades'))document.getElementById('prodUnidades').textContent=unidades;
+  if(document.getElementById('prodCustoEstoque'))document.getElementById('prodCustoEstoque').textContent=money(custo);
+}
+function render(){
+  document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;
+  let r=vendas.reduce((s,x)=>s+(+x.valor_pendente||0),0);document.getElementById('qRec').textContent=money(r);
+  preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
+  document.getElementById('listaClientes').innerHTML=clientes.length?'<table><tr><th>Nome</th><th>WhatsApp</th></tr>'+clientes.map(c=>`<tr><td>${esc(c.nome)}</td><td>${esc(c.whatsapp||'')}</td></tr>`).join('')+'</table>':'Nenhum cliente.';
+  let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)
+}
 function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
-function novoProduto(){openModal(`<h2>Novo produto</h2><input id="pn" placeholder="Nome"><select id="pc"><option value="">Sem categoria</option>${categorias.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select><input id="pp" type="number" step=".01" placeholder="Preço"><input id="pe" type="number" placeholder="Estoque"><button class="soft" onclick="closeModal()">Cancelar</button> <button class="primary" onclick="salvarProduto()">Salvar</button>`)}
-async function salvarProduto(){let o={user_id:user.id,nome:pn.value.trim(),categoria_id:pc.value||null,preco:+pp.value||0,estoque:+pe.value||0};let r=await sb.from('produtos').insert(o);if(r.error)return alert(r.error.message);closeModal();await carregar()}
+function produtoForm(p={}){
+  const editar=!!p.id;const catOpts='<option value="">Sem categoria</option>'+categorias.map(c=>`<option value="${esc(c.id)}" ${p.categoria_id===c.id?'selected':''}>${esc(c.nome)}</option>`).join('');
+  return `<h2>${editar?'✏️ Editar produto':'🛍️ Novo produto'}</h2><p class="muted">Preencha os dados abaixo. O lucro é calculado automaticamente pela diferença entre preço de venda e custo.</p><div class="form-grid"><div class="full"><label>Nome do produto *</label><input id="pn" value="${esc(p.nome||'')}" placeholder="Ex.: Perfume Kiss Me"></div><div><label>Código / SKU</label><input id="psku" value="${esc(p.sku||'')}" placeholder="Ex.: PERF-001"></div><div><label>Categoria</label><select id="pc">${catOpts}</select></div><div class="full"><label>Descrição</label><textarea id="pdesc" placeholder="Descrição, fragrância, tamanho, detalhes...">${esc(p.descricao||'')}</textarea></div><div><label>Preço de custo</label><input id="pcusto" type="number" min="0" step="0.01" value="${precoCustoProduto(p)}" placeholder="0,00"></div><div><label>Preço de venda</label><input id="pvenda" type="number" min="0" step="0.01" value="${precoVendaProduto(p)}" placeholder="0,00"></div><div><label>Estoque atual</label><input id="pe" type="number" min="0" step="1" value="${num(p.estoque)}"></div><div><label>Estoque mínimo</label><input id="pemin" type="number" min="0" step="1" value="${num(p.estoque_minimo)}"></div><div><label>Unidade</label><select id="pun"><option value="un" ${(p.unidade||'un')==='un'?'selected':''}>Unidade (un)</option><option value="kit" ${p.unidade==='kit'?'selected':''}>Kit</option><option value="par" ${p.unidade==='par'?'selected':''}>Par</option><option value="cx" ${p.unidade==='cx'?'selected':''}>Caixa</option></select></div><div><label>URL da foto</label><input id="pfoto" value="${esc(p.foto_url||'')}" placeholder="https://..."></div><div class="full check-row"><input id="pativo" type="checkbox" ${p.ativo!==false?'checked':''}><label for="pativo">Produto ativo e disponível para uso no sistema</label></div></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarProduto(${editar?`'${p.id}'`:'null'})">${editar?'Salvar alterações':'Cadastrar produto'}</button></div>`
+}
+function novoProduto(){openModal(produtoForm())}
+function editarProduto(id){const p=produtos.find(x=>x.id===id);if(!p)return;openModal(produtoForm(p))}
+async function salvarProduto(id=null){
+  const nome=document.getElementById('pn').value.trim();if(!nome)return alert('Digite o nome do produto.');
+  const venda=num(document.getElementById('pvenda').value),custo=num(document.getElementById('pcusto').value),estoque=Math.max(0,Math.floor(num(document.getElementById('pe').value))),min=Math.max(0,Math.floor(num(document.getElementById('pemin').value)));
+  const o={user_id:user.id,nome,categoria_id:document.getElementById('pc').value||null,sku:document.getElementById('psku').value.trim()||null,descricao:document.getElementById('pdesc').value.trim()||null,preco_custo:custo,preco_venda:venda,preco:venda,estoque,estoque_minimo:min,unidade:document.getElementById('pun').value||'un',foto_url:document.getElementById('pfoto').value.trim()||null,ativo:document.getElementById('pativo').checked,updated_at:new Date().toISOString()};
+  const q=id?sb.from('produtos').update(o).eq('id',id).eq('user_id',user.id):sb.from('produtos').insert(o);const {error}=await q;if(error)return alert('Não foi possível salvar: '+error.message);closeModal();await carregar();
+}
+function abrirAjusteEstoque(id){const p=produtos.find(x=>x.id===id);if(!p)return;openModal(`<h2>📦 Ajustar estoque</h2><p><b>${esc(p.nome)}</b></p><p class="muted">Estoque atual: <b>${num(p.estoque)} ${esc(p.unidade||'un')}</b></p><label>Quantidade</label><input id="ajQtd" type="number" min="1" step="1" value="1"><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="success" onclick="ajustarEstoque('${p.id}',1)">+ Entrada</button><button class="warning" onclick="ajustarEstoque('${p.id}',-1)">− Saída</button><button class="soft" onclick="closeModal()">Cancelar</button></div>`)}
+async function ajustarEstoque(id,direcao){const p=produtos.find(x=>x.id===id);if(!p)return;const qtd=Math.max(1,Math.floor(num(document.getElementById('ajQtd').value)));const novo=num(p.estoque)+(direcao*qtd);if(novo<0)return alert('A saída é maior que o estoque disponível.');const {error}=await sb.from('produtos').update({estoque:novo,updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);if(error)return alert('Não foi possível ajustar o estoque: '+error.message);closeModal();await carregar()}
+async function excluirProduto(id){const p=produtos.find(x=>x.id===id);if(!p)return;if(!confirm(`Excluir o produto "${p.nome}"? Essa ação não pode ser desfeita.`))return;const {error}=await sb.from('produtos').delete().eq('id',id).eq('user_id',user.id);if(error)return alert('Não foi possível excluir: '+error.message);await carregar()}
+function novaCategoria(){openModal(`<h2>🏷️ Nova categoria</h2><label>Nome da categoria</label><input id="catNome" placeholder="Ex.: Perfumes, Semijoias, Maquiagem"><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarCategoria()">Salvar categoria</button></div>`)}
+async function salvarCategoria(){const nome=document.getElementById('catNome').value.trim();if(!nome)return alert('Digite o nome da categoria.');const {error}=await sb.from('categorias').insert({user_id:user.id,nome});if(error)return alert('Não foi possível salvar a categoria: '+error.message);closeModal();await carregar()}
 function novoCliente(){openModal(`<h2>Novo cliente</h2><input id="cn" placeholder="Nome"><input id="cw" placeholder="WhatsApp"><button class="soft" onclick="closeModal()">Cancelar</button> <button class="primary" onclick="salvarCliente()">Salvar</button>`)}
 async function salvarCliente(){let o={user_id:user.id,nome:cn.value.trim(),whatsapp:cw.value.trim()};let r=await sb.from('clientes').insert(o);if(r.error)return alert(r.error.message);closeModal();await carregar()}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>ativarAba(b.dataset.v))
