@@ -304,6 +304,18 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div id="cfgMenuOrdem" class="menu-order-list"></div>
     <button class="soft" type="button" onclick="restaurarMenuPadrao()">Restaurar menu padrão</button>
 
+    <h3 class="section-title">📦 Backup e Exportação</h3>
+    <p class="muted">Baixe cópias dos seus dados para guardar no computador ou abrir no Excel.</p>
+    <div class="quick">
+      <button class="soft" type="button" onclick="exportarProdutosCSV()">📦 Produtos CSV</button>
+      <button class="soft" type="button" onclick="exportarClientesCSV()">👥 Clientes CSV</button>
+      <button class="soft" type="button" onclick="exportarVendasCSV()">🧾 Vendas CSV</button>
+      <button class="soft" type="button" onclick="exportarDespesasCSV()">💸 Contas a pagar CSV</button>
+      <button class="soft" type="button" onclick="exportarReceberCSV()">💳 Contas a receber CSV</button>
+      <button class="primary" type="button" onclick="backupCompletoJSON()">🛡️ Backup completo</button>
+    </div>
+    <p class="muted" id="backupMsg"></p>
+
     <div style="margin-top:18px">
       <button class="primary" onclick="salvarConfiguracoes()">Salvar todas as configurações</button>
       <button class="soft" style="margin-left:6px" onclick="restaurarAparenciaPadrao()">Restaurar cores padrão</button>
@@ -320,6 +332,52 @@ const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos
 const MENU_PADRAO=['inicio','vendas','produtos','clientes','financeiro','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
+
+function csvCelula(v){
+  if(v===null||v===undefined)return '';
+  if(typeof v==='object')v=JSON.stringify(v);
+  const s=String(v).replace(/"/g,'""');
+  return /[";\n\r]/.test(s)?'"'+s+'"':s;
+}
+function baixarArquivo(conteudo,nome,tipo='text/csv;charset=utf-8;'){
+  const blob=new Blob(['\ufeff'+conteudo],{type:tipo});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function paraCSV(lista,colunas){
+  const rows=[colunas.map(c=>csvCelula(c[0])).join(';')];
+  for(const item of lista)rows.push(colunas.map(c=>csvCelula(typeof c[1]==='function'?c[1](item):item[c[1]])).join(';'));
+  return rows.join('\r\n');
+}
+function stampArquivo(){const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}`;}
+function clienteNome(id){return clientes.find(c=>c.id===id)?.nome||'';}
+function produtoNome(id){return produtos.find(p=>p.id===id)?.nome||'';}
+function avisoBackup(msg){const e=document.getElementById('backupMsg');if(e)e.textContent=msg;}
+function exportarProdutosCSV(){
+  const cols=[['Nome','nome'],['SKU','sku'],['Categoria','categoria'],['Descrição','descricao'],['Custo','preco_custo'],['Preço de venda','preco_venda'],['Estoque','estoque'],['Estoque mínimo','estoque_minimo'],['Unidade','unidade'],['Ativo',p=>p.ativo===false?'Não':'Sim'],['Foto','foto_url']];
+  baixarArquivo(paraCSV(produtos,cols),`produtos_${stampArquivo()}.csv`);avisoBackup('✅ Produtos exportados.');
+}
+function exportarClientesCSV(){
+  const cols=[['Nome','nome'],['WhatsApp','whatsapp'],['Telefone','telefone'],['E-mail','email'],['CPF','cpf'],['Endereço','endereco'],['Cidade','cidade'],['Aniversário','aniversario'],['Observações','observacoes'],['Ativo',c=>c.ativo===false?'Não':'Sim']];
+  baixarArquivo(paraCSV(clientes,cols),`clientes_${stampArquivo()}.csv`);avisoBackup('✅ Clientes exportados.');
+}
+function exportarVendasCSV(){
+  const cols=[['Recibo','numero_recibo'],['Data',v=>v.data_venda||v.created_at||''],['Cliente',v=>clienteNome(v.cliente_id)],['Subtotal','subtotal'],['Desconto','desconto'],['Total','total'],['Valor pago','valor_pago'],['Valor em aberto','valor_aberto'],['Forma de pagamento','forma_pagamento'],['Tipo de pagamento','tipo_pagamento'],['Parcelas','quantidade_parcelas'],['Status','status_pagamento'],['Observações','observacoes']];
+  baixarArquivo(paraCSV(vendas,cols),`vendas_${stampArquivo()}.csv`);avisoBackup('✅ Vendas exportadas.');
+}
+function exportarDespesasCSV(){
+  const cols=[['Descrição',d=>d.descricao||d.nome||''],['Categoria','categoria'],['Valor','valor'],['Vencimento','vencimento'],['Pago',d=>d.pago?'Sim':'Não'],['Data pagamento','data_pagamento'],['Forma de pagamento','forma_pagamento'],['Observações','observacoes']];
+  baixarArquivo(paraCSV(despesas,cols),`contas_a_pagar_${stampArquivo()}.csv`);avisoBackup('✅ Contas a pagar exportadas.');
+}
+function exportarReceberCSV(){
+  const cols=[['Cliente',p=>clienteNome(p.cliente_id)],['Venda','venda_id'],['Parcela','numero_parcela'],['Valor','valor'],['Vencimento','vencimento'],['Pago',p=>p.pago?'Sim':'Não'],['Status','status'],['Data recebimento',p=>p.recebido_em||p.data_pagamento||''],['Forma de pagamento','forma_pagamento'],['Observações','observacoes']];
+  baixarArquivo(paraCSV(parcelasReceber,cols),`contas_a_receber_${stampArquivo()}.csv`);avisoBackup('✅ Contas a receber exportadas.');
+}
+function backupCompletoJSON(){
+  const backup={versao:1,gerado_em:new Date().toISOString(),loja:configLoja,produtos,clientes,vendas,itens_venda:itensVenda,parcelas_receber:parcelasReceber,despesas,categorias};
+  baixarArquivo(JSON.stringify(backup,null,2),`backup_completo_${stampArquivo()}.json`,'application/json;charset=utf-8;');
+  avisoBackup('✅ Backup completo baixado. Guarde esse arquivo em local seguro.');
+}
 
 function telaNovaSenha(){
   openModal(`<h2>🔑 Criar nova senha</h2>
