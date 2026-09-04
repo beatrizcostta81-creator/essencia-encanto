@@ -128,6 +128,8 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 
 .receipt-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .sale-actions .success{white-space:nowrap}
+
+.finance-toolbar{display:grid;grid-template-columns:220px 1fr;gap:12px;align-items:end;margin-bottom:14px}.finance-toolbar label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.finance-stats{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:12px;margin:14px 0}.finance-stat{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:16px;box-shadow:0 6px 18px #00000008}.finance-stat span,.finance-stat small{display:block;color:#777;font-size:12px}.finance-stat b{display:block;font-size:20px;margin:6px 0;color:var(--cor-texto)}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.finance-item{display:grid;grid-template-columns:1fr auto;gap:10px;padding:13px 0;border-bottom:1px solid #0000000d}.finance-item:last-child{border-bottom:0}.finance-item h4{margin:0 0 4px}.finance-meta{font-size:12px;color:#777;line-height:1.5}.finance-value{text-align:right}.finance-value b{display:block;font-size:16px}.finance-actions{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-top:7px}.fin-badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#eef7ef;color:#26743b}.fin-badge.pending{background:#fff4df;color:#8a5b00}.fin-badge.overdue{background:#ffe7e7;color:#a32222}.fin-empty{text-align:center;padding:28px 10px;color:#777}.fin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fin-form-grid .full{grid-column:1/-1}@media(max-width:1050px){.finance-stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.finance-toolbar,.finance-grid,.fin-form-grid{grid-template-columns:1fr}.finance-stats{grid-template-columns:repeat(2,1fr)}.finance-item{grid-template-columns:1fr}.finance-value{text-align:left}.finance-actions{justify-content:flex-start}}@media(max-width:430px){.finance-stats{grid-template-columns:1fr 1fr}.finance-stat{padding:13px}.finance-stat b{font-size:17px}}
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -224,7 +226,31 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
   </div>
 </section>
 
-<section id="financeiro" class="view"><h2>Financeiro</h2><div class="cards"><div class="card">Faturamento<b id="fat">R$ 0,00</b></div><div class="card">A receber<b id="rec">R$ 0,00</b></div><div class="card">Despesas<b id="desp">R$ 0,00</b></div><div class="card">Resultado<b id="res">R$ 0,00</b></div></div></section>
+<section id="financeiro" class="view">
+  <div class="top"><div><h2>💳 Financeiro</h2><p class="muted">Controle contas a pagar, valores a receber e acompanhe o resultado mensal.</p></div><button class="primary" onclick="novaDespesa()">+ Nova conta a pagar</button></div>
+  <div class="finance-toolbar panel">
+    <div><label>Mês do relatório</label><input id="finMes" type="month" onchange="renderFinanceiro()"></div>
+    <div><label>Buscar</label><input id="finBusca" placeholder="🔎 Descrição, cliente ou categoria" oninput="renderFinanceiro()"></div>
+  </div>
+  <div class="finance-stats">
+    <div class="finance-stat"><span>Faturamento do mês</span><b id="fat">R$ 0,00</b><small>Vendas registradas</small></div>
+    <div class="finance-stat"><span>Recebido</span><b id="finRecebido">R$ 0,00</b><small>Vendas já pagas</small></div>
+    <div class="finance-stat"><span>A receber</span><b id="rec">R$ 0,00</b><small>Parcelas pendentes</small></div>
+    <div class="finance-stat"><span>Contas a pagar</span><b id="desp">R$ 0,00</b><small>Despesas do mês</small></div>
+    <div class="finance-stat"><span>Resultado</span><b id="res">R$ 0,00</b><small>Faturamento menos despesas</small></div>
+    <div class="finance-stat"><span>Vencido</span><b id="finVencido">R$ 0,00</b><small>Valores a receber em atraso</small></div>
+  </div>
+  <div class="finance-grid">
+    <div class="panel">
+      <div class="top"><div><h3>💸 Contas a pagar</h3><p class="muted">Despesas, vencimentos e pagamentos.</p></div><select id="finFiltroDespesas" onchange="renderFinanceiro()"><option value="">Todas</option><option value="pendente">Pendentes</option><option value="pago">Pagas</option><option value="vencido">Vencidas</option></select></div>
+      <div id="listaDespesas"></div>
+    </div>
+    <div class="panel">
+      <div class="top"><div><h3>💰 Contas a receber</h3><p class="muted">Parcelas das vendas e valores em aberto.</p></div><select id="finFiltroReceber" onchange="renderFinanceiro()"><option value="">Todas</option><option value="pendente">Pendentes</option><option value="pago">Recebidas</option><option value="vencido">Vencidas</option></select></div>
+      <div id="listaReceber"></div>
+    </div>
+  </div>
+</section>
 
 <section id="configuracoes" class="view">
   <div class="top"><div><h2>⚙️ Configurações da Loja</h2><p class="muted">Altere a identidade da sua loja quando quiser.</p></div></div>
@@ -503,8 +529,50 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderDashboard();
-  let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)
+  renderFinanceiro();
 }
+
+function finHoje(){const d=new Date();return d.toISOString().slice(0,10)}
+function finMesAtual(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+function finDataDespesa(d){return d?.vencimento||d?.data_vencimento||d?.data_lancamento||d?.created_at||null}
+function finDataParcela(p){return p?.vencimento||p?.created_at||null}
+function finNoMes(valor,mes){if(!valor||!mes)return false;const str=String(valor).slice(0,7);return str===mes}
+function finVencido(data,pago){return !pago&&data&&String(data).slice(0,10)<finHoje()}
+function finClienteNome(id){return clientes.find(c=>c.id===id)?.nome||'Cliente'}
+function finTexto(v){return String(v??'').toLowerCase()}
+function finDespesaPaga(d){return d.pago===true||String(d.status||'').toLowerCase()==='pago'||String(d.status||'').toLowerCase()==='paga'}
+function finParcelaPaga(p){return p.pago===true||String(p.status||'').toLowerCase()==='pago'}
+function renderFinanceiro(){
+  const mesInput=document.getElementById('finMes');if(!mesInput)return;
+  if(!mesInput.value)mesInput.value=finMesAtual();
+  const mes=mesInput.value,busca=finTexto(document.getElementById('finBusca')?.value).trim(),fDesp=document.getElementById('finFiltroDespesas')?.value||'',fRec=document.getElementById('finFiltroReceber')?.value||'';
+  const vendasMes=vendas.filter(v=>finNoMes(v.data_venda||v.created_at,mes));
+  const fat=vendasMes.reduce((s,v)=>s+num(v.total),0);
+  const recebido=vendasMes.reduce((s,v)=>s+num(v.valor_pago),0);
+  const despesasMes=despesas.filter(d=>finNoMes(finDataDespesa(d),mes));
+  const totalDes=despesasMes.reduce((s,d)=>s+num(d.valor),0);
+  const parcelasMes=parcelasReceber.filter(p=>finNoMes(finDataParcela(p),mes));
+  const receber=parcelasMes.filter(p=>!finParcelaPaga(p)).reduce((s,p)=>s+num(p.valor),0);
+  const vencido=parcelasReceber.filter(p=>finVencido(p.vencimento,finParcelaPaga(p))).reduce((s,p)=>s+num(p.valor),0);
+  document.getElementById('fat').textContent=money(fat);document.getElementById('finRecebido').textContent=money(recebido);document.getElementById('rec').textContent=money(receber);document.getElementById('desp').textContent=money(totalDes);document.getElementById('res').textContent=money(fat-totalDes);document.getElementById('finVencido').textContent=money(vencido);
+
+  let dl=[...despesasMes].filter(d=>{const pago=finDespesaPaga(d),over=finVencido(finDataDespesa(d),pago);if(fDesp==='pago'&&!pago)return false;if(fDesp==='pendente'&&(pago||over))return false;if(fDesp==='vencido'&&!over)return false;if(busca&&!finTexto([d.descricao,d.categoria,d.fornecedor,d.observacoes].join(' ')).includes(busca))return false;return true}).sort((a,b)=>String(finDataDespesa(a)||'').localeCompare(String(finDataDespesa(b)||'')));
+  const ld=document.getElementById('listaDespesas');
+  ld.innerHTML=dl.length?dl.map(d=>{const pago=finDespesaPaga(d),over=finVencido(finDataDespesa(d),pago);const badge=pago?'<span class="fin-badge">Pago</span>':over?'<span class="fin-badge overdue">Vencido</span>':'<span class="fin-badge pending">Pendente</span>';return `<div class="finance-item"><div><h4>${esc(d.descricao||'Conta')}</h4><div class="finance-meta">${d.categoria?esc(d.categoria)+' • ':''}${finDataDespesa(d)?'Vence em '+formatarData(finDataDespesa(d)):'Sem vencimento'}${d.forma_pagamento?' • '+esc(d.forma_pagamento):''}</div>${d.observacoes?`<div class="finance-meta">${esc(d.observacoes)}</div>`:''}</div><div class="finance-value">${badge}<b>${money(d.valor)}</b><div class="finance-actions">${!pago?`<button class="success" onclick="marcarDespesaPaga('${d.id}')">✓ Pagar</button>`:''}<button class="soft" onclick="editarDespesa('${d.id}')">✏️</button><button class="danger" onclick="excluirDespesa('${d.id}')">🗑️</button></div></div></div>`}).join(''):'<div class="fin-empty">Nenhuma conta a pagar neste período.</div>';
+
+  let rl=[...parcelasReceber].filter(p=>{const pago=finParcelaPaga(p),over=finVencido(p.vencimento,pago);if(fRec==='pago'&&!pago)return false;if(fRec==='pendente'&&(pago||over))return false;if(fRec==='vencido'&&!over)return false;if(busca&&!finTexto([finClienteNome(p.cliente_id),p.observacoes,p.forma_pagamento].join(' ')).includes(busca))return false;return true}).sort((a,b)=>String(a.vencimento||'9999').localeCompare(String(b.vencimento||'9999')));
+  const lr=document.getElementById('listaReceber');
+  lr.innerHTML=rl.length?rl.map(p=>{const pago=finParcelaPaga(p),over=finVencido(p.vencimento,pago);const badge=pago?'<span class="fin-badge">Recebido</span>':over?'<span class="fin-badge overdue">Vencido</span>':'<span class="fin-badge pending">Pendente</span>';return `<div class="finance-item"><div><h4>${esc(finClienteNome(p.cliente_id))}</h4><div class="finance-meta">Parcela ${num(p.numero_parcela)||1}${p.vencimento?' • Vence em '+formatarData(p.vencimento):' • Sem vencimento'}${p.forma_pagamento?' • '+esc(p.forma_pagamento):''}</div></div><div class="finance-value">${badge}<b>${money(p.valor)}</b><div class="finance-actions">${!pago?`<button class="success" onclick="receberParcela('${p.id}')">✓ Receber</button>`:''}${p.venda_id?`<button class="soft" onclick="ativarAba('vendas');setTimeout(()=>verVenda('${p.venda_id}'),80)">🧾 Venda</button>`:''}</div></div></div>`}).join(''):'<div class="fin-empty">Nenhuma conta a receber.</div>';
+}
+function despesaForm(d={}){const editar=!!d.id;const venc=String(d.vencimento||d.data_vencimento||'').slice(0,10),pago=finDespesaPaga(d);return `<h2>${editar?'✏️ Editar conta':'💸 Nova conta a pagar'}</h2><div class="fin-form-grid"><div class="full"><label>Descrição *</label><input id="fdDesc" value="${esc(d.descricao||'')}" placeholder="Ex.: Pedido O Boticário"></div><div><label>Categoria</label><input id="fdCat" value="${esc(d.categoria||'')}" placeholder="Ex.: Mercadoria, embalagem"></div><div><label>Valor *</label><input id="fdValor" type="number" min="0" step="0.01" value="${num(d.valor)||''}"></div><div><label>Vencimento</label><input id="fdVenc" type="date" value="${esc(venc)}"></div><div><label>Forma de pagamento</label><select id="fdForma"><option value="">Não informado</option>${['Pix','Dinheiro','Cartão de crédito','Cartão de débito','Boleto','Transferência'].map(x=>`<option ${d.forma_pagamento===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="full"><label>Observações</label><textarea id="fdObs" placeholder="Informações adicionais">${esc(d.observacoes||'')}</textarea></div><div class="full check-row"><input id="fdPago" type="checkbox" ${pago?'checked':''}><label for="fdPago">Conta já foi paga</label></div></div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarDespesa(${editar?`'${d.id}'`:'null'})">Salvar</button></div>`}
+function novaDespesa(){openModal(despesaForm())}
+function editarDespesa(id){const d=despesas.find(x=>x.id===id);if(d)openModal(despesaForm(d))}
+async function salvarDespesa(id=null){const descricao=document.getElementById('fdDesc').value.trim(),valor=num(document.getElementById('fdValor').value);if(!descricao)return alert('Digite a descrição.');if(valor<=0)return alert('Digite um valor maior que zero.');const pago=document.getElementById('fdPago').checked,agora=new Date().toISOString();const payload={user_id:user.id,descricao,categoria:document.getElementById('fdCat').value.trim()||null,valor,vencimento:document.getElementById('fdVenc').value||null,pago,status:pago?'paga':'pendente',forma_pagamento:document.getElementById('fdForma').value||null,observacoes:document.getElementById('fdObs').value.trim()||null,data_pagamento:pago?agora:null,updated_at:agora};let r=id?await sb.from('despesas').update(payload).eq('id',id).eq('user_id',user.id):await sb.from('despesas').insert(payload);if(r.error)return alert('Não foi possível salvar: '+r.error.message);closeModal();await carregar()}
+async function marcarDespesaPaga(id){if(!confirm('Marcar esta conta como paga?'))return;const agora=new Date().toISOString();const r=await sb.from('despesas').update({pago:true,status:'paga',data_pagamento:agora,updated_at:agora}).eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível atualizar: '+r.error.message);await carregar()}
+async function excluirDespesa(id){if(!confirm('Excluir esta conta a pagar?'))return;const r=await sb.from('despesas').delete().eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível excluir: '+r.error.message);await carregar()}
+async function sincronizarVendaFinanceiro(vendaId){if(!vendaId)return;const {data:ps,error}=await sb.from('parcelas_receber').select('valor,pago,status').eq('venda_id',vendaId).eq('user_id',user.id);if(error)return;const aberto=(ps||[]).filter(p=>!finParcelaPaga(p)).reduce((s,p)=>s+num(p.valor),0);const v=vendas.find(x=>x.id===vendaId);if(!v)return;const total=num(v.total),pago=Math.max(0,total-aberto);await sb.from('vendas').update({valor_aberto:aberto,valor_pago:pago,status_pagamento:aberto>0.005?'aberto':'pago',updated_at:new Date().toISOString()}).eq('id',vendaId).eq('user_id',user.id)}
+async function receberParcela(id){const p=parcelasReceber.find(x=>x.id===id);if(!p)return;if(!confirm(`Confirmar recebimento de ${money(p.valor)}?`))return;const forma=prompt('Forma de pagamento (Pix, Dinheiro, Cartão...):',p.forma_pagamento||'Pix');if(forma===null)return;const agora=new Date().toISOString();const r=await sb.from('parcelas_receber').update({pago:true,status:'pago',forma_pagamento:forma.trim()||p.forma_pagamento||null,data_pagamento:agora,recebido_em:agora,updated_at:agora}).eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível registrar o recebimento: '+r.error.message);await sincronizarVendaFinanceiro(p.venda_id);await carregar();alert('Recebimento registrado com sucesso!')}
+
 function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
 function produtoForm(p={}){
   const editar=!!p.id;const catOpts='<option value="">Sem categoria</option>'+categorias.map(c=>`<option value="${esc(c.id)}" ${p.categoria_id===c.id?'selected':''}>${esc(c.nome)}</option>`).join('');
