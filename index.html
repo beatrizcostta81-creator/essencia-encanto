@@ -367,6 +367,21 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div id="cfgMenuOrdem" class="menu-order-list"></div>
     <button class="soft" type="button" onclick="restaurarMenuPadrao()">Restaurar menu padrão</button>
 
+
+    <h3 class="section-title">📲 Configurações de Cobrança</h3>
+    <p class="muted">Personalize os alertas e a mensagem enviada pelo WhatsApp. Use {cliente}, {valor} e {vencimento} nos textos.</p>
+    <div class="form-grid">
+      <div><label>Dias antes para alertar</label><input id="cfgDiasAlerta" type="number" min="0" max="30" value="3"></div>
+      <div><label>Assinatura da cobrança</label><input id="cfgAssinaturaCobranca" placeholder="Ex.: Essência & Encanto"></div>
+      <div class="full"><label>Mensagem antes do vencimento</label><textarea id="cfgMsgAntesVenc" style="width:100%;min-height:90px"></textarea></div>
+      <div class="full"><label>Mensagem para parcela vencida</label><textarea id="cfgMsgVencida" style="width:100%;min-height:90px"></textarea></div>
+      <div class="full" style="display:flex;gap:16px;flex-wrap:wrap;margin:4px 0 10px">
+        <label style="display:flex;align-items:center;gap:6px"><input id="cfgIncluiNome" type="checkbox" style="width:auto;margin:0"> Incluir nome do cliente</label>
+        <label style="display:flex;align-items:center;gap:6px"><input id="cfgIncluiValor" type="checkbox" style="width:auto;margin:0"> Incluir valor</label>
+        <label style="display:flex;align-items:center;gap:6px"><input id="cfgIncluiVenc" type="checkbox" style="width:auto;margin:0"> Incluir vencimento</label>
+      </div>
+    </div>
+
     <h3 class="section-title">📦 Backup e Exportação</h3>
     <p class="muted">Baixe cópias dos seus dados para guardar no computador ou abrir no Excel.</p>
     <div class="quick">
@@ -599,6 +614,7 @@ function aplicarConfiguracoes(){
     for(const [id,val] of Object.entries(vals)){document.getElementById(id).value=val;document.getElementById(id+'Hex').value=val}
     document.getElementById('cfgLayout').value=configLoja?.layout_estilo||'elegante';document.getElementById('cfgTema').value=configLoja?.modo_tema||'claro';document.getElementById('previewNome').textContent=nome;
     document.getElementById('cfgMenuPosicao').value=configLoja?.menu_posicao||'topo';document.getElementById('cfgMenuEstilo').value=configLoja?.menu_estilo||'botoes';menuOrdemRascunho=normalizarMenuOrdem(configLoja?.menu_ordem);menuOcultosRascunho=normalizarMenuOcultos(configLoja?.menu_ocultos);renderMenuControles();
+    document.getElementById('cfgDiasAlerta').value=num(configLoja?.dias_alerta_cobranca ?? 3);document.getElementById('cfgAssinaturaCobranca').value=configLoja?.assinatura_cobranca||nome;document.getElementById('cfgMsgAntesVenc').value=configLoja?.mensagem_antes_vencimento||'Olá, {cliente}! Passando para lembrar que você tem uma parcela de {valor} com vencimento em {vencimento}.';document.getElementById('cfgMsgVencida').value=configLoja?.mensagem_vencida||'Olá, {cliente}! Identificamos uma parcela em aberto no valor de {valor}, com vencimento em {vencimento}. Quando possível, entre em contato conosco.';document.getElementById('cfgIncluiNome').checked=configLoja?.incluir_nome_cliente_cobranca!==false;document.getElementById('cfgIncluiValor').checked=configLoja?.incluir_valor_cobranca!==false;document.getElementById('cfgIncluiVenc').checked=configLoja?.incluir_vencimento_cobranca!==false;
   }
 }
 function sincronizarCor(corId,hexId){document.getElementById(hexId).value=document.getElementById(corId).value;previsualizarAparencia()}
@@ -611,8 +627,8 @@ function previsualizarAparencia(){
 function restaurarAparenciaPadrao(){document.getElementById('cfgCorPrincipal').value='#d98fa3';document.getElementById('cfgCorPrincipalHex').value='#d98fa3';document.getElementById('cfgCorSecundaria').value='#f6dfe7';document.getElementById('cfgCorSecundariaHex').value='#f6dfe7';document.getElementById('cfgCorFundo').value='#fffafc';document.getElementById('cfgCorFundoHex').value='#fffafc';document.getElementById('cfgCorTexto').value='#3d2b32';document.getElementById('cfgCorTextoHex').value='#3d2b32';document.getElementById('cfgLayout').value='elegante';document.getElementById('cfgTema').value='claro';previsualizarAparencia()}
 async function salvarConfiguracoes(){
   let logoUrl=null;try{logoUrl=await uploadLogoLoja()}catch(e){document.getElementById('cfgMsg').textContent='Erro: '+e.message;return}
-  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:logoUrl,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,menu_posicao:document.getElementById('cfgMenuPosicao').value,menu_estilo:document.getElementById('cfgMenuEstilo').value,menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho,updated_at:new Date().toISOString()};
-  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;const lf=document.getElementById('cfgLogoArquivo');if(lf)lf.value='';aplicarConfiguracoes();renderDashboard();document.getElementById('cfgMsg').textContent='✅ Configurações, aparência, menu e logo salvos com sucesso.';
+  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:logoUrl,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,menu_posicao:document.getElementById('cfgMenuPosicao').value,menu_estilo:document.getElementById('cfgMenuEstilo').value,menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho,dias_alerta_cobranca:Math.max(0,Math.min(30,parseInt(document.getElementById('cfgDiasAlerta').value||'3',10)||0)),mensagem_antes_vencimento:document.getElementById('cfgMsgAntesVenc').value.trim()||null,mensagem_vencida:document.getElementById('cfgMsgVencida').value.trim()||null,assinatura_cobranca:document.getElementById('cfgAssinaturaCobranca').value.trim()||document.getElementById('cfgNome').value.trim()||'Essência & Encanto',incluir_valor_cobranca:document.getElementById('cfgIncluiValor').checked,incluir_vencimento_cobranca:document.getElementById('cfgIncluiVenc').checked,incluir_nome_cliente_cobranca:document.getElementById('cfgIncluiNome').checked,updated_at:new Date().toISOString()};
+  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;const lf=document.getElementById('cfgLogoArquivo');if(lf)lf.value='';aplicarConfiguracoes();renderDashboard();document.getElementById('cfgMsg').textContent='✅ Configurações, aparência, menu, logo e cobrança salvos com sucesso.';
 }
 
 function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
@@ -724,10 +740,11 @@ function alertaDiasAte(v){const d=alertaDataLocal(v);if(!d)return null;const h=n
 function alertaCliente(p){return clientes.find(c=>c.id===p.cliente_id)||null}
 function alertaTelefone(p){const c=alertaCliente(p);return whatsappNumero(c?.whatsapp||c?.telefone||'')}
 function formatarVencimentoAlerta(v){const d=alertaDataLocal(v);return d?d.toLocaleDateString('pt-BR'):'Sem vencimento'}
-function parcelasAlerta(){return parcelasReceber.filter(p=>!finParcelaPaga(p)&&p.vencimento).map(p=>({...p,_dias:alertaDiasAte(p.vencimento)})).filter(p=>p._dias!==null&&p._dias<=3).sort((a,b)=>a._dias-b._dias)}
+function diasAlertaCobranca(){return Math.max(0,Math.min(30,num(configLoja?.dias_alerta_cobranca ?? 3)))}
+function parcelasAlerta(){const limite=diasAlertaCobranca();return parcelasReceber.filter(p=>!finParcelaPaga(p)&&p.vencimento).map(p=>({...p,_dias:alertaDiasAte(p.vencimento)})).filter(p=>p._dias!==null&&p._dias<=limite).sort((a,b)=>a._dias-b._dias)}
 function despesasAtrasadas(){return despesas.filter(d=>!finDespesaPaga(d)&&d.vencimento&&alertaDiasAte(d.vencimento)<0).sort((a,b)=>String(a.vencimento).localeCompare(String(b.vencimento)))}
 function renderAlertas(){
-  const rec=parcelasAlerta(),venc=rec.filter(p=>p._dias<0),breve=rec.filter(p=>p._dias>=0&&p._dias<=3),pag=despesasAtrasadas();
+  const rec=parcelasAlerta(),venc=rec.filter(p=>p._dias<0),breve=rec.filter(p=>p._dias>=0&&p._dias<=diasAlertaCobranca()),pag=despesasAtrasadas();
   const total=venc.reduce((s,p)=>s+num(p.valor),0)+pag.reduce((s,d)=>s+num(d.valor),0);
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};set('alParcVenc',venc.length);set('alParcBreve',breve.length);set('alDespVenc',pag.length);set('alTotalAtraso',money(total));
   const rbox=document.getElementById('alertasReceber');if(rbox){rbox.innerHTML=rec.length?rec.map(p=>{const c=alertaCliente(p),vencida=p._dias<0,rotulo=vencida?`${Math.abs(p._dias)} dia(s) em atraso`:p._dias===0?'Vence hoje':`Vence em ${p._dias} dia(s)`;return `<div class="alert-item"><div><div class="alert-title">${esc(c?.nome||'Cliente')} • Parcela ${p.numero_parcela||1}</div><div class="alert-meta">Vencimento: ${formatarVencimentoAlerta(p.vencimento)} • ${money(p.valor)}<br><span class="alert-badge ${vencida?'overdue':'soon'}">${rotulo}</span>${p.cobranca_enviada?' <span class="alert-badge ok">Cobrança já aberta</span>':''}</div></div><div class="alert-actions">${alertaTelefone(p)?`<button class="success" onclick="cobrarParcelaWhats('${p.id}')">📲 Cobrar</button>`:''}<button class="primary" onclick="receberParcela('${p.id}')">✓ Receber</button></div></div>`}).join(''):'<div class="fin-empty">Nenhuma parcela vencida ou próxima do vencimento. 🎉</div>'}
@@ -736,8 +753,13 @@ function renderAlertas(){
 }
 async function cobrarParcelaWhats(id){
   const p=parcelasReceber.find(x=>x.id===id);if(!p)return;const c=alertaCliente(p),n=alertaTelefone(p);if(!n)return alert('Cadastre o WhatsApp do cliente primeiro.');
-  const loja=(configLoja?.nome_loja||'Essência & Encanto').trim();const dias=alertaDiasAte(p.vencimento);let prazo=dias<0?`está vencida há ${Math.abs(dias)} dia(s)`:(dias===0?'vence hoje':`vence em ${dias} dia(s)`);
-  const msg=`Olá, ${c?.nome||''}! Tudo bem? 😊\n\nPassando para lembrar que a parcela ${p.numero_parcela||1}, no valor de ${money(p.valor)}, com vencimento em ${formatarVencimentoAlerta(p.vencimento)}, ${prazo}.\n\nSe o pagamento já foi realizado, por favor desconsidere esta mensagem. 💕\n\n${loja}`;
+  const dias=alertaDiasAte(p.vencimento),vencida=dias<0;
+  let modelo=vencida?(configLoja?.mensagem_vencida||'Olá, {cliente}! Identificamos uma parcela em aberto no valor de {valor}, com vencimento em {vencimento}. Quando possível, entre em contato conosco.'):(configLoja?.mensagem_antes_vencimento||'Olá, {cliente}! Passando para lembrar que você tem uma parcela de {valor} com vencimento em {vencimento}.');
+  const nome=configLoja?.incluir_nome_cliente_cobranca===false?'':(c?.nome||'');
+  const valor=configLoja?.incluir_valor_cobranca===false?'':money(p.valor);
+  const venc=configLoja?.incluir_vencimento_cobranca===false?'':formatarVencimentoAlerta(p.vencimento);
+  let msg=modelo.replaceAll('{cliente}',nome).replaceAll('{valor}',valor).replaceAll('{vencimento}',venc).replace(/\s{2,}/g,' ').trim();
+  const ass=(configLoja?.assinatura_cobranca||configLoja?.nome_loja||'Essência & Encanto').trim();if(ass)msg+='\n\n'+ass;
   const agora=new Date().toISOString();await sb.from('parcelas_receber').update({cobranca_enviada:true,cobranca_enviada_em:agora,updated_at:agora}).eq('id',id).eq('user_id',user.id);
   window.open(`https://wa.me/${n}?text=${encodeURIComponent(msg)}`,'_blank');await carregar();ativarAba('alertas');
 }
