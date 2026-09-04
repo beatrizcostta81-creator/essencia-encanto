@@ -535,32 +535,16 @@ async function salvarVenda(){
 
 async function excluirVenda(id){
   const v=vendas.find(x=>x.id===id);if(!v)return;
-  const its=itensVenda.filter(i=>i.venda_id===id);
   const numero=v.numero?'#'+v.numero:'';
-  const ok=confirm(`Excluir a venda ${numero}?\n\nO estoque dos produtos desta venda será devolvido automaticamente. Esta ação não pode ser desfeita.`);
+  const ok=confirm(`Excluir a venda ${numero}?\n\nO estoque será devolvido automaticamente. Esta ação não pode ser desfeita.`);
   if(!ok)return;
 
-  const restaurados=[];
-  for(const it of its){
-    const p=produtos.find(x=>x.id===it.produto_id);
-    if(!p)continue;
-    const estoqueAnterior=num(p.estoque),estoqueNovo=estoqueAnterior+num(it.quantidade);
-    const ur=await sb.from('produtos').update({estoque:estoqueNovo,updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);
-    if(ur.error){
-      for(const r of restaurados){await sb.from('produtos').update({estoque:r.estoqueAnterior,updated_at:new Date().toISOString()}).eq('id',r.id).eq('user_id',user.id)}
-      return alert('Não foi possível devolver o estoque. A venda não foi excluída: '+ur.error.message);
-    }
-    restaurados.push({id:p.id,estoqueAnterior});
-  }
+  const {data,error}=await sb.rpc('excluir_venda_com_estorno',{p_venda_id:id});
+  if(error)return alert('Não foi possível excluir a venda: '+error.message);
+  if(data!==true)return alert('A venda não foi excluída. Atualize a página e tente novamente.');
 
-  const dr=await sb.from('vendas').delete().eq('id',id).eq('user_id',user.id);
-  if(dr.error){
-    for(const r of restaurados){await sb.from('produtos').update({estoque:r.estoqueAnterior,updated_at:new Date().toISOString()}).eq('id',r.id).eq('user_id',user.id)}
-    return alert('Não foi possível excluir a venda: '+dr.error.message);
-  }
-
-  await sb.from('movimentacoes_estoque').delete().eq('referencia_id',id).eq('user_id',user.id);
-  await carregar();ativarAba('vendas');
+  await carregar();
+  ativarAba('vendas');
   alert('✅ Venda excluída e estoque devolvido com sucesso.');
 }
 
