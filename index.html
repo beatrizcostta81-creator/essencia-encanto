@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Essência & Encanto - Produtos e Clientes completos + fotos + Menu e Aparência personalizáveis --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Essência & Encanto - Dashboard profissional + logo + vendas + produtos + clientes + personalização --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Essência & Encanto Online</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -100,13 +100,56 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .pay-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.pay-grid .full{grid-column:1/-1}.pay-grid label{font-weight:700;font-size:13px}.pay-grid textarea{width:100%;min-height:70px;padding:12px;border:1px solid var(--borda);border-radius:10px;background:var(--cor-card);color:var(--cor-texto);font-family:inherit;margin:6px 0 12px}
 @media(max-width:760px){.sales-stats,.sale-values,.cart-summary{grid-template-columns:repeat(2,1fr)}.sales-toolbar{grid-template-columns:1fr}.cart-wrap{overflow-x:auto}.cart-table{min-width:650px}.pay-grid{grid-template-columns:1fr}.pay-grid .full{grid-column:auto}}
 
+/* Início profissional + identidade da loja */
+.dashboard-hero{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:linear-gradient(135deg,var(--cor-card),var(--cor-secundaria));border:1px solid var(--borda);border-radius:calc(var(--raio) + 6px);padding:22px;box-shadow:var(--sombra);margin-bottom:16px;overflow:hidden;position:relative}
+.dashboard-hero:after{content:'';position:absolute;width:170px;height:170px;border-radius:50%;background:var(--cor-principal);opacity:.08;right:-55px;top:-70px;pointer-events:none}
+.dashboard-logo,.dashboard-logo-placeholder{width:76px;height:76px;border-radius:20px;border:1px solid var(--borda);background:var(--cor-card);object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.dashboard-logo{display:none}.dashboard-logo-placeholder{display:grid;place-items:center;font-size:34px}
+.dashboard-hero h2{margin:0 0 5px;font-size:25px}.dashboard-hero p{margin:0}.dashboard-date{font-size:12px;font-weight:700;background:var(--cor-card);border:1px solid var(--borda);border-radius:999px;padding:8px 11px;white-space:nowrap;z-index:1}
+.dashboard-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.dashboard-kpi{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:15px;box-shadow:var(--sombra)}.dashboard-kpi span{display:block;font-size:11px;color:#88766f;margin-bottom:7px}.dashboard-kpi b{display:block;font-size:20px;color:var(--cor-principal)}.dashboard-kpi small{display:block;margin-top:5px;color:#88766f;font-size:10px}
+.quick-actions{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.quick-actions button{padding:12px 16px}
+.dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.dashboard-stack{display:flex;flex-direction:column;gap:14px}.dash-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.dash-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px;border:1px solid var(--borda);border-radius:11px;background:var(--cor-fundo)}.dash-row-main{min-width:0}.dash-row-title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dash-row-meta{font-size:11px;color:#88766f;margin-top:3px}.dash-value{font-weight:800;color:var(--cor-principal);white-space:nowrap}.dash-empty{text-align:center;padding:18px 8px;color:#88766f;font-size:13px}
+.logo-upload-box{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;padding:12px;border:1px dashed var(--borda);border-radius:14px;background:var(--cor-fundo);margin:6px 0 18px}.logo-preview,.logo-preview-placeholder{width:120px;height:120px;border-radius:22px;border:1px solid var(--borda);background:var(--cor-card)}.logo-preview{object-fit:cover;display:none}.logo-preview-placeholder{display:grid;place-items:center;font-size:40px}.logo-help{font-size:11px;color:#88766f;margin-top:6px}.logo-status{font-size:12px;margin-top:7px;color:var(--cor-principal);font-weight:700}
+.login-logo{width:84px;height:84px;border-radius:22px;object-fit:cover;border:1px solid var(--borda);display:none;margin:0 auto 10px}
+@media(max-width:900px){.dashboard-kpis{grid-template-columns:repeat(2,1fr)}.dashboard-grid{grid-template-columns:1fr}.dashboard-hero{grid-template-columns:auto 1fr}.dashboard-date{grid-column:1/-1;justify-self:start}}
+@media(max-width:600px){.dashboard-hero{padding:16px;gap:12px}.dashboard-logo,.dashboard-logo-placeholder{width:58px;height:58px;border-radius:16px}.dashboard-hero h2{font-size:20px}.dashboard-kpis{grid-template-columns:1fr 1fr}.dashboard-kpi:last-child{grid-column:1/-1}.quick-actions{display:grid;grid-template-columns:1fr 1fr}.quick-actions button:first-child{grid-column:1/-1}.logo-upload-box{grid-template-columns:90px 1fr}.logo-preview,.logo-preview-placeholder{width:90px;height:90px;border-radius:18px}}
+
 </style></head><body>
-<section id="login" class="login"><div class="box"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
+<section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div><span id="userEmail" class="muted"></span> <button class="soft" onclick="sair()">Sair</button></div></header><main>
 <div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
-<section id="inicio" class="view active"><div class="cards"><div class="card">Produtos<b id="qProd">0</b></div><div class="card">Clientes<b id="qCli">0</b></div><div class="card">Vendas<b id="qVen">0</b></div><div class="card">A receber<b id="qRec">R$ 0,00</b></div></div><div class="panel" style="margin-top:15px"><b>Status</b><p id="status">Conectando...</p></div></section>
+<section id="inicio" class="view active">
+  <div class="dashboard-hero">
+    <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
+    <div><h2 id="dashboardNomeLoja">Essência & Encanto</h2><p id="dashboardMensagem" class="muted">Seu negócio em um só lugar.</p></div>
+    <div id="dashboardData" class="dashboard-date"></div>
+  </div>
+  <div class="dashboard-kpis">
+    <div class="dashboard-kpi"><span>Faturamento do mês</span><b id="dashFatMes">R$ 0,00</b><small id="dashVendasMes">0 vendas</small></div>
+    <div class="dashboard-kpi"><span>A receber</span><b id="qRec">R$ 0,00</b><small>Valores ainda em aberto</small></div>
+    <div class="dashboard-kpi"><span>Resultado do mês</span><b id="dashResultadoMes">R$ 0,00</b><small>Faturamento menos despesas</small></div>
+    <div class="dashboard-kpi"><span>Produtos</span><b id="qProd">0</b><small id="dashEstoqueBaixo">0 com estoque baixo</small></div>
+    <div class="dashboard-kpi"><span>Clientes</span><b id="qCli">0</b><small id="dashClientesNovos">0 recentes</small></div>
+  </div>
+  <div class="quick-actions">
+    <button class="primary" onclick="ativarAba('vendas');novaVenda()">🧾 Nova venda</button>
+    <button class="soft" onclick="ativarAba('produtos');novoProduto()">🛍️ Novo produto</button>
+    <button class="soft" onclick="ativarAba('clientes');novoCliente()">👥 Novo cliente</button>
+  </div>
+  <div class="dashboard-grid">
+    <div class="dashboard-stack">
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>🧾 Últimas vendas</b><p class="muted" style="margin:4px 0 0">Movimentações mais recentes.</p></div><button class="soft" onclick="ativarAba('vendas')">Ver vendas</button></div><div id="dashUltimasVendas" class="dash-list"></div></div>
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>📦 Estoque baixo</b><p class="muted" style="margin:4px 0 0">Produtos que precisam de atenção.</p></div><button class="soft" onclick="ativarAba('produtos')">Ver estoque</button></div><div id="dashProdutosBaixos" class="dash-list"></div></div>
+    </div>
+    <div class="dashboard-stack">
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>👥 Clientes recentes</b><p class="muted" style="margin:4px 0 0">Últimos clientes cadastrados.</p></div><button class="soft" onclick="ativarAba('clientes')">Ver clientes</button></div><div id="dashClientesRecentes" class="dash-list"></div></div>
+      <div class="panel"><b>🔗 Status do sistema</b><p id="status" class="muted">Conectando...</p></div>
+    </div>
+  </div>
+  <span id="qVen" style="display:none">0</span>
+</section>
 <section id="produtos" class="view">
   <div class="top"><div><h2>🛍️ Produtos</h2><p class="muted">Cadastre preços, estoque, lucro, fotos e organize seus produtos.</p></div><div class="category-actions"><button class="soft" onclick="novaCategoria()">+ Categoria</button><button class="primary" onclick="novoProduto()">+ Novo produto</button></div></div>
   <div class="product-stats">
@@ -176,8 +219,17 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <label>Mensagem da loja</label>
     <input id="cfgMensagem" placeholder="Mensagem curta da loja">
 
-    <label>URL da logo</label>
-    <input id="cfgLogo" placeholder="Link da imagem da logo" oninput="previsualizarAparencia()">
+    <label>🏪 Logo da loja</label>
+    <div class="logo-upload-box">
+      <div><img id="cfgLogoPreview" class="logo-preview" alt="Logo"><div id="cfgLogoPlaceholder" class="logo-preview-placeholder">🏪</div></div>
+      <div>
+        <input id="cfgLogoArquivo" type="file" accept="image/jpeg,image/png,image/webp" onchange="previewLogoLoja(this)">
+        <input id="cfgLogo" type="hidden">
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="soft" type="button" onclick="document.getElementById('cfgLogoArquivo').click()">📷 Escolher logo</button><button class="danger" type="button" onclick="removerLogoLoja()">Remover logo</button></div>
+        <div class="logo-help">JPG, PNG ou WEBP. Máximo de 5 MB. A logo será enviada ao Supabase quando você salvar.</div>
+        <div id="cfgLogoStatus" class="logo-status"></div>
+      </div>
+    </div>
 
     <h3 class="section-title">🎨 Aparência</h3>
     <p class="muted">Escolha as cores e o estilo. A prévia muda na hora; só fica salvo quando você clicar em salvar.</p>
@@ -287,12 +339,56 @@ function alternarMenuItem(k,mostrar){if(k==='configuracoes')return;if(mostrar)me
 function previsualizarMenu(){aplicarMenuVisual({menu_posicao:document.getElementById('cfgMenuPosicao')?.value||'topo',menu_estilo:document.getElementById('cfgMenuEstilo')?.value||'botoes',menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho})}
 function restaurarMenuPadrao(){menuOrdemRascunho=[...MENU_PADRAO];menuOcultosRascunho=[];document.getElementById('cfgMenuPosicao').value='topo';document.getElementById('cfgMenuEstilo').value='botoes';renderMenuControles();previsualizarMenu()}
 function ativarAba(chave){const alvo=document.querySelector(`.tab[data-v="${chave}"]`);if(!alvo||alvo.style.display==='none')return;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));alvo.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));const sec=document.getElementById(chave);if(sec)sec.classList.add('active')}
+
+function aplicarLogoVisual(url){
+  const ids=['headerLogo','dashboardLogo','loginLogo','cfgLogoPreview'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;if(url){el.src=url;el.style.display='block';el.onerror=()=>{el.style.display='none'}}else{el.style.display='none';el.removeAttribute('src')}});
+  const dph=document.getElementById('dashboardLogoPlaceholder');if(dph)dph.style.display=url?'none':'grid';
+  const cph=document.getElementById('cfgLogoPlaceholder');if(cph)cph.style.display=url?'none':'grid';
+}
+function previewLogoLoja(input){
+  const file=input.files&&input.files[0];if(!file)return;
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){input.value='';return alert('Escolha uma imagem JPG, PNG ou WEBP.');}
+  if(file.size>5*1024*1024){input.value='';return alert('A logo deve ter no máximo 5 MB.');}
+  const url=URL.createObjectURL(file);aplicarLogoVisual(url);const st=document.getElementById('cfgLogoStatus');if(st)st.textContent='Logo selecionada. Ela será enviada quando você salvar.';
+}
+function removerLogoLoja(){
+  const f=document.getElementById('cfgLogoArquivo');if(f)f.value='';const h=document.getElementById('cfgLogo');if(h)h.value='';aplicarLogoVisual('');const st=document.getElementById('cfgLogoStatus');if(st)st.textContent='A logo será removida quando você salvar.';
+}
+async function uploadLogoLoja(){
+  const input=document.getElementById('cfgLogoArquivo');const file=input?.files?.[0];
+  if(!file)return document.getElementById('cfgLogo')?.value.trim()||null;
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const path=`${user.id}/logo-${Date.now()}.${ext}`;const st=document.getElementById('cfgLogoStatus');if(st)st.textContent='Enviando logo...';
+  const {error}=await sb.storage.from('logos').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
+  if(error)throw new Error('Não foi possível enviar a logo: '+error.message);
+  const {data}=sb.storage.from('logos').getPublicUrl(path);if(!data?.publicUrl)throw new Error('Não foi possível obter o link da logo.');
+  document.getElementById('cfgLogo').value=data.publicUrl;if(st)st.textContent='✅ Logo enviada com sucesso.';return data.publicUrl;
+}
+function dataObj(v){const d=new Date(v);return Number.isNaN(d.getTime())?null:d}
+function dataVenda(v){return dataObj(v?.data_venda||v?.created_at)}
+function dataDespesa(v){return dataObj(v?.data||v?.data_despesa||v?.created_at)}
+function dataCliente(v){return dataObj(v?.created_at||v?.updated_at)}
+function mesmoMes(d,ref=new Date()){return d&&d.getFullYear()===ref.getFullYear()&&d.getMonth()===ref.getMonth()}
+function formatDataCurta(d){return d?d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}):'—'}
+function nomeClienteVenda(v){return clientes.find(c=>c.id===v.cliente_id)?.nome||v.cliente_nome||'Cliente não informado'}
+function renderDashboard(){
+  const agora=new Date();const vendasMes=vendas.filter(v=>mesmoMes(dataVenda(v),agora));const fatMes=vendasMes.reduce((s,v)=>s+num(v.total),0);const despMes=despesas.filter(d=>mesmoMes(dataDespesa(d),agora)).reduce((s,d)=>s+num(d.valor),0);const receber=vendas.reduce((s,v)=>s+num(v.valor_aberto??v.valor_pendente),0);const baixos=produtos.filter(p=>p.ativo!==false&&estoqueBaixo(p));
+  const nome=(configLoja?.nome_loja||'Essência & Encanto').trim()||'Essência & Encanto';const msg=(configLoja?.mensagem||'Seu negócio em um só lugar.').trim()||'Seu negócio em um só lugar.';
+  const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val};set('dashboardNomeLoja',nome);set('dashboardMensagem',msg);set('dashboardData',agora.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}));set('dashFatMes',money(fatMes));set('dashVendasMes',`${vendasMes.length} ${vendasMes.length===1?'venda':'vendas'}`);set('dashResultadoMes',money(fatMes-despMes));set('dashEstoqueBaixo',`${baixos.length} com estoque baixo`);
+  const seteDias=new Date(agora);seteDias.setDate(agora.getDate()-7);const novos=clientes.filter(c=>{const d=dataCliente(c);return d&&d>=seteDias}).length;set('dashClientesNovos',`${novos} recentes`);
+  const lv=document.getElementById('dashUltimasVendas');if(lv){const list=[...vendas].sort((a,b)=>(dataVenda(b)?.getTime()||0)-(dataVenda(a)?.getTime()||0)).slice(0,5);lv.innerHTML=list.length?list.map(v=>`<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(nomeClienteVenda(v))}</div><div class="dash-row-meta">${formatDataCurta(dataVenda(v))} · ${esc(v.forma_pagamento||'Pagamento não informado')}</div></div><div class="dash-value">${money(v.total)}</div></div>`).join(''):'<div class="dash-empty">Nenhuma venda registrada ainda.</div>'}
+  const lp=document.getElementById('dashProdutosBaixos');if(lp){const list=[...baixos].sort((a,b)=>num(a.estoque)-num(b.estoque)).slice(0,5);lp.innerHTML=list.length?list.map(p=>`<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(p.nome||'Produto')}</div><div class="dash-row-meta">Mínimo: ${num(p.estoque_minimo)} ${esc(p.unidade||'un')}</div></div><div class="dash-value">${num(p.estoque)} ${esc(p.unidade||'un')}</div></div>`).join(''):'<div class="dash-empty">Tudo certo com o estoque. ✨</div>'}
+  const lc=document.getElementById('dashClientesRecentes');if(lc){const list=[...clientes].sort((a,b)=>(dataCliente(b)?.getTime()||0)-(dataCliente(a)?.getTime()||0)).slice(0,5);lc.innerHTML=list.length?list.map(c=>`<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(c.nome||'Cliente')}</div><div class="dash-row-meta">${esc(c.cidade||c.whatsapp||'Cliente cadastrado')}</div></div><div class="dash-row-meta">${formatDataCurta(dataCliente(c))}</div></div>`).join(''):'<div class="dash-empty">Nenhum cliente cadastrado ainda.</div>'}
+  aplicarLogoVisual(configLoja?.logo_url||'');
+}
+
 function aplicarConfiguracoes(){
   const nome=(configLoja?.nome_loja||'Essência & Encanto').trim()||'Essência & Encanto';
   document.getElementById('loginNomeLoja').textContent=nome;document.getElementById('headerNomeLoja').textContent=nome;document.title=nome+' Online';
   aplicarTemaVisual(configLoja||{});
   aplicarMenuVisual(configLoja||{});
-  const logo=document.getElementById('headerLogo'); if(configLoja?.logo_url){logo.src=configLoja.logo_url;logo.style.display='block';logo.onerror=()=>logo.style.display='none'}else{logo.style.display='none';logo.removeAttribute('src')}
+  aplicarLogoVisual(configLoja?.logo_url||'');
   if(document.getElementById('cfgNome')){
     document.getElementById('cfgNome').value=configLoja?.nome_loja||'';document.getElementById('cfgWhats').value=configLoja?.whatsapp||'';document.getElementById('cfgInstagram').value=configLoja?.instagram||'';document.getElementById('cfgEndereco').value=configLoja?.endereco||'';document.getElementById('cfgMensagem').value=configLoja?.mensagem||'';document.getElementById('cfgLogo').value=configLoja?.logo_url||'';
     const vals={cfgCorPrincipal:configLoja?.cor_principal||'#d98fa3',cfgCorSecundaria:configLoja?.cor_secundaria||'#f6dfe7',cfgCorFundo:configLoja?.cor_fundo||'#fffafc',cfgCorTexto:configLoja?.cor_texto||'#3d2b32'};
@@ -306,12 +402,13 @@ function sincronizarHex(hexId,corId){let v=document.getElementById(hexId).value.
 function previsualizarAparencia(){
   const prev={cor_principal:document.getElementById('cfgCorPrincipalHex')?.value,cor_secundaria:document.getElementById('cfgCorSecundariaHex')?.value,cor_fundo:document.getElementById('cfgCorFundoHex')?.value,cor_texto:document.getElementById('cfgCorTextoHex')?.value,layout_estilo:document.getElementById('cfgLayout')?.value,modo_tema:document.getElementById('cfgTema')?.value};aplicarTemaVisual(prev);
   const pn=document.getElementById('previewNome');if(pn)pn.textContent=document.getElementById('cfgNome').value.trim()||'Essência & Encanto';
-  const logo=document.getElementById('headerLogo'),url=document.getElementById('cfgLogo')?.value.trim();if(url){logo.src=url;logo.style.display='block';logo.onerror=()=>logo.style.display='none'}
+  const url=document.getElementById('cfgLogo')?.value.trim();if(url)aplicarLogoVisual(url);
 }
 function restaurarAparenciaPadrao(){document.getElementById('cfgCorPrincipal').value='#d98fa3';document.getElementById('cfgCorPrincipalHex').value='#d98fa3';document.getElementById('cfgCorSecundaria').value='#f6dfe7';document.getElementById('cfgCorSecundariaHex').value='#f6dfe7';document.getElementById('cfgCorFundo').value='#fffafc';document.getElementById('cfgCorFundoHex').value='#fffafc';document.getElementById('cfgCorTexto').value='#3d2b32';document.getElementById('cfgCorTextoHex').value='#3d2b32';document.getElementById('cfgLayout').value='elegante';document.getElementById('cfgTema').value='claro';previsualizarAparencia()}
 async function salvarConfiguracoes(){
-  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:document.getElementById('cfgLogo').value.trim()||null,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,menu_posicao:document.getElementById('cfgMenuPosicao').value,menu_estilo:document.getElementById('cfgMenuEstilo').value,menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho,updated_at:new Date().toISOString()};
-  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;aplicarConfiguracoes();document.getElementById('cfgMsg').textContent='✅ Configurações, aparência e menu salvos com sucesso.';
+  let logoUrl=null;try{logoUrl=await uploadLogoLoja()}catch(e){document.getElementById('cfgMsg').textContent='Erro: '+e.message;return}
+  const obj={user_id:user.id,nome_loja:document.getElementById('cfgNome').value.trim()||'Essência & Encanto',whatsapp:document.getElementById('cfgWhats').value.trim()||null,instagram:document.getElementById('cfgInstagram').value.trim()||null,endereco:document.getElementById('cfgEndereco').value.trim()||null,mensagem:document.getElementById('cfgMensagem').value.trim()||null,logo_url:logoUrl,cor_principal:corValida(document.getElementById('cfgCorPrincipalHex').value,'#d98fa3'),cor_secundaria:corValida(document.getElementById('cfgCorSecundariaHex').value,'#f6dfe7'),cor_fundo:corValida(document.getElementById('cfgCorFundoHex').value,'#fffafc'),cor_texto:corValida(document.getElementById('cfgCorTextoHex').value,'#3d2b32'),layout_estilo:document.getElementById('cfgLayout').value,modo_tema:document.getElementById('cfgTema').value,menu_posicao:document.getElementById('cfgMenuPosicao').value,menu_estilo:document.getElementById('cfgMenuEstilo').value,menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho,updated_at:new Date().toISOString()};
+  const {data,error}=await sb.from('configuracoes_loja').upsert(obj,{onConflict:'user_id'}).select().single();if(error){document.getElementById('cfgMsg').textContent='Erro: '+error.message;return}configLoja=data;const lf=document.getElementById('cfgLogoArquivo');if(lf)lf.value='';aplicarConfiguracoes();renderDashboard();document.getElementById('cfgMsg').textContent='✅ Configurações, aparência, menu e logo salvos com sucesso.';
 }
 
 function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
@@ -359,7 +456,7 @@ function render(){
   document.getElementById('qProd').textContent=produtos.length;document.getElementById('qCli').textContent=clientes.length;document.getElementById('qVen').textContent=vendas.length;
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
-  atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();
+  atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderDashboard();
   let fat=vendas.reduce((s,x)=>s+(+x.total||0),0),des=despesas.reduce((s,x)=>s+(+x.valor||0),0);document.getElementById('fat').textContent=money(fat);document.getElementById('rec').textContent=money(r);document.getElementById('desp').textContent=money(des);document.getElementById('res').textContent=money(fat-des)
 }
 function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
