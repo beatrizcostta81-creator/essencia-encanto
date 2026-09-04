@@ -500,7 +500,7 @@ function renderVendas(){
   const busca=(document.getElementById('vendaBusca')?.value||'').trim().toLowerCase(),filtro=document.getElementById('vendaStatus')?.value||'';
   let lista=[...vendas].filter(v=>{const aberto=vendaAberto(v);if(filtro==='pago'&&aberto>0.005)return false;if(filtro==='aberto'&&aberto<=0.005)return false;const txt=[v.numero,clienteNome(v.cliente_id),v.forma_pagamento,v.status_pagamento,v.status].join(' ').toLowerCase();return !busca||txt.includes(busca)}).sort((a,b)=>new Date(b.data_venda||b.created_at||0)-new Date(a.data_venda||a.created_at||0));
   if(!lista.length){alvo.innerHTML='<div class="empty-state"><div class="icon">🧾</div><h3>Nenhuma venda encontrada</h3><p class="muted">Clique em Nova venda para registrar a primeira.</p></div>';return}
-  alvo.innerHTML='<div class="sale-list">'+lista.map(v=>{const aberto=vendaAberto(v),pago=vendaPago(v),status=aberto>0.005?'Em aberto':'Pago',qtd=itensVenda.filter(i=>i.venda_id===v.id).reduce((s,i)=>s+num(i.quantidade),0);return `<article class="sale-card"><div class="sale-head"><div><div class="sale-title">Venda ${v.numero?'#'+esc(v.numero):''} • ${esc(clienteNome(v.cliente_id))}</div><div class="sale-meta">${formatarDataHora(v.data_venda||v.created_at)} • ${esc(v.forma_pagamento||'Pagamento não informado')} • ${qtd} item(ns)</div></div><span class="badge ${aberto>0.005?'low':''}">${status}</span></div><div class="sale-values"><div class="sale-value"><small>Total</small><b>${money(v.total)}</b></div><div class="sale-value"><small>Pago</small><b>${money(pago)}</b></div><div class="sale-value"><small>Em aberto</small><b>${money(aberto)}</b></div><div class="sale-value"><small>Parcelas</small><b>${num(v.quantidade_parcelas||v.parcelas)||1}x</b></div></div><div class="sale-actions"><button class="soft" onclick="verVenda('${v.id}')">👁️ Detalhes</button></div></article>`}).join('')+'</div>';
+  alvo.innerHTML='<div class="sale-list">'+lista.map(v=>{const aberto=vendaAberto(v),pago=vendaPago(v),status=aberto>0.005?'Em aberto':'Pago',qtd=itensVenda.filter(i=>i.venda_id===v.id).reduce((s,i)=>s+num(i.quantidade),0);return `<article class="sale-card"><div class="sale-head"><div><div class="sale-title">Venda ${v.numero?'#'+esc(v.numero):''} • ${esc(clienteNome(v.cliente_id))}</div><div class="sale-meta">${formatarDataHora(v.data_venda||v.created_at)} • ${esc(v.forma_pagamento||'Pagamento não informado')} • ${qtd} item(ns)</div></div><span class="badge ${aberto>0.005?'low':''}">${status}</span></div><div class="sale-values"><div class="sale-value"><small>Total</small><b>${money(v.total)}</b></div><div class="sale-value"><small>Pago</small><b>${money(pago)}</b></div><div class="sale-value"><small>Em aberto</small><b>${money(aberto)}</b></div><div class="sale-value"><small>Parcelas</small><b>${num(v.quantidade_parcelas||v.parcelas)||1}x</b></div></div><div class="sale-actions"><button class="soft" onclick="verVenda('${v.id}')">👁️ Detalhes</button><button class="danger" onclick="excluirVenda('${v.id}')">🗑️ Excluir</button></div></article>`}).join('')+'</div>';
 }
 function novaVenda(){
   carrinhoVenda=[];
@@ -532,7 +532,39 @@ async function salvarVenda(){
   if(calc.aberto>0.005){const qtd=tipo==='parcelado'?parcelas:1,base=Math.floor((calc.aberto/qtd)*100)/100;let restante=Math.round(calc.aberto*100)/100;const venc=document.getElementById('vVencimento').value;const ps=[];for(let i=1;i<=qtd;i++){let valor=i===qtd?restante:base;restante=Math.round((restante-valor)*100)/100;let data=null;if(venc){const d=new Date(venc+'T12:00:00');d.setMonth(d.getMonth()+i-1);data=d.toISOString().slice(0,10)}ps.push({user_id:user.id,venda_id:venda.id,cliente_id,numero_parcela:i,valor,vencimento:data,pago:false,forma_pagamento:forma})}const pr=await sb.from('parcelas_receber').insert(ps);if(pr.error)alert('Venda salva, mas não foi possível criar as parcelas: '+pr.error.message)}
   closeModal();await carregar();ativarAba('vendas');alert('✅ Venda registrada com sucesso e estoque atualizado.');
 }
-function verVenda(id){const v=vendas.find(x=>x.id===id);if(!v)return;const its=itensVenda.filter(i=>i.venda_id===id),pars=parcelasReceber.filter(p=>p.venda_id===id).sort((a,b)=>num(a.numero_parcela)-num(b.numero_parcela));const itensHtml=its.length?its.map(i=>{const p=produtos.find(x=>x.id===i.produto_id);return `<div class="history-item"><div><b>${esc(p?.nome||'Produto')}</b><small>${num(i.quantidade)} x ${money(i.preco_unitario)}</small></div><b>${money(i.total??i.subtotal)}</b></div>`}).join(''):'<p class="muted">Itens não encontrados.</p>';const parHtml=pars.length?`<h3>💳 Parcelas</h3><div class="history-list">${pars.map(p=>`<div class="history-item"><div><b>Parcela ${num(p.numero_parcela)}</b><small>${p.vencimento?'Vence em '+formatarData(p.vencimento):'Sem vencimento'} • ${p.pago?'Pago':'Pendente'}</small></div><b>${money(p.valor)}</b></div>`).join('')}</div>`:'';openModal(`<h2>🧾 Venda ${v.numero?'#'+esc(v.numero):''}</h2><p><b>Cliente:</b> ${esc(clienteNome(v.cliente_id))}<br><b>Data:</b> ${formatarDataHora(v.data_venda||v.created_at)}<br><b>Pagamento:</b> ${esc(v.forma_pagamento||'Não informado')}</p><h3>Produtos</h3><div class="history-list">${itensHtml}</div><div class="cart-summary"><div><small>Total</small><b>${money(v.total)}</b></div><div><small>Pago</small><b>${money(vendaPago(v))}</b></div><div><small>Em aberto</small><b>${money(vendaAberto(v))}</b></div><div><small>Status</small><b>${vendaAberto(v)>0.005?'Em aberto':'Pago'}</b></div></div>${parHtml}<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="primary" onclick="closeModal()">Fechar</button></div>`)}
+
+async function excluirVenda(id){
+  const v=vendas.find(x=>x.id===id);if(!v)return;
+  const its=itensVenda.filter(i=>i.venda_id===id);
+  const numero=v.numero?'#'+v.numero:'';
+  const ok=confirm(`Excluir a venda ${numero}?\n\nO estoque dos produtos desta venda será devolvido automaticamente. Esta ação não pode ser desfeita.`);
+  if(!ok)return;
+
+  const restaurados=[];
+  for(const it of its){
+    const p=produtos.find(x=>x.id===it.produto_id);
+    if(!p)continue;
+    const estoqueAnterior=num(p.estoque),estoqueNovo=estoqueAnterior+num(it.quantidade);
+    const ur=await sb.from('produtos').update({estoque:estoqueNovo,updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);
+    if(ur.error){
+      for(const r of restaurados){await sb.from('produtos').update({estoque:r.estoqueAnterior,updated_at:new Date().toISOString()}).eq('id',r.id).eq('user_id',user.id)}
+      return alert('Não foi possível devolver o estoque. A venda não foi excluída: '+ur.error.message);
+    }
+    restaurados.push({id:p.id,estoqueAnterior});
+  }
+
+  const dr=await sb.from('vendas').delete().eq('id',id).eq('user_id',user.id);
+  if(dr.error){
+    for(const r of restaurados){await sb.from('produtos').update({estoque:r.estoqueAnterior,updated_at:new Date().toISOString()}).eq('id',r.id).eq('user_id',user.id)}
+    return alert('Não foi possível excluir a venda: '+dr.error.message);
+  }
+
+  await sb.from('movimentacoes_estoque').delete().eq('referencia_id',id).eq('user_id',user.id);
+  await carregar();ativarAba('vendas');
+  alert('✅ Venda excluída e estoque devolvido com sucesso.');
+}
+
+function verVenda(id){const v=vendas.find(x=>x.id===id);if(!v)return;const its=itensVenda.filter(i=>i.venda_id===id),pars=parcelasReceber.filter(p=>p.venda_id===id).sort((a,b)=>num(a.numero_parcela)-num(b.numero_parcela));const itensHtml=its.length?its.map(i=>{const p=produtos.find(x=>x.id===i.produto_id);return `<div class="history-item"><div><b>${esc(p?.nome||'Produto')}</b><small>${num(i.quantidade)} x ${money(i.preco_unitario)}</small></div><b>${money(i.total??i.subtotal)}</b></div>`}).join(''):'<p class="muted">Itens não encontrados.</p>';const parHtml=pars.length?`<h3>💳 Parcelas</h3><div class="history-list">${pars.map(p=>`<div class="history-item"><div><b>Parcela ${num(p.numero_parcela)}</b><small>${p.vencimento?'Vence em '+formatarData(p.vencimento):'Sem vencimento'} • ${p.pago?'Pago':'Pendente'}</small></div><b>${money(p.valor)}</b></div>`).join('')}</div>`:'';openModal(`<h2>🧾 Venda ${v.numero?'#'+esc(v.numero):''}</h2><p><b>Cliente:</b> ${esc(clienteNome(v.cliente_id))}<br><b>Data:</b> ${formatarDataHora(v.data_venda||v.created_at)}<br><b>Pagamento:</b> ${esc(v.forma_pagamento||'Não informado')}</p><h3>Produtos</h3><div class="history-list">${itensHtml}</div><div class="cart-summary"><div><small>Total</small><b>${money(v.total)}</b></div><div><small>Pago</small><b>${money(vendaPago(v))}</b></div><div><small>Em aberto</small><b>${money(vendaAberto(v))}</b></div><div><small>Status</small><b>${vendaAberto(v)>0.005?'Em aberto':'Pago'}</b></div></div>${parHtml}<div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="danger" onclick="closeModal();excluirVenda('${v.id}')">🗑️ Excluir venda</button><button class="primary" onclick="closeModal()">Fechar</button></div>`)}
 
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>ativarAba(b.dataset.v))
 ;
