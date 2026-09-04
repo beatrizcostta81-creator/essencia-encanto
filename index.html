@@ -290,7 +290,7 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
   </div>
 </section>
 <section id="financeiro" class="view">
-  <div class="top"><div><h2>💳 Financeiro</h2><p class="muted">Controle contas a pagar, valores a receber e acompanhe o resultado mensal.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="soft" onclick="gerarRelatorioMensal()">📄 Relatório mensal</button><button class="primary" onclick="novaDespesa()">+ Nova conta a pagar</button></div></div>
+  <div class="top"><div><h2>💳 Financeiro</h2><p class="muted">Controle contas a pagar, valores a receber e acompanhe o resultado mensal.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="soft" onclick="gerarRelatorioMensal()">📄 Relatório mensal</button><button class="soft" onclick="abrirRelatorioPeriodo()">📅 Relatório por período</button><button class="primary" onclick="novaDespesa()">+ Nova conta a pagar</button></div></div>
   <div class="finance-toolbar panel">
     <div><label>Mês do relatório</label><input id="finMes" type="month" onchange="renderFinanceiro()"></div>
     <div><label>Buscar</label><input id="finBusca" placeholder="🔎 Descrição, cliente ou categoria" oninput="renderFinanceiro()"></div>
@@ -773,6 +773,84 @@ function renderFinanceiro(){
   let rl=[...parcelasReceber].filter(p=>{const pago=finParcelaPaga(p),over=finVencido(p.vencimento,pago);if(fRec==='pago'&&!pago)return false;if(fRec==='pendente'&&(pago||over))return false;if(fRec==='vencido'&&!over)return false;if(busca&&!finTexto([finClienteNome(p.cliente_id),p.observacoes,p.forma_pagamento].join(' ')).includes(busca))return false;return true}).sort((a,b)=>String(a.vencimento||'9999').localeCompare(String(b.vencimento||'9999')));
   const lr=document.getElementById('listaReceber');
   lr.innerHTML=rl.length?rl.map(p=>{const pago=finParcelaPaga(p),over=finVencido(p.vencimento,pago);const badge=pago?'<span class="fin-badge">Recebido</span>':over?'<span class="fin-badge overdue">Vencido</span>':'<span class="fin-badge pending">Pendente</span>';return `<div class="finance-item"><div><h4>${esc(finClienteNome(p.cliente_id))}</h4><div class="finance-meta">Parcela ${num(p.numero_parcela)||1}${p.vencimento?' • Vence em '+formatarData(p.vencimento):' • Sem vencimento'}${p.forma_pagamento?' • '+esc(p.forma_pagamento):''}</div></div><div class="finance-value">${badge}<b>${money(p.valor)}</b><div class="finance-actions">${!pago?`<button class="success" onclick="receberParcela('${p.id}')">✓ Receber</button>`:''}${p.venda_id?`<button class="soft" onclick="ativarAba('vendas');setTimeout(()=>verVenda('${p.venda_id}'),80)">🧾 Venda</button>`:''}</div></div></div>`}).join(''):'<div class="fin-empty">Nenhuma conta a receber.</div>';
+}
+
+
+function abrirRelatorioPeriodo(){
+  const hoje=new Date();
+  const fim=hoje.toISOString().slice(0,10);
+  const inicio=new Date(hoje.getFullYear(),hoje.getMonth(),1).toISOString().slice(0,10);
+  openModal(`<h2>📅 Relatório por período</h2>
+    <p class="muted">Escolha qualquer intervalo de datas para analisar sua loja.</p>
+    <div class="form-grid">
+      <div><label>Data inicial</label><input id="rpInicio" type="date" value="${inicio}"></div>
+      <div><label>Data final</label><input id="rpFim" type="date" value="${fim}"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px">
+      <button class="soft" onclick="closeModal()">Cancelar</button>
+      <button class="primary" onclick="gerarRelatorioPeriodo()">📄 Gerar relatório</button>
+    </div>`);
+}
+function rpDataISO(v){
+  if(!v)return '';
+  if(v instanceof Date)return v.toISOString().slice(0,10);
+  return String(v).slice(0,10);
+}
+function rpNoPeriodo(v,inicio,fim){
+  const d=rpDataISO(v);return !!d && d>=inicio && d<=fim;
+}
+function gerarRelatorioPeriodo(){
+  const inicio=document.getElementById('rpInicio')?.value||'';
+  const fim=document.getElementById('rpFim')?.value||'';
+  if(!inicio||!fim)return alert('Escolha a data inicial e a data final.');
+  if(inicio>fim)return alert('A data inicial não pode ser maior que a data final.');
+
+  const vendasPeriodo=vendas.filter(v=>rpNoPeriodo(v.data_venda||v.created_at,inicio,fim));
+  const despesasPeriodo=despesas.filter(d=>rpNoPeriodo(finDataDespesa(d),inicio,fim));
+  const parcelasPeriodo=parcelasReceber.filter(p=>rpNoPeriodo(finDataParcela(p),inicio,fim));
+  const fat=vendasPeriodo.reduce((s,v)=>s+num(v.total),0);
+  const recebido=vendasPeriodo.reduce((s,v)=>s+num(v.valor_pago),0);
+  const totalDes=despesasPeriodo.reduce((s,d)=>s+num(d.valor),0);
+  const aReceber=parcelasPeriodo.filter(p=>!finParcelaPaga(p)).reduce((s,p)=>s+num(p.valor),0);
+  const vencido=parcelasPeriodo.filter(p=>finVencido(p.vencimento,finParcelaPaga(p))).reduce((s,p)=>s+num(p.valor),0);
+  const idsVendas=new Set(vendasPeriodo.map(v=>v.id));
+  const itensPeriodo=itensVenda.filter(i=>idsVendas.has(i.venda_id));
+  const custo=itensPeriodo.reduce((s,i)=>s+(num(i.preco_custo)*num(i.quantidade)),0);
+  const lucro=fat-custo;
+  const resultado=fat-totalDes;
+
+  const rankingProdutos={};
+  itensPeriodo.forEach(i=>{const p=produtos.find(x=>x.id===i.produto_id);const nome=p?.nome||i.produto_nome||'Produto';if(!rankingProdutos[nome])rankingProdutos[nome]={qtd:0,total:0};rankingProdutos[nome].qtd+=num(i.quantidade);rankingProdutos[nome].total+=num(i.subtotal)||num(i.preco_unitario)*num(i.quantidade)});
+  const topProdutos=Object.entries(rankingProdutos).map(([nome,x])=>({nome,...x})).sort((a,b)=>b.qtd-a.qtd).slice(0,10);
+
+  const rankingClientes={};
+  vendasPeriodo.forEach(v=>{const nome=nomeClienteVenda(v);if(!rankingClientes[nome])rankingClientes[nome]={qtd:0,total:0};rankingClientes[nome].qtd++;rankingClientes[nome].total+=num(v.total)});
+  const topClientes=Object.entries(rankingClientes).map(([nome,x])=>({nome,...x})).sort((a,b)=>b.total-a.total).slice(0,10);
+
+  const nome=configLoja?.nome_loja||'Essência & Encanto';
+  const logo=configLoja?.logo_url||'';
+  const instagram=configLoja?.instagram||'';
+  const whatsapp=configLoja?.whatsapp||'';
+  const endereco=configLoja?.endereco||'';
+  const fmt=d=>{const [a,m,di]=String(d).split('-');return `${di}/${m}/${a}`};
+  const tituloPeriodo=`${fmt(inicio)} a ${fmt(fim)}`;
+  const vendasRows=vendasPeriodo.length?vendasPeriodo.slice().sort((a,b)=>rpDataISO(a.data_venda||a.created_at).localeCompare(rpDataISO(b.data_venda||b.created_at))).map(v=>`<tr><td>${formatDataCurta(dataVenda(v))}</td><td>${esc(nomeClienteVenda(v))}</td><td>${esc(v.forma_pagamento||'—')}</td><td style="text-align:right">${money(v.total)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhuma venda neste período.</td></tr>';
+  const despRows=despesasPeriodo.length?despesasPeriodo.slice().sort((a,b)=>rpDataISO(finDataDespesa(a)).localeCompare(rpDataISO(finDataDespesa(b)))).map(d=>`<tr><td>${finDataDespesa(d)?formatarData(finDataDespesa(d)):'—'}</td><td>${esc(d.descricao||'Conta')}</td><td>${esc(d.categoria||'—')}</td><td style="text-align:right">${money(d.valor)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhuma despesa neste período.</td></tr>';
+  const prodRows=topProdutos.length?topProdutos.map((x,n)=>`<tr><td>${n+1}º</td><td>${esc(x.nome)}</td><td style="text-align:center">${x.qtd}</td><td style="text-align:right">${money(x.total)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Sem dados de produtos vendidos.</td></tr>';
+  const cliRows=topClientes.length?topClientes.map((x,n)=>`<tr><td>${n+1}º</td><td>${esc(x.nome)}</td><td style="text-align:center">${x.qtd}</td><td style="text-align:right">${money(x.total)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Sem dados de clientes.</td></tr>';
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  closeModal();
+  const w=window.open('','_blank');
+  if(!w)return alert('O navegador bloqueou a janela do relatório. Libere pop-ups e tente novamente.');
+  w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório por período - ${esc(nome)}</title><style>
+  *{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#2d2830;margin:0;background:#f4f4f4}.page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:16mm}.head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #ddd;padding-bottom:14px;margin-bottom:18px}.logo{width:72px;height:72px;object-fit:contain;border-radius:14px}.brand h1{margin:0;font-size:24px}.periodo{text-transform:capitalize;font-weight:700;font-size:18px;margin-top:6px}.contact{font-size:11px;color:#666;margin-top:5px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.kpi{border:1px solid #ddd;border-radius:10px;padding:12px}.kpi span{display:block;color:#666;font-size:12px}.kpi b{display:block;font-size:19px;margin-top:5px}.section{margin-top:22px}.section h2{font-size:16px;border-bottom:1px solid #ddd;padding-bottom:7px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid #e6e6e6;text-align:left}th{background:#f7f7f7}.empty{text-align:center;color:#777;padding:16px}.foot{margin-top:28px;padding-top:10px;border-top:1px solid #ddd;color:#777;font-size:11px}.actions{position:fixed;right:18px;bottom:18px;display:flex;gap:8px}.actions button{border:0;border-radius:9px;padding:11px 14px;cursor:pointer;font-weight:700}.print{background:#222;color:#fff}.close{background:#ddd}@media print{body{background:#fff}.page{width:auto;min-height:auto;margin:0;padding:8mm}.actions{display:none}@page{size:A4;margin:0}}</style></head><body><div class="page"><div class="head">${logo?`<img class="logo" src="${esc(logo)}" alt="Logo">`:''}<div class="brand"><h1>${esc(nome)}</h1><div class="periodo">Relatório por período · ${tituloPeriodo}</div><div class="contact">${[instagram,whatsapp,endereco].filter(Boolean).map(esc).join(' · ')}</div></div></div>
+  <div class="grid"><div class="kpi"><span>Faturamento</span><b>${money(fat)}</b></div><div class="kpi"><span>Lucro estimado</span><b>${money(lucro)}</b></div><div class="kpi"><span>Despesas</span><b>${money(totalDes)}</b></div><div class="kpi"><span>Resultado</span><b>${money(resultado)}</b></div><div class="kpi"><span>A receber</span><b>${money(aReceber)}</b></div><div class="kpi"><span>Vencido</span><b>${money(vencido)}</b></div><div class="kpi"><span>Recebido nas vendas</span><b>${money(recebido)}</b></div><div class="kpi"><span>Vendas realizadas</span><b>${vendasPeriodo.length}</b></div><div class="kpi"><span>Custo dos produtos vendidos</span><b>${money(custo)}</b></div></div>
+  <div class="section"><h2>🧾 Vendas do período</h2><table><thead><tr><th>Data</th><th>Cliente</th><th>Pagamento</th><th style="text-align:right">Total</th></tr></thead><tbody>${vendasRows}</tbody></table></div>
+  <div class="section"><h2>🏆 Produtos mais vendidos</h2><table><thead><tr><th>#</th><th>Produto</th><th style="text-align:center">Qtd.</th><th style="text-align:right">Total</th></tr></thead><tbody>${prodRows}</tbody></table></div>
+  <div class="section"><h2>👑 Clientes que mais compraram</h2><table><thead><tr><th>#</th><th>Cliente</th><th style="text-align:center">Compras</th><th style="text-align:right">Total</th></tr></thead><tbody>${cliRows}</tbody></table></div>
+  <div class="section"><h2>💸 Contas a pagar do período</h2><table><thead><tr><th>Vencimento</th><th>Descrição</th><th>Categoria</th><th style="text-align:right">Valor</th></tr></thead><tbody>${despRows}</tbody></table></div>
+  <div class="foot">Relatório gerado em ${hoje}. Período analisado: ${tituloPeriodo}. Os valores refletem os registros cadastrados no sistema.</div></div><div class="actions"><button class="close" onclick="window.close()">Fechar</button><button class="print" onclick="window.print()">🖨️ Imprimir / Salvar em PDF</button></div></body></html>`);
+  w.document.close();
 }
 
 function gerarRelatorioMensal(){
