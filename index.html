@@ -106,11 +106,22 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .dashboard-logo,.dashboard-logo-placeholder{width:76px;height:76px;border-radius:20px;border:1px solid var(--borda);background:var(--cor-card);object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.08)}
 .dashboard-logo{display:none}.dashboard-logo-placeholder{display:grid;place-items:center;font-size:34px}
 .dashboard-hero h2{margin:0 0 5px;font-size:25px}.dashboard-hero p{margin:0}.dashboard-date{font-size:12px;font-weight:700;background:var(--cor-card);border:1px solid var(--borda);border-radius:999px;padding:8px 11px;white-space:nowrap;z-index:1}
-.dashboard-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.dashboard-kpi{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:15px;box-shadow:var(--sombra)}.dashboard-kpi span{display:block;font-size:11px;color:#88766f;margin-bottom:7px}.dashboard-kpi b{display:block;font-size:20px;color:var(--cor-principal)}.dashboard-kpi small{display:block;margin-top:5px;color:#88766f;font-size:10px}
+.dashboard-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.dashboard-kpi{background:var(--cor-card);border:1px solid var(--borda);border-radius:var(--raio);padding:15px;box-shadow:var(--sombra)}.dashboard-kpi span{display:block;font-size:11px;color:#88766f;margin-bottom:7px}.dashboard-kpi b{display:block;font-size:20px;color:var(--cor-principal)}.dashboard-kpi small{display:block;margin-top:5px;color:#88766f;font-size:10px}
 .quick-actions{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.quick-actions button{padding:12px 16px}
 .dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.dashboard-stack{display:flex;flex-direction:column;gap:14px}.dash-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.dash-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px;border:1px solid var(--borda);border-radius:11px;background:var(--cor-fundo)}.dash-row-main{min-width:0}.dash-row-title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dash-row-meta{font-size:11px;color:#88766f;margin-top:3px}.dash-value{font-weight:800;color:var(--cor-principal);white-space:nowrap}.dash-empty{text-align:center;padding:18px 8px;color:#88766f;font-size:13px}
 .logo-upload-box{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;padding:12px;border:1px dashed var(--borda);border-radius:14px;background:var(--cor-fundo);margin:6px 0 18px}.logo-preview,.logo-preview-placeholder{width:120px;height:120px;border-radius:22px;border:1px solid var(--borda);background:var(--cor-card)}.logo-preview{object-fit:cover;display:none}.logo-preview-placeholder{display:grid;place-items:center;font-size:40px}.logo-help{font-size:11px;color:#88766f;margin-top:6px}.logo-status{font-size:12px;margin-top:7px;color:var(--cor-principal);font-weight:700}
 .login-logo{width:84px;height:84px;border-radius:22px;object-fit:cover;border:1px solid var(--borda);display:none;margin:0 auto 10px}
+
+/* Dashboard avançado */
+.chart-wrap{height:230px;display:flex;align-items:flex-end;gap:9px;padding:14px 8px 4px;border-top:1px solid var(--borda);margin-top:12px;overflow-x:auto}
+.chart-col{min-width:38px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
+.chart-value{font-size:10px;font-weight:800;color:var(--cor-texto);white-space:nowrap}
+.chart-bar-box{height:160px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.chart-bar{width:min(28px,75%);min-height:3px;background:linear-gradient(180deg,var(--cor-principal),var(--cor-secundaria));border-radius:9px 9px 3px 3px;box-shadow:0 5px 12px rgba(0,0,0,.08)}
+.chart-label{font-size:10px;color:#88766f;white-space:nowrap}
+.rank-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}.rank-row{display:grid;grid-template-columns:28px 1fr auto;gap:9px;align-items:center;padding:10px;border:1px solid var(--borda);border-radius:11px;background:var(--cor-fundo)}.rank-pos{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--cor-secundaria);font-weight:900;color:var(--cor-principal)}.rank-name{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rank-meta{font-size:10px;color:#88766f;margin-top:2px}.rank-val{font-weight:900;color:var(--cor-principal);white-space:nowrap}
+.receivable-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.mini-kpi{padding:11px;border:1px solid var(--borda);border-radius:11px;background:var(--cor-fundo)}.mini-kpi span{display:block;font-size:10px;color:#88766f}.mini-kpi b{display:block;margin-top:5px;font-size:15px;color:var(--cor-principal)}
+@media(max-width:700px){.dashboard-kpis{grid-template-columns:1fr 1fr}.receivable-summary{grid-template-columns:1fr}.chart-wrap{height:210px}.chart-bar-box{height:140px}}
 @media(max-width:900px){.dashboard-kpis{grid-template-columns:repeat(2,1fr)}.dashboard-grid{grid-template-columns:1fr}.dashboard-hero{grid-template-columns:auto 1fr}.dashboard-date{grid-column:1/-1;justify-self:start}}
 @media(max-width:600px){.dashboard-hero{padding:16px;gap:12px}.dashboard-logo,.dashboard-logo-placeholder{width:58px;height:58px;border-radius:16px}.dashboard-hero h2{font-size:20px}.dashboard-kpis{grid-template-columns:1fr 1fr}.dashboard-kpi:last-child{grid-column:1/-1}.quick-actions{display:grid;grid-template-columns:1fr 1fr}.quick-actions button:first-child{grid-column:1/-1}.logo-upload-box{grid-template-columns:90px 1fr}.logo-preview,.logo-preview-placeholder{width:90px;height:90px;border-radius:18px}}
 
@@ -132,6 +143,7 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div class="dashboard-kpi"><span>Resultado do mês</span><b id="dashResultadoMes">R$ 0,00</b><small>Faturamento menos despesas</small></div>
     <div class="dashboard-kpi"><span>Produtos</span><b id="qProd">0</b><small id="dashEstoqueBaixo">0 com estoque baixo</small></div>
     <div class="dashboard-kpi"><span>Clientes</span><b id="qCli">0</b><small id="dashClientesNovos">0 recentes</small></div>
+    <div class="dashboard-kpi"><span>Lucro estimado do mês</span><b id="dashLucroMes">R$ 0,00</b><small>Vendas menos custo dos produtos</small></div>
   </div>
   <div class="quick-actions">
     <button class="primary" onclick="ativarAba('vendas');novaVenda()">🧾 Nova venda</button>
@@ -146,6 +158,16 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div class="dashboard-stack">
       <div class="panel"><div class="top" style="margin-bottom:0"><div><b>👥 Clientes recentes</b><p class="muted" style="margin:4px 0 0">Últimos clientes cadastrados.</p></div><button class="soft" onclick="ativarAba('clientes')">Ver clientes</button></div><div id="dashClientesRecentes" class="dash-list"></div></div>
       <div class="panel"><b>🔗 Status do sistema</b><p id="status" class="muted">Conectando...</p></div>
+    </div>
+  </div>
+  <div class="dashboard-grid" style="margin-top:14px">
+    <div class="dashboard-stack">
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>📈 Vendas dos últimos 7 dias</b><p class="muted" style="margin:4px 0 0">Faturamento diário para acompanhar o ritmo das vendas.</p></div></div><div id="dashGraficoVendas" class="chart-wrap"></div></div>
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>🏆 Produtos mais vendidos</b><p class="muted" style="margin:4px 0 0">Ranking por quantidade vendida.</p></div></div><div id="dashTopProdutos" class="rank-list"></div></div>
+    </div>
+    <div class="dashboard-stack">
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>👑 Clientes que mais compram</b><p class="muted" style="margin:4px 0 0">Ranking pelo valor total comprado.</p></div></div><div id="dashTopClientes" class="rank-list"></div></div>
+      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>💳 Contas a receber</b><p class="muted" style="margin:4px 0 0">Resumo das parcelas e valores pendentes.</p></div><button class="soft" onclick="ativarAba('financeiro')">Ver financeiro</button></div><div id="dashReceberResumo" class="receivable-summary"></div><div id="dashProximosRecebimentos" class="dash-list"></div></div>
     </div>
   </div>
   <span id="qVen" style="display:none">0</span>
@@ -380,6 +402,27 @@ function renderDashboard(){
   const lv=document.getElementById('dashUltimasVendas');if(lv){const list=[...vendas].sort((a,b)=>(dataVenda(b)?.getTime()||0)-(dataVenda(a)?.getTime()||0)).slice(0,5);lv.innerHTML=list.length?list.map(v=>`<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(nomeClienteVenda(v))}</div><div class="dash-row-meta">${formatDataCurta(dataVenda(v))} · ${esc(v.forma_pagamento||'Pagamento não informado')}</div></div><div class="dash-value">${money(v.total)}</div></div>`).join(''):'<div class="dash-empty">Nenhuma venda registrada ainda.</div>'}
   const lp=document.getElementById('dashProdutosBaixos');if(lp){const list=[...baixos].sort((a,b)=>num(a.estoque)-num(b.estoque)).slice(0,5);lp.innerHTML=list.length?list.map(p=>`<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(p.nome||'Produto')}</div><div class="dash-row-meta">Mínimo: ${num(p.estoque_minimo)} ${esc(p.unidade||'un')}</div></div><div class="dash-value">${num(p.estoque)} ${esc(p.unidade||'un')}</div></div>`).join(''):'<div class="dash-empty">Tudo certo com o estoque. ✨</div>'}
   const lc=document.getElementById('dashClientesRecentes');if(lc){const list=[...clientes].sort((a,b)=>(dataCliente(b)?.getTime()||0)-(dataCliente(a)?.getTime()||0)).slice(0,5);lc.innerHTML=list.length?list.map(c=>`<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(c.nome||'Cliente')}</div><div class="dash-row-meta">${esc(c.cidade||c.whatsapp||'Cliente cadastrado')}</div></div><div class="dash-row-meta">${formatDataCurta(dataCliente(c))}</div></div>`).join(''):'<div class="dash-empty">Nenhum cliente cadastrado ainda.</div>'}
+
+  // Lucro estimado do mês usando o custo gravado nos itens da venda
+  const idsMes=new Set(vendasMes.map(v=>v.id));
+  const lucroMes=itensVenda.filter(i=>idsMes.has(i.venda_id)).reduce((s,i)=>s+(num(i.preco_unitario)-num(i.preco_custo))*num(i.quantidade),0)-num(vendasMes.reduce((s,v)=>s+num(v.desconto),0));
+  set('dashLucroMes',money(lucroMes));
+
+  // Gráfico dos últimos 7 dias
+  const graf=document.getElementById('dashGraficoVendas');if(graf){const dias=[];for(let n=6;n>=0;n--){const d=new Date(agora);d.setHours(0,0,0,0);d.setDate(d.getDate()-n);const fim=new Date(d);fim.setDate(fim.getDate()+1);const total=vendas.filter(v=>{const dv=dataVenda(v);return dv&&dv>=d&&dv<fim}).reduce((s,v)=>s+num(v.total),0);dias.push({d,total})}const max=Math.max(...dias.map(x=>x.total),1);graf.innerHTML=dias.map(x=>`<div class="chart-col"><div class="chart-value">${x.total?money(x.total).replace('R$ ','R$ '):''}</div><div class="chart-bar-box"><div class="chart-bar" style="height:${Math.max(3,(x.total/max)*100)}%"></div></div><div class="chart-label">${x.d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}<br>${formatDataCurta(x.d)}</div></div>`).join('')}
+
+  // Produtos mais vendidos
+  const prodAgg={};for(const i of itensVenda){if(!i.produto_id)continue;const a=prodAgg[i.produto_id]||(prodAgg[i.produto_id]={qtd:0,total:0});a.qtd+=num(i.quantidade);a.total+=num(i.subtotal??i.total??(num(i.quantidade)*num(i.preco_unitario)))}
+  const topP=document.getElementById('dashTopProdutos');if(topP){const arr=Object.entries(prodAgg).map(([id,a])=>({id,...a,nome:produtos.find(p=>p.id===id)?.nome||'Produto'})).sort((a,b)=>b.qtd-a.qtd).slice(0,5);topP.innerHTML=arr.length?arr.map((x,k)=>`<div class="rank-row"><div class="rank-pos">${k+1}</div><div><div class="rank-name">${esc(x.nome)}</div><div class="rank-meta">${x.qtd} ${x.qtd===1?'unidade':'unidades'} vendidas</div></div><div class="rank-val">${money(x.total)}</div></div>`).join(''):'<div class="dash-empty">O ranking aparecerá após suas primeiras vendas.</div>'}
+
+  // Clientes que mais compram
+  const cliAgg={};for(const v of vendas){if(!v.cliente_id)continue;const a=cliAgg[v.cliente_id]||(cliAgg[v.cliente_id]={qtd:0,total:0});a.qtd++;a.total+=num(v.total)}
+  const topC=document.getElementById('dashTopClientes');if(topC){const arr=Object.entries(cliAgg).map(([id,a])=>({id,...a,nome:clientes.find(c=>c.id===id)?.nome||'Cliente'})).sort((a,b)=>b.total-a.total).slice(0,5);topC.innerHTML=arr.length?arr.map((x,k)=>`<div class="rank-row"><div class="rank-pos">${k+1}</div><div><div class="rank-name">${esc(x.nome)}</div><div class="rank-meta">${x.qtd} ${x.qtd===1?'compra':'compras'}</div></div><div class="rank-val">${money(x.total)}</div></div>`).join(''):'<div class="dash-empty">O ranking aparecerá quando houver vendas vinculadas a clientes.</div>'}
+
+  // Contas a receber / parcelas
+  const pendentes=parcelasReceber.filter(p=>!p.pago);const hoje=new Date();hoje.setHours(0,0,0,0);const vencidas=pendentes.filter(p=>p.vencimento&&dataObj(p.vencimento+'T12:00:00')<hoje);const totalPend=pendentes.reduce((s,p)=>s+num(p.valor),0);const totalVenc=vencidas.reduce((s,p)=>s+num(p.valor),0);const rr=document.getElementById('dashReceberResumo');if(rr)rr.innerHTML=`<div class="mini-kpi"><span>Pendente</span><b>${money(totalPend)}</b></div><div class="mini-kpi"><span>Parcelas abertas</span><b>${pendentes.length}</b></div><div class="mini-kpi"><span>Vencido</span><b>${money(totalVenc)}</b></div>`;
+  const prox=document.getElementById('dashProximosRecebimentos');if(prox){const arr=[...pendentes].sort((a,b)=>String(a.vencimento||'9999').localeCompare(String(b.vencimento||'9999'))).slice(0,4);prox.innerHTML=arr.length?arr.map(p=>{const c=clientes.find(x=>x.id===p.cliente_id);return `<div class="dash-row"><div class="dash-row-main"><div class="dash-row-title">${esc(c?.nome||'Cliente')}</div><div class="dash-row-meta">Parcela ${num(p.numero_parcela)} · ${p.vencimento?'vence '+formatarData(p.vencimento):'sem vencimento'}</div></div><div class="dash-value">${money(p.valor)}</div></div>`}).join(''):'<div class="dash-empty">Nenhuma parcela pendente. ✨</div>'}
+
   aplicarLogoVisual(configLoja?.logo_url||'');
 }
 
