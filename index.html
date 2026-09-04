@@ -227,7 +227,7 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </section>
 
 <section id="financeiro" class="view">
-  <div class="top"><div><h2>💳 Financeiro</h2><p class="muted">Controle contas a pagar, valores a receber e acompanhe o resultado mensal.</p></div><button class="primary" onclick="novaDespesa()">+ Nova conta a pagar</button></div>
+  <div class="top"><div><h2>💳 Financeiro</h2><p class="muted">Controle contas a pagar, valores a receber e acompanhe o resultado mensal.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="soft" onclick="gerarRelatorioMensal()">📄 Relatório mensal</button><button class="primary" onclick="novaDespesa()">+ Nova conta a pagar</button></div></div>
   <div class="finance-toolbar panel">
     <div><label>Mês do relatório</label><input id="finMes" type="month" onchange="renderFinanceiro()"></div>
     <div><label>Buscar</label><input id="finBusca" placeholder="🔎 Descrição, cliente ou categoria" oninput="renderFinanceiro()"></div>
@@ -564,6 +564,57 @@ function renderFinanceiro(){
   const lr=document.getElementById('listaReceber');
   lr.innerHTML=rl.length?rl.map(p=>{const pago=finParcelaPaga(p),over=finVencido(p.vencimento,pago);const badge=pago?'<span class="fin-badge">Recebido</span>':over?'<span class="fin-badge overdue">Vencido</span>':'<span class="fin-badge pending">Pendente</span>';return `<div class="finance-item"><div><h4>${esc(finClienteNome(p.cliente_id))}</h4><div class="finance-meta">Parcela ${num(p.numero_parcela)||1}${p.vencimento?' • Vence em '+formatarData(p.vencimento):' • Sem vencimento'}${p.forma_pagamento?' • '+esc(p.forma_pagamento):''}</div></div><div class="finance-value">${badge}<b>${money(p.valor)}</b><div class="finance-actions">${!pago?`<button class="success" onclick="receberParcela('${p.id}')">✓ Receber</button>`:''}${p.venda_id?`<button class="soft" onclick="ativarAba('vendas');setTimeout(()=>verVenda('${p.venda_id}'),80)">🧾 Venda</button>`:''}</div></div></div>`}).join(''):'<div class="fin-empty">Nenhuma conta a receber.</div>';
 }
+
+function gerarRelatorioMensal(){
+  const mes=(document.getElementById('finMes')?.value)||finMesAtual();
+  const [ano,mesNum]=mes.split('-').map(Number);
+  const tituloMes=new Date(ano,mesNum-1,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  const vendasMes=vendas.filter(v=>finNoMes(v.data_venda||v.created_at,mes));
+  const despesasMes=despesas.filter(d=>finNoMes(finDataDespesa(d),mes));
+  const parcelasMes=parcelasReceber.filter(p=>finNoMes(finDataParcela(p),mes));
+  const fat=vendasMes.reduce((s,v)=>s+num(v.total),0);
+  const recebido=vendasMes.reduce((s,v)=>s+num(v.valor_pago),0);
+  const totalDes=despesasMes.reduce((s,d)=>s+num(d.valor),0);
+  const aReceber=parcelasMes.filter(p=>!finParcelaPaga(p)).reduce((s,p)=>s+num(p.valor),0);
+  const vencido=parcelasMes.filter(p=>finVencido(p.vencimento,finParcelaPaga(p))).reduce((s,p)=>s+num(p.valor),0);
+  const idsVendas=new Set(vendasMes.map(v=>v.id));
+  const itensMes=itensVenda.filter(i=>idsVendas.has(i.venda_id));
+  const custo=itensMes.reduce((s,i)=>s+(num(i.preco_custo)*num(i.quantidade)),0);
+  const lucro=fat-custo;
+  const resultado=fat-totalDes;
+
+  const rankingProdutos={};
+  itensMes.forEach(i=>{const p=produtos.find(x=>x.id===i.produto_id);const nome=p?.nome||i.produto_nome||'Produto';if(!rankingProdutos[nome])rankingProdutos[nome]={qtd:0,total:0};rankingProdutos[nome].qtd+=num(i.quantidade);rankingProdutos[nome].total+=num(i.subtotal)||num(i.preco_unitario)*num(i.quantidade)});
+  const topProdutos=Object.entries(rankingProdutos).map(([nome,x])=>({nome,...x})).sort((a,b)=>b.qtd-a.qtd).slice(0,5);
+
+  const rankingClientes={};
+  vendasMes.forEach(v=>{const nome=nomeClienteVenda(v);if(!rankingClientes[nome])rankingClientes[nome]={qtd:0,total:0};rankingClientes[nome].qtd++;rankingClientes[nome].total+=num(v.total)});
+  const topClientes=Object.entries(rankingClientes).map(([nome,x])=>({nome,...x})).sort((a,b)=>b.total-a.total).slice(0,5);
+
+  const nome=configLoja?.nome_loja||'Essência & Encanto';
+  const logo=configLoja?.logo_url||'';
+  const instagram=configLoja?.instagram||'';
+  const whatsapp=configLoja?.whatsapp||'';
+  const endereco=configLoja?.endereco||'';
+  const vendasRows=vendasMes.length?vendasMes.slice().sort((a,b)=>(dataVenda(a)?.getTime()||0)-(dataVenda(b)?.getTime()||0)).map(v=>`<tr><td>${formatDataCurta(dataVenda(v))}</td><td>${esc(nomeClienteVenda(v))}</td><td>${esc(v.forma_pagamento||'—')}</td><td style="text-align:right">${money(v.total)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhuma venda neste mês.</td></tr>';
+  const despRows=despesasMes.length?despesasMes.map(d=>`<tr><td>${finDataDespesa(d)?formatarData(finDataDespesa(d)):'—'}</td><td>${esc(d.descricao||'Conta')}</td><td>${esc(d.categoria||'—')}</td><td style="text-align:right">${money(d.valor)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Nenhuma despesa neste mês.</td></tr>';
+  const prodRows=topProdutos.length?topProdutos.map((x,n)=>`<tr><td>${n+1}º</td><td>${esc(x.nome)}</td><td style="text-align:center">${x.qtd}</td><td style="text-align:right">${money(x.total)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Sem dados de produtos vendidos.</td></tr>';
+  const cliRows=topClientes.length?topClientes.map((x,n)=>`<tr><td>${n+1}º</td><td>${esc(x.nome)}</td><td style="text-align:center">${x.qtd}</td><td style="text-align:right">${money(x.total)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">Sem dados de clientes.</td></tr>';
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  const w=window.open('','_blank');
+  if(!w)return alert('O navegador bloqueou a janela do relatório. Libere pop-ups e tente novamente.');
+  w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório mensal - ${esc(nome)}</title><style>
+  *{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#2d2830;margin:0;background:#f4f4f4}.page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:16mm}.head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #ddd;padding-bottom:14px;margin-bottom:18px}.logo{width:72px;height:72px;object-fit:contain;border-radius:14px}.brand h1{margin:0;font-size:24px}.brand p{margin:4px 0;color:#666}.month{text-transform:capitalize;font-weight:700;font-size:18px;margin-top:6px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.kpi{border:1px solid #ddd;border-radius:10px;padding:12px}.kpi span{display:block;color:#666;font-size:12px}.kpi b{display:block;font-size:19px;margin-top:5px}.section{margin-top:22px}.section h2{font-size:16px;border-bottom:1px solid #ddd;padding-bottom:7px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid #e6e6e6;text-align:left}th{background:#f7f7f7}.empty{text-align:center;color:#777;padding:16px}.foot{margin-top:28px;padding-top:10px;border-top:1px solid #ddd;color:#777;font-size:11px}.actions{position:fixed;right:18px;bottom:18px;display:flex;gap:8px}.actions button{border:0;border-radius:9px;padding:11px 14px;cursor:pointer;font-weight:700}.print{background:#222;color:white}.close{background:#ddd}.contact{font-size:11px;color:#666;margin-top:5px}@media print{body{background:white}.page{width:auto;min-height:auto;margin:0;padding:8mm}.actions{display:none}@page{size:A4;margin:0}}
+  </style></head><body><div class="page"><div class="head">${logo?`<img class="logo" src="${esc(logo)}" alt="Logo">`:''}<div class="brand"><h1>${esc(nome)}</h1><div class="month">Relatório mensal · ${tituloMes}</div><div class="contact">${[instagram,whatsapp,endereco].filter(Boolean).map(esc).join(' · ')}</div></div></div>
+  <div class="grid"><div class="kpi"><span>Faturamento</span><b>${money(fat)}</b></div><div class="kpi"><span>Lucro estimado</span><b>${money(lucro)}</b></div><div class="kpi"><span>Despesas</span><b>${money(totalDes)}</b></div><div class="kpi"><span>Resultado</span><b>${money(resultado)}</b></div><div class="kpi"><span>A receber</span><b>${money(aReceber)}</b></div><div class="kpi"><span>Vencido</span><b>${money(vencido)}</b></div><div class="kpi"><span>Recebido nas vendas</span><b>${money(recebido)}</b></div><div class="kpi"><span>Vendas realizadas</span><b>${vendasMes.length}</b></div><div class="kpi"><span>Custo dos produtos vendidos</span><b>${money(custo)}</b></div></div>
+  <div class="section"><h2>🧾 Vendas do período</h2><table><thead><tr><th>Data</th><th>Cliente</th><th>Pagamento</th><th style="text-align:right">Total</th></tr></thead><tbody>${vendasRows}</tbody></table></div>
+  <div class="section"><h2>🏆 Produtos mais vendidos</h2><table><thead><tr><th>#</th><th>Produto</th><th style="text-align:center">Qtd.</th><th style="text-align:right">Total</th></tr></thead><tbody>${prodRows}</tbody></table></div>
+  <div class="section"><h2>👑 Clientes que mais compraram</h2><table><thead><tr><th>#</th><th>Cliente</th><th style="text-align:center">Compras</th><th style="text-align:right">Total</th></tr></thead><tbody>${cliRows}</tbody></table></div>
+  <div class="section"><h2>💸 Contas a pagar do período</h2><table><thead><tr><th>Vencimento</th><th>Descrição</th><th>Categoria</th><th style="text-align:right">Valor</th></tr></thead><tbody>${despRows}</tbody></table></div>
+  <div class="foot">Relatório gerado em ${hoje}. Os valores refletem os registros cadastrados no sistema.</div></div><div class="actions"><button class="close" onclick="window.close()">Fechar</button><button class="print" onclick="window.print()">🖨️ Imprimir / Salvar em PDF</button></div></body></html>`);
+  w.document.close();
+}
+
 function despesaForm(d={}){const editar=!!d.id;const venc=String(d.vencimento||d.data_vencimento||'').slice(0,10),pago=finDespesaPaga(d);return `<h2>${editar?'✏️ Editar conta':'💸 Nova conta a pagar'}</h2><div class="fin-form-grid"><div class="full"><label>Descrição *</label><input id="fdDesc" value="${esc(d.descricao||'')}" placeholder="Ex.: Pedido O Boticário"></div><div><label>Categoria</label><input id="fdCat" value="${esc(d.categoria||'')}" placeholder="Ex.: Mercadoria, embalagem"></div><div><label>Valor *</label><input id="fdValor" type="number" min="0" step="0.01" value="${num(d.valor)||''}"></div><div><label>Vencimento</label><input id="fdVenc" type="date" value="${esc(venc)}"></div><div><label>Forma de pagamento</label><select id="fdForma"><option value="">Não informado</option>${['Pix','Dinheiro','Cartão de crédito','Cartão de débito','Boleto','Transferência'].map(x=>`<option ${d.forma_pagamento===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="full"><label>Observações</label><textarea id="fdObs" placeholder="Informações adicionais">${esc(d.observacoes||'')}</textarea></div><div class="full check-row"><input id="fdPago" type="checkbox" ${pago?'checked':''}><label for="fdPago">Conta já foi paga</label></div></div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarDespesa(${editar?`'${d.id}'`:'null'})">Salvar</button></div>`}
 function novaDespesa(){openModal(despesaForm())}
 function editarDespesa(id){const d=despesas.find(x=>x.id===id);if(d)openModal(despesaForm(d))}
