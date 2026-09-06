@@ -161,12 +161,29 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .notify-section-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:10px 4px 4px}
 @media(max-width:520px){.header-actions #userEmail{display:none}.notify-panel{position:fixed;top:72px;right:10px;left:10px;width:auto;max-height:72vh}}
 
+
+/* Agenda e lembretes */
+.agenda-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.agenda-stat{background:var(--cor-card);border:1px solid var(--borda);border-radius:14px;padding:14px;box-shadow:var(--sombra)}
+.agenda-stat span{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.agenda-stat b{font-size:22px}
+.agenda-filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.agenda-list{display:flex;flex-direction:column;gap:10px}
+.agenda-item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid var(--borda);border-radius:14px;padding:12px;background:var(--cor-card)}
+.agenda-item.done{opacity:.65}.agenda-date{min-width:84px;text-align:center;padding:9px;border-radius:12px;background:var(--cor-secundaria)}
+.agenda-date b{display:block;font-size:18px}.agenda-date small{font-size:11px;color:var(--muted)}
+.agenda-title{font-weight:800}.agenda-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+.agenda-badge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:5px}
+.agenda-badge.high{background:#fde2e2;color:#9b1c1c}.agenda-badge.normal{background:var(--cor-secundaria);color:var(--cor-texto)}.agenda-badge.low{background:#e7f7ec;color:#176b35}
+.agenda-badge.overdue{background:#ffe2e2;color:#a11}.agenda-badge.today{background:#fff0c7;color:#805800}.agenda-badge.upcoming{background:#e8efff;color:#274b9f}.agenda-badge.done{background:#e7f7ec;color:#176b35}
+.agenda-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:700px){.agenda-stats{grid-template-columns:1fr 1fr}.agenda-filters{grid-template-columns:1fr}.agenda-item{grid-template-columns:1fr}.agenda-date{text-align:left}.agenda-actions{justify-content:flex-start}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -314,6 +331,25 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div class="panel"><div class="top" style="margin-bottom:0"><div><b>💸 Contas a pagar</b><p class="muted" style="margin:4px 0 0">Despesas vencidas que ainda não foram pagas.</p></div></div><div id="alertasPagar"></div></div>
   </div>
 </section>
+
+<section id="agenda" class="view">
+  <div class="top"><div><h2>📅 Agenda & Lembretes</h2><p class="muted">Organize cobranças, contas, pedidos, retornos e compromissos da loja.</p></div><button class="primary" onclick="novoLembrete()">+ Novo lembrete</button></div>
+  <div class="agenda-stats">
+    <div class="agenda-stat"><span>Pendentes</span><b id="agPendentes">0</b></div>
+    <div class="agenda-stat"><span>Para hoje</span><b id="agHoje">0</b></div>
+    <div class="agenda-stat"><span>Atrasados</span><b id="agAtrasados">0</b></div>
+    <div class="agenda-stat"><span>Concluídos</span><b id="agConcluidos">0</b></div>
+  </div>
+  <div class="panel">
+    <div class="agenda-filters">
+      <input id="agendaBusca" placeholder="🔎 Buscar lembrete" oninput="renderAgenda()">
+      <select id="agendaTipo" onchange="renderAgenda()"><option value="">Todos os tipos</option><option value="cobranca">Cobrança</option><option value="conta">Conta</option><option value="cliente">Cliente</option><option value="pedido">Pedido</option><option value="compromisso">Compromisso</option><option value="outro">Outro</option></select>
+      <select id="agendaStatus" onchange="renderAgenda()"><option value="pendentes">Pendentes</option><option value="todos">Todos</option><option value="hoje">Hoje</option><option value="atrasados">Atrasados</option><option value="concluidos">Concluídos</option></select>
+    </div>
+    <div id="listaAgenda" class="agenda-list"></div>
+  </div>
+</section>
+
 <section id="financeiro" class="view">
   <div class="top"><div><h2>💳 Financeiro</h2><p class="muted">Controle contas a pagar, valores a receber e acompanhe o resultado mensal.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="soft" onclick="gerarRelatorioMensal()">📄 Relatório mensal</button><button class="soft" onclick="abrirRelatorioPeriodo()">📅 Relatório por período</button><button class="primary" onclick="novaDespesa()">+ Nova conta a pagar</button></div></div>
   <div class="finance-toolbar panel">
@@ -442,9 +478,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[];let carrinhoVenda=[],carrinhoCompra=[];
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','produtos','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[];let carrinhoVenda=[],carrinhoCompra=[];
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','agenda','produtos','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -526,7 +562,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -813,7 +849,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderUsuarios();renderNotificacoes();
+  renderFinanceiro();renderUsuarios();renderAgenda();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
@@ -874,6 +910,19 @@ function notificacoesAutomaticas(){
       if(pct>=100)lista.push({tipo:'auto',icone:'🏆',titulo:'Meta alcançada!',texto:`Faturamento do mês: ${money(fat)}.`,acao:"ativarAba('equipe')",prioridade:3});
     }
   }
+  // Lembretes da agenda: atrasados, hoje e próximos 24h.
+  lembretes.filter(l=>!l.concluido&&l.status!=='concluido'&&l.avisar!==false).forEach(l=>{
+    const dias=alertaDiasAte(l.data_lembrete);if(dias===null||dias>1)return;
+    const hora=l.hora_lembrete?String(l.hora_lembrete).slice(0,5):'';
+    lista.push({
+      tipo:'auto',
+      icone:dias<0?'⏰':'📅',
+      titulo:dias<0?'Lembrete atrasado':dias===0?'Lembrete para hoje':'Lembrete para amanhã',
+      texto:`${l.titulo||'Lembrete'}${hora?' • '+hora:''}`,
+      acao:"ativarAba('agenda')",
+      prioridade:dias<0?0:2
+    });
+  });
   return lista.sort((a,b)=>a.prioridade-b.prioridade).slice(0,30);
 }
 function toggleNotificacoes(ev){if(ev)ev.stopPropagation();const p=document.getElementById('notifyPanel');if(!p)return;p.classList.toggle('open');if(p.classList.contains('open'))renderNotificacoes()}
@@ -898,6 +947,60 @@ function renderNotificacoes(){
 async function marcarNotificacaoLida(id){const agora=new Date().toISOString(),r=await sb.from('notificacoes').update({lida:true,lida_em:agora}).eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível atualizar a notificação: '+r.error.message);const n=notificacoes.find(x=>x.id===id);if(n){n.lida=true;n.lida_em=agora}renderNotificacoes()}
 async function marcarTodasNotificacoesLidas(){const ids=notificacoes.filter(n=>!n.lida).map(n=>n.id);if(!ids.length)return renderNotificacoes();const agora=new Date().toISOString(),r=await sb.from('notificacoes').update({lida:true,lida_em:agora}).eq('user_id',user.id).eq('lida',false);if(r.error)return alert('Não foi possível marcar as notificações: '+r.error.message);notificacoes.forEach(n=>{n.lida=true;n.lida_em=agora});renderNotificacoes()}
 async function excluirNotificacao(id){if(!confirm('Excluir este aviso?'))return;const r=await sb.from('notificacoes').delete().eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível excluir a notificação: '+r.error.message);notificacoes=notificacoes.filter(n=>n.id!==id);renderNotificacoes()}
+
+
+function agendaHoje(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function agendaTipoLabel(v){return ({cobranca:'Cobrança',conta:'Conta',cliente:'Cliente',pedido:'Pedido',compromisso:'Compromisso',outro:'Outro'})[v]||'Outro'}
+function agendaPrioridadeLabel(v){return ({alta:'Alta',normal:'Normal',baixa:'Baixa'})[v]||'Normal'}
+function agendaConcluido(l){return l?.concluido===true||String(l?.status||'').toLowerCase()==='concluido'}
+function agendaSituacao(l){
+  if(agendaConcluido(l))return {cls:'done',txt:'Concluído'};
+  const hoje=agendaHoje(),data=String(l.data_lembrete||'').slice(0,10);
+  if(data<hoje)return {cls:'overdue',txt:'Atrasado'};
+  if(data===hoje)return {cls:'today',txt:'Hoje'};
+  return {cls:'upcoming',txt:'Próximo'};
+}
+function renderAgenda(){
+  const box=document.getElementById('listaAgenda');if(!box)return;
+  const busca=String(document.getElementById('agendaBusca')?.value||'').toLowerCase().trim(),tipo=document.getElementById('agendaTipo')?.value||'',status=document.getElementById('agendaStatus')?.value||'pendentes',hoje=agendaHoje();
+  const pend=lembretes.filter(l=>!agendaConcluido(l)),concl=lembretes.filter(agendaConcluido),atras=pend.filter(l=>String(l.data_lembrete||'').slice(0,10)<hoje),hj=pend.filter(l=>String(l.data_lembrete||'').slice(0,10)===hoje);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};set('agPendentes',pend.length);set('agHoje',hj.length);set('agAtrasados',atras.length);set('agConcluidos',concl.length);
+  let lista=[...lembretes].filter(l=>{
+    if(tipo&&l.tipo!==tipo)return false;
+    const done=agendaConcluido(l),data=String(l.data_lembrete||'').slice(0,10);
+    if(status==='pendentes'&&done)return false;
+    if(status==='hoje'&&(done||data!==hoje))return false;
+    if(status==='atrasados'&&(done||data>=hoje))return false;
+    if(status==='concluidos'&&!done)return false;
+    if(busca&&!String([l.titulo,l.descricao,l.tipo].join(' ')).toLowerCase().includes(busca))return false;
+    return true;
+  }).sort((a,b)=>`${a.data_lembrete||''} ${a.hora_lembrete||''}`.localeCompare(`${b.data_lembrete||''} ${b.hora_lembrete||''}`));
+  box.innerHTML=lista.length?lista.map(l=>{
+    const sit=agendaSituacao(l),data=alertaDataLocal(l.data_lembrete),dia=data?data.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}):'--/--',sem=data?data.toLocaleDateString('pt-BR',{weekday:'short'}):'',hora=l.hora_lembrete?String(l.hora_lembrete).slice(0,5):'Sem horário',prio=String(l.prioridade||'normal').toLowerCase();
+    return `<article class="agenda-item ${agendaConcluido(l)?'done':''}"><div class="agenda-date"><b>${dia}</b><small>${esc(sem)} • ${esc(hora)}</small></div><div><div class="agenda-title">${esc(l.titulo||'Lembrete')}</div><div class="agenda-meta"><span class="agenda-badge ${sit.cls}">${sit.txt}</span><span class="agenda-badge ${prio}">${agendaPrioridadeLabel(prio)}</span>${esc(agendaTipoLabel(l.tipo))}${l.descricao?`<br>${esc(l.descricao)}`:''}</div></div><div class="agenda-actions">${agendaConcluido(l)?`<button class="soft" onclick="reabrirLembrete('${l.id}')">↩ Reabrir</button>`:`<button class="success" onclick="concluirLembrete('${l.id}')">✓ Concluir</button>`}<button class="soft" onclick="editarLembrete('${l.id}')">✏️</button><button class="danger" onclick="excluirLembrete('${l.id}')">🗑️</button></div></article>`;
+  }).join(''):'<div class="fin-empty">Nenhum lembrete encontrado.</div>';
+}
+function novoLembrete(){
+  const hoje=agendaHoje();
+  openModal(`<h2>📅 Novo lembrete</h2><div class="form-grid"><div class="full"><label>Título</label><input id="lemTitulo" placeholder="Ex.: Cobrar cliente, separar pedido..." autofocus></div><div><label>Tipo</label><select id="lemTipo"><option value="cobranca">Cobrança</option><option value="conta">Conta</option><option value="cliente">Cliente</option><option value="pedido">Pedido</option><option value="compromisso">Compromisso</option><option value="outro" selected>Outro</option></select></div><div><label>Prioridade</label><select id="lemPrioridade"><option value="baixa">Baixa</option><option value="normal" selected>Normal</option><option value="alta">Alta</option></select></div><div><label>Data</label><input id="lemData" type="date" value="${hoje}"></div><div><label>Horário</label><input id="lemHora" type="time"></div><div class="full"><label>Observações</label><textarea id="lemDesc" rows="3" placeholder="Detalhes do lembrete"></textarea></div><div class="full"><label><input id="lemAvisar" type="checkbox" checked style="width:auto"> Mostrar aviso no sino 🔔</label></div></div><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarNovoLembrete()">Salvar lembrete</button></div>`);
+}
+async function salvarNovoLembrete(){
+  const titulo=document.getElementById('lemTitulo').value.trim(),data=document.getElementById('lemData').value;if(!titulo)return alert('Informe o título do lembrete.');if(!data)return alert('Informe a data.');
+  const obj={user_id:user.id,titulo,tipo:document.getElementById('lemTipo').value,descricao:document.getElementById('lemDesc').value.trim()||null,data_lembrete:data,hora_lembrete:document.getElementById('lemHora').value||null,prioridade:document.getElementById('lemPrioridade').value,status:'pendente',concluido:false,avisar:document.getElementById('lemAvisar').checked,updated_at:new Date().toISOString()};
+  const {error}=await sb.from('lembretes').insert(obj);if(error)return alert('Não foi possível salvar o lembrete: '+error.message);closeModal();await carregar();ativarAba('agenda');
+}
+function editarLembrete(id){
+  const l=lembretes.find(x=>x.id===id);if(!l)return;
+  openModal(`<h2>✏️ Editar lembrete</h2><div class="form-grid"><div class="full"><label>Título</label><input id="lemTitulo" value="${esc(l.titulo||'')}"></div><div><label>Tipo</label><select id="lemTipo">${['cobranca','conta','cliente','pedido','compromisso','outro'].map(v=>`<option value="${v}" ${l.tipo===v?'selected':''}>${agendaTipoLabel(v)}</option>`).join('')}</select></div><div><label>Prioridade</label><select id="lemPrioridade">${['baixa','normal','alta'].map(v=>`<option value="${v}" ${String(l.prioridade||'normal')===v?'selected':''}>${agendaPrioridadeLabel(v)}</option>`).join('')}</select></div><div><label>Data</label><input id="lemData" type="date" value="${String(l.data_lembrete||'').slice(0,10)}"></div><div><label>Horário</label><input id="lemHora" type="time" value="${l.hora_lembrete?String(l.hora_lembrete).slice(0,5):''}"></div><div class="full"><label>Observações</label><textarea id="lemDesc" rows="3">${esc(l.descricao||'')}</textarea></div><div class="full"><label><input id="lemAvisar" type="checkbox" ${l.avisar!==false?'checked':''} style="width:auto"> Mostrar aviso no sino 🔔</label></div></div><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarEdicaoLembrete('${id}')">Salvar alterações</button></div>`);
+}
+async function salvarEdicaoLembrete(id){
+  const titulo=document.getElementById('lemTitulo').value.trim(),data=document.getElementById('lemData').value;if(!titulo||!data)return alert('Informe título e data.');
+  const obj={titulo,tipo:document.getElementById('lemTipo').value,descricao:document.getElementById('lemDesc').value.trim()||null,data_lembrete:data,hora_lembrete:document.getElementById('lemHora').value||null,prioridade:document.getElementById('lemPrioridade').value,avisar:document.getElementById('lemAvisar').checked,updated_at:new Date().toISOString()};
+  const {error}=await sb.from('lembretes').update(obj).eq('id',id).eq('user_id',user.id);if(error)return alert('Não foi possível atualizar o lembrete: '+error.message);closeModal();await carregar();ativarAba('agenda');
+}
+async function concluirLembrete(id){const agora=new Date().toISOString(),r=await sb.from('lembretes').update({concluido:true,status:'concluido',concluido_em:agora,updated_at:agora}).eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível concluir o lembrete: '+r.error.message);await carregar();ativarAba('agenda')}
+async function reabrirLembrete(id){const agora=new Date().toISOString(),r=await sb.from('lembretes').update({concluido:false,status:'pendente',concluido_em:null,updated_at:agora}).eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível reabrir o lembrete: '+r.error.message);await carregar();ativarAba('agenda')}
+async function excluirLembrete(id){if(!confirm('Excluir este lembrete?'))return;const r=await sb.from('lembretes').delete().eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível excluir o lembrete: '+r.error.message);await carregar();ativarAba('agenda')}
 
 function finHoje(){const d=new Date();return d.toISOString().slice(0,10)}
 function finMesAtual(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
