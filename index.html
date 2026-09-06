@@ -603,12 +603,113 @@ body.menu-lateral .tab[data-v="usuarios"]:before{
   .view>.top:first-child>div:last-child button{flex:1}
 }
 
+
+/* =========================================================
+   PROPOSTA 2 — MENU EXECUTIVO / AGRUPADO
+   ========================================================= */
+body.menu-lateral{--pro-sidebar:236px}
+body.menu-lateral header{
+  padding-left:calc(var(--pro-sidebar) + 22px);
+  background:color-mix(in srgb,var(--cor-card) 96%,transparent);
+}
+body.menu-lateral .tabs{
+  width:var(--pro-sidebar);
+  padding:16px 12px 24px;
+  padding-top:78px;
+  gap:1px;
+  background:var(--cor-card);
+  border-right:1px solid color-mix(in srgb,var(--borda) 92%,transparent);
+  box-shadow:6px 0 24px rgba(30,22,18,.025)
+}
+body.menu-lateral .tabs:before{display:none}
+body.menu-lateral .menu-group-label{
+  display:block;
+  padding:17px 10px 7px;
+  margin-top:2px;
+  font-size:9px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.13em;
+  color:#9b8f89;
+  user-select:none;
+  white-space:nowrap
+}
+body.menu-lateral .menu-group-label:first-child{padding-top:5px}
+body.menu-lateral .tab{
+  min-height:38px;
+  padding:8px 10px;
+  border-radius:9px!important;
+  font-size:12.5px;
+  font-weight:650;
+  color:color-mix(in srgb,var(--cor-texto) 82%,#777)
+}
+body.menu-lateral .tab:hover{
+  background:color-mix(in srgb,var(--cor-principal) 5%,var(--cor-card))!important;
+  border-color:transparent!important
+}
+body.menu-lateral .tab.active{
+  background:color-mix(in srgb,var(--cor-principal) 9%,var(--cor-card))!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  color:var(--cor-principal)!important;
+  font-weight:800
+}
+body.menu-lateral .tab.active:before{
+  content:"";
+  position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:4px;
+  background:var(--cor-principal)
+}
+body.menu-lateral .tab.active:after{display:none}
+body.menu-lateral .tab[data-v]{margin-top:0!important}
+body.menu-lateral .tab[data-v]:before{background:var(--cor-principal)}
+body.menu-lateral .tab[data-v="produtos"]:before,
+body.menu-lateral .tab[data-v="clientes"]:before,
+body.menu-lateral .tab[data-v="fornecedores"]:before,
+body.menu-lateral .tab[data-v="financeiro"]:before,
+body.menu-lateral .tab[data-v="usuarios"]:before{height:auto;right:auto;top:9px}
+body.menu-lateral main{
+  margin-left:var(--pro-sidebar);
+  width:calc(100% - var(--pro-sidebar));
+  padding:30px 36px 54px
+}
+body.menu-lateral .view>.top:first-child{
+  padding-bottom:16px;
+  border-bottom:1px solid color-mix(in srgb,var(--borda) 72%,transparent);
+  margin-bottom:22px
+}
+body.menu-lateral .view>.top:first-child h2{
+  font-size:25px;
+  font-weight:850
+}
+body.menu-lateral .panel,
+body.menu-lateral .card{
+  border-radius:16px
+}
+
+/* Cabeçalho menos carregado */
+body.menu-lateral .brand-copy small{
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-size:8px!important
+}
+body.menu-lateral .header-actions button{
+  min-height:38px;
+  border-radius:10px
+}
+
+/* No celular, some com os títulos de grupo e volta ao menu horizontal */
+@media(max-width:720px){
+  body.menu-lateral .menu-group-label{display:none}
+  body.menu-lateral .tabs{padding:8px}
+  body.menu-lateral main{padding:16px 12px 34px}
+}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><div class="brand-copy"><b id="headerNomeLoja">Essência & Encanto</b><small style="display:block;font-size:10px;color:#998a83;margin-top:2px">Gestão do negócio</small></div></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="etiquetas">🏷️ Etiquetas</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="separacao">🧾 Separação</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="separacao">🧾 Separação</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="etiquetas">🏷️ Etiquetas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -1241,7 +1342,8 @@ body.menu-lateral .tab[data-v="usuarios"]:before{
 <script>
 const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[],precificacoes=[],reposicoesSugeridas=[],configEtiquetas=[],carrinhosCatalogo=[],itensCarrinhoCatalogo=[];let carrinhoRapido=[],carrinhoRapidoCupom=null,carrinhoRapidoCliente=null;let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
 const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},precificacao:{label:'Precificação',icone:'💲'},inventario:{label:'Inventário',icone:'🧮'},reposicao:{label:'Reposição',icone:'📦'},etiquetas:{label:'Etiquetas',icone:'🏷️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},separacao:{label:'Separação',icone:'🧾'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','separacao','trocas','agenda','produtos','precificacao','inventario','reposicao','etiquetas','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
+const MENU_ANTIGO=['inicio','vendas','pedidos','separacao','trocas','agenda','produtos','precificacao','inventario','reposicao','etiquetas','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
+const MENU_PADRAO=['inicio','alertas','agenda','clientes','catalogo','vendas','pedidos','separacao','trocas','promocoes','produtos','precificacao','inventario','reposicao','etiquetas','fornecedores','compras','caixa','financeiro','equipe','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -1338,7 +1440,9 @@ function lerArrayJson(v,padrao=[]){
   return padrao;
 }
 function normalizarMenuOrdem(v){
-  const recebido=lerArrayJson(v,[]).filter(k=>MENU_INFO[k]);
+  let recebido=lerArrayJson(v,[]).filter(k=>MENU_INFO[k]);
+  const igualAntigo=recebido.length===MENU_ANTIGO.length&&recebido.every((k,i)=>k===MENU_ANTIGO[i]);
+  if(!recebido.length||igualAntigo)recebido=[...MENU_PADRAO];
   const unicos=[];for(const k of recebido)if(!unicos.includes(k))unicos.push(k);
   for(const k of MENU_PADRAO)if(!unicos.includes(k))unicos.push(k);
   return unicos;
@@ -1353,8 +1457,32 @@ function aplicarMenuVisual(cfg){
   const tabs=document.querySelector('.tabs');if(!tabs)return;
   ordem.forEach(k=>{const b=tabs.querySelector(`[data-v="${k}"]`);if(b){tabs.appendChild(b);b.style.display=ocultos.includes(k)?'none':''}});
   tabs.querySelectorAll('.tab').forEach(b=>{if(!ordem.includes(b.dataset.v))b.style.display='none'});
+  aplicarGruposMenu();
   const ativa=tabs.querySelector('.tab.active');if(ativa&&ativa.style.display==='none')ativarAba(ordem.find(k=>!ocultos.includes(k))||'configuracoes');
 }
+
+function aplicarGruposMenu(){
+  const tabs=document.querySelector('.tabs');if(!tabs)return;
+  tabs.querySelectorAll('.menu-group-label').forEach(x=>x.remove());
+  if(!document.body.classList.contains('menu-lateral'))return;
+  const grupos=[
+    ['VISÃO GERAL','inicio'],
+    ['ATENDIMENTO & VENDAS','clientes'],
+    ['PRODUTOS & ESTOQUE','produtos'],
+    ['COMPRAS','fornecedores'],
+    ['FINANCEIRO','caixa'],
+    ['GESTÃO','equipe']
+  ];
+  grupos.forEach(([titulo,chave])=>{
+    const alvo=tabs.querySelector(`[data-v="${chave}"]`);
+    if(alvo&&alvo.style.display!=='none'){
+      const el=document.createElement('div');
+      el.className='menu-group-label';el.textContent=titulo;
+      tabs.insertBefore(el,alvo);
+    }
+  });
+}
+
 function renderMenuControles(){
   const box=document.getElementById('cfgMenuOrdem');if(!box)return;
   box.innerHTML=menuOrdemRascunho.map((k,i)=>{const info=MENU_INFO[k],travado=k==='configuracoes',mostrar=!menuOcultosRascunho.includes(k);return `<div class="menu-order-item"><span class="menu-label">${info.icone} ${info.label}</span><button class="soft" type="button" onclick="moverMenuItem('${k}',-1)" ${i===0?'disabled':''}>↑</button><button class="soft" type="button" onclick="moverMenuItem('${k}',1)" ${i===menuOrdemRascunho.length-1?'disabled':''}>↓</button><label><input type="checkbox" ${mostrar?'checked':''} ${travado?'disabled':''} onchange="alternarMenuItem('${k}',this.checked)"> ${travado?'Sempre visível':'Mostrar'}</label></div>`}).join('');
