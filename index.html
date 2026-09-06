@@ -284,6 +284,15 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .price-calc-grid div{background:var(--card,#fff);border-radius:12px;padding:10px}.price-calc-grid small{display:block;color:#777;font-size:10px}.price-calc-grid b{font-size:15px}
 @media(max-width:900px){.price-kpis{grid-template-columns:1fr 1fr}.price-calc-grid{grid-template-columns:1fr 1fr}}
 
+
+/* Taxas na precificação */
+.fee-box{background:#00000004;border:1px solid #00000010;border-radius:15px;padding:14px;margin-top:12px}
+.fee-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.fee-grid div{background:var(--card,#fff);border-radius:12px;padding:10px}
+.fee-grid small{display:block;color:#777;font-size:10px}.fee-grid b{font-size:14px}
+.fee-alert{margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff3cd;color:#7a5b00;font-size:12px}
+@media(max-width:900px){.fee-grid{grid-template-columns:1fr 1fr}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -389,7 +398,8 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
           <th>Outros</th>
           <th>Custo total</th>
           <th>Margem</th>
-          <th>Lucro</th>
+          <th>Taxas</th>
+          <th>Lucro líquido</th>
           <th>Preço sugerido</th>
           <th>Preço final</th>
           <th>Ações</th>
@@ -1036,13 +1046,19 @@ function catalogoContatoTexto(){
 
 
 function precProdutoNome(x){return x.produto_nome||produtos.find(p=>p.id===x.produto_id)?.nome||'Produto'}
-function precCalcularValores(valorPago,frete,embalagem,outros,margem){
+function precCalcularValores(valorPago,frete,embalagem,outros,margem,taxaCartao=0,taxaMarketplace=0,comissao=0,imposto=0,taxaFixa=0){
   const custo=Math.max(0,num(valorPago))+Math.max(0,num(frete))+Math.max(0,num(embalagem))+Math.max(0,num(outros));
   const m=Math.max(0,Math.min(99.99,num(margem)));
-  // Margem real: lucro representa m% do preço de venda.
-  const sugerido=custo<=0?0:custo/(1-m/100);
-  const lucro=Math.max(0,sugerido-custo);
-  return {custo,margem:m,sugerido,lucro};
+  const tc=Math.max(0,num(taxaCartao)),tm=Math.max(0,num(taxaMarketplace)),co=Math.max(0,num(comissao)),im=Math.max(0,num(imposto));
+  const tf=Math.max(0,num(taxaFixa));
+  const taxasPercent=tc+tm+co+im;
+  const divisor=1-(m+taxasPercent)/100;
+  const sugerido=divisor>0?(custo+tf)/divisor:0;
+  const taxasValor=(sugerido*taxasPercent/100)+tf;
+  const lucroLiquido=Math.max(0,sugerido-custo-taxasValor);
+  const margemLiquida=sugerido>0?(lucroLiquido/sugerido)*100:0;
+  const lucroBruto=Math.max(0,sugerido-custo);
+  return {custo,margem:m,sugerido,lucro:lucroBruto,taxasPercent,taxasValor,lucroLiquido,margemLiquida,tc,tm,co,im,tf};
 }
 function renderPrecificacoes(){
   const body=document.getElementById('precTabela');if(!body)return;
@@ -1065,11 +1081,12 @@ function renderPrecificacoes(){
     <td class="money-cell">${money(x.outros_custos)}</td>
     <td class="money-cell">${money(x.custo_total)}</td>
     <td><b>${num(x.margem_lucro).toFixed(1).replace('.',',')}%</b></td>
-    <td class="money-cell">${money(x.lucro_valor)}</td>
+    <td><b>${num(x.total_taxas_percentual).toFixed(1).replace('.',',')}%</b><div class="muted" style="font-size:10px">${money(x.total_taxas_valor)}</div></td>
+    <td class="money-cell">${money(x.lucro_liquido_estimado||x.lucro_valor)}</td>
     <td class="money-cell suggested">${money(x.preco_sugerido)}</td>
     <td class="money-cell">${money(x.preco_final||x.preco_sugerido)}</td>
     <td><div style="display:flex;gap:5px;white-space:nowrap"><button class="soft" onclick="editarPrecificacao('${x.id}')">✏️</button><button class="soft" onclick="usarPrecoNoProduto('${x.id}')">🛍️ Usar preço</button><button class="danger" onclick="excluirPrecificacao('${x.id}')">🗑️</button></div></td>
-  </tr>`).join(''):`<tr><td colspan="11"><div class="empty-state"><div class="icon">💲</div><h3>Nenhuma precificação</h3><p class="muted">Clique em “Nova precificação” para calcular seu primeiro produto.</p></div></td></tr>`;
+  </tr>`).join(''):`<tr><td colspan="12"><div class="empty-state"><div class="icon">💲</div><h3>Nenhuma precificação</h3><p class="muted">Clique em “Nova precificação” para calcular seu primeiro produto.</p></div></td></tr>`;
 }
 function novaPrecificacao(){abrirFormPrecificacao(null)}
 function editarPrecificacao(id){const x=precificacoes.find(p=>p.id===id);if(x)abrirFormPrecificacao(x)}
@@ -1084,17 +1101,32 @@ function abrirFormPrecificacao(x){
     <div><label>Embalagem</label><input id="pcEmbalagem" type="number" min="0" step="0.01" value="${num(x?.embalagem)||0}" oninput="previewPrecificacao()"></div>
     <div><label>Outros custos</label><input id="pcOutros" type="number" min="0" step="0.01" value="${num(x?.outros_custos)||0}" oninput="previewPrecificacao()"></div>
     <div><label>Margem de lucro desejada (%) *</label><input id="pcMargem" type="number" min="0" max="99.99" step="0.1" value="${num(x?.margem_lucro)||40}" oninput="previewPrecificacao()"></div>
+    <div><label>Taxa cartão (%)</label><input id="pcTaxaCartao" type="number" min="0" step="0.01" value="${num(x?.taxa_cartao_percentual)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Taxa marketplace (%)</label><input id="pcTaxaMarket" type="number" min="0" step="0.01" value="${num(x?.taxa_marketplace_percentual)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Comissão (%)</label><input id="pcComissao" type="number" min="0" step="0.01" value="${num(x?.comissao_percentual)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Imposto (%)</label><input id="pcImposto" type="number" min="0" step="0.01" value="${num(x?.imposto_percentual)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Taxa fixa por venda (R$)</label><input id="pcTaxaFixa" type="number" min="0" step="0.01" value="${num(x?.taxa_fixa_venda)||0}" oninput="previewPrecificacao()"></div>
     <div><label>Preço final</label><input id="pcFinal" type="number" min="0" step="0.01" value="${x?.preco_final!=null?num(x.preco_final):''}" placeholder="Opcional, ex.: 119,90"></div>
     <div class="full"><label>Observações</label><textarea id="pcObs" placeholder="Opcional">${esc(x?.observacoes||'')}</textarea></div>
   </div>
   <div class="price-calc-box">
     <div class="price-calc-grid">
       <div><small>Custo total</small><b id="pcPrevCusto">R$ 0,00</b></div>
-      <div><small>Lucro em R$</small><b id="pcPrevLucro">R$ 0,00</b></div>
+      <div><small>Taxas estimadas</small><b id="pcPrevTaxas">R$ 0,00</b></div>
+      <div><small>Lucro líquido estimado</small><b id="pcPrevLiquido">R$ 0,00</b></div>
       <div><small>Preço sugerido</small><b id="pcPrevSug">R$ 0,00</b></div>
-      <div><small>Margem</small><b id="pcPrevMargem">0%</b></div>
     </div>
-    <p class="muted" style="font-size:11px;margin:10px 0 0">A margem é calculada sobre o preço de venda. Ex.: margem de 40% significa que 40% do preço final é lucro bruto.</p>
+    <div class="fee-box">
+      <div class="fee-grid">
+        <div><small>Cartão</small><b id="pcPrevTC">0%</b></div>
+        <div><small>Marketplace</small><b id="pcPrevTM">0%</b></div>
+        <div><small>Comissão</small><b id="pcPrevCO">0%</b></div>
+        <div><small>Imposto</small><b id="pcPrevIM">0%</b></div>
+        <div><small>Margem líquida final</small><b id="pcPrevML">0%</b></div>
+      </div>
+      <div id="pcFeeAlert" class="fee-alert" style="display:none"></div>
+    </div>
+    <p class="muted" style="font-size:11px;margin:10px 0 0">O preço sugerido considera os custos fixos, as taxas percentuais e a margem líquida desejada.</p>
   </div>
   <div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarPrecificacao(${x?.id?`'${x.id}'`:'null'})">Salvar precificação</button></div>`);
   previewPrecificacao();
@@ -1109,9 +1141,38 @@ function precProdutoMudou(){
   previewPrecificacao();
 }
 function previewPrecificacao(){
-  const r=precCalcularValores(document.getElementById('pcPago')?.value,document.getElementById('pcFrete')?.value,document.getElementById('pcEmbalagem')?.value,document.getElementById('pcOutros')?.value,document.getElementById('pcMargem')?.value);
+  const r=precCalcularValores(
+    document.getElementById('pcPago')?.value,
+    document.getElementById('pcFrete')?.value,
+    document.getElementById('pcEmbalagem')?.value,
+    document.getElementById('pcOutros')?.value,
+    document.getElementById('pcMargem')?.value,
+    document.getElementById('pcTaxaCartao')?.value,
+    document.getElementById('pcTaxaMarket')?.value,
+    document.getElementById('pcComissao')?.value,
+    document.getElementById('pcImposto')?.value,
+    document.getElementById('pcTaxaFixa')?.value
+  );
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-  set('pcPrevCusto',money(r.custo));set('pcPrevLucro',money(r.lucro));set('pcPrevSug',money(r.sugerido));set('pcPrevMargem',r.margem.toFixed(1).replace('.',',')+'%');
+  set('pcPrevCusto',money(r.custo));
+  set('pcPrevTaxas',money(r.taxasValor));
+  set('pcPrevLiquido',money(r.lucroLiquido));
+  set('pcPrevSug',money(r.sugerido));
+  set('pcPrevTC',r.tc.toFixed(2).replace('.',',')+'%');
+  set('pcPrevTM',r.tm.toFixed(2).replace('.',',')+'%');
+  set('pcPrevCO',r.co.toFixed(2).replace('.',',')+'%');
+  set('pcPrevIM',r.im.toFixed(2).replace('.',',')+'%');
+  set('pcPrevML',r.margemLiquida.toFixed(1).replace('.',',')+'%');
+  const alerta=document.getElementById('pcFeeAlert');
+  if(alerta){
+    if(r.margem+r.taxasPercent>=100){
+      alerta.style.display='block';
+      alerta.textContent='A soma da margem desejada com as taxas chegou a 100% ou mais. Reduza algum percentual para calcular um preço viável.';
+    }else{
+      alerta.style.display='none';
+      alerta.textContent='';
+    }
+  }
   return r;
 }
 async function salvarPrecificacao(id=null){
@@ -1119,9 +1180,10 @@ async function salvarPrecificacao(id=null){
   if(!nome)return alert('Informe o nome do produto.');
   if(r.custo<=0)return alert('Informe o valor pago ou algum custo do produto.');
   if(r.margem>=100)return alert('A margem precisa ser menor que 100%.');
+  if(r.margem+r.taxasPercent>=100)return alert('A soma da margem com as taxas precisa ser menor que 100%.');
   const finalTxt=document.getElementById('pcFinal').value;
   const precoFinal=finalTxt===''?null:Math.max(0,num(finalTxt));
-  const obj={user_id:user.id,produto_id,produto_nome:nome,valor_pago:Math.max(0,num(document.getElementById('pcPago').value)),frete:Math.max(0,num(document.getElementById('pcFrete').value)),embalagem:Math.max(0,num(document.getElementById('pcEmbalagem').value)),outros_custos:Math.max(0,num(document.getElementById('pcOutros').value)),custo_total:r.custo,margem_lucro:r.margem,lucro_valor:r.lucro,preco_sugerido:r.sugerido,preco_final:precoFinal,observacoes:document.getElementById('pcObs').value.trim()||null,updated_at:new Date().toISOString()};
+  const obj={user_id:user.id,produto_id,produto_nome:nome,valor_pago:Math.max(0,num(document.getElementById('pcPago').value)),frete:Math.max(0,num(document.getElementById('pcFrete').value)),embalagem:Math.max(0,num(document.getElementById('pcEmbalagem').value)),outros_custos:Math.max(0,num(document.getElementById('pcOutros').value)),custo_total:r.custo,margem_lucro:r.margem,lucro_valor:r.lucro,preco_sugerido:r.sugerido,preco_final:precoFinal,taxa_cartao_percentual:r.tc,taxa_marketplace_percentual:r.tm,comissao_percentual:r.co,imposto_percentual:r.im,taxa_fixa_venda:r.tf,total_taxas_percentual:r.taxasPercent,total_taxas_valor:r.taxasValor,lucro_liquido_estimado:r.lucroLiquido,margem_liquida_final:r.margemLiquida,observacoes:document.getElementById('pcObs').value.trim()||null,updated_at:new Date().toISOString()};
   const q=id?sb.from('precificacoes').update(obj).eq('id',id).eq('user_id',user.id):sb.from('precificacoes').insert(obj);
   const res=await q;if(res.error)return alert('Não foi possível salvar: '+res.error.message);
   closeModal();await carregar();ativarAba('precificacao');
