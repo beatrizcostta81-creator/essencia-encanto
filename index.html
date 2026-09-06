@@ -1247,14 +1247,14 @@ body.menu-lateral .header-actions button{
 }
 
 </style>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#6F4E45">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Essência & Encanto">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" href="favicon-64.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" href="./favicon-64.png">
 
 </head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
@@ -2994,18 +2994,7 @@ function imprimirEtiquetas(){
     document.querySelectorAll('.label-qrcode').forEach(function(el){try{new QRCode(el,{text:el.dataset.code||'0000',width:50,height:50,correctLevel:QRCode.CorrectLevel.M})}catch(e){}});
     setTimeout(function(){window.print()},350);
   };
-  <\/script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => {
-      console.warn('Service Worker não registrado:', err);
-    });
-  });
-}
-</script>
-
-</body></html>`);
+  <\/script></body></html>`);
   w.document.close();
 }
 
@@ -4351,4 +4340,14 @@ sb.auth.onAuthStateChange(async (event, session)=>{
     await iniciar();
   }
 })();
-</script></body></html>
+</script>
+<script>
+window.addEventListener('load', function () {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .catch(function (err) { console.warn('Service Worker:', err); });
+  }
+});
+</script>
+
+</body></html>
