@@ -250,12 +250,24 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 @media(max-width:1000px){.cash-kpis{grid-template-columns:repeat(2,1fr)}.cash-grid{grid-template-columns:1fr}.cash-history-row{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.cash-kpis{grid-template-columns:1fr 1fr}.cash-kpi:first-child{grid-column:1/-1}.cash-mov{align-items:flex-start}.cash-history-row{grid-template-columns:1fr}}
 
+
+/* Inventário */
+.inv-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.inv-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.inv-kpi span{display:block;font-size:11px;color:#777}.inv-kpi b{display:block;font-size:19px;margin-top:5px;color:var(--cor-principal)}
+.inv-table{width:100%;border-collapse:collapse}.inv-table th,.inv-table td{padding:10px;border-bottom:1px solid #0000000f;text-align:left;font-size:12px}.inv-table th{color:#666;font-size:11px}
+.inv-diff.pos{color:#26743b}.inv-diff.neg{color:#a33131}.inv-diff.zero{color:#777}
+.inv-actions{display:flex;gap:7px;flex-wrap:wrap}
+.inv-history{display:grid;gap:9px}.inv-card{border:1px solid #00000010;border-radius:15px;padding:13px;background:var(--card,#fff)}
+.inv-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}.inv-status.em_andamento{background:#fff3cd;color:#7a5b00}.inv-status.finalizado{background:#e8f7ec;color:#26743b}
+@media(max-width:900px){.inv-kpis{grid-template-columns:1fr 1fr}.inv-table{display:block;overflow-x:auto}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="inventario">📋 Inventário</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -319,6 +331,24 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div id="listaProdutos"></div>
   </div>
 </section>
+
+<section id="inventario" class="view">
+  <div class="top">
+    <div><h2>📋 Inventário / Contagem de Estoque</h2><p class="muted">Compare o estoque do sistema com a contagem física e ajuste diferenças.</p></div>
+    <button class="primary" onclick="novoInventario()">+ Nova contagem</button>
+  </div>
+  <div class="inv-kpis">
+    <div class="inv-kpi"><span>Em andamento</span><b id="invAndamento">0</b></div>
+    <div class="inv-kpi"><span>Finalizados</span><b id="invFinalizados">0</b></div>
+    <div class="inv-kpi"><span>Itens divergentes</span><b id="invDivergentes">0</b></div>
+    <div class="inv-kpi"><span>Ajustes aplicados</span><b id="invAjustes">0</b></div>
+  </div>
+  <div class="panel">
+    <div class="top"><div><h3>📚 Histórico de inventários</h3></div></div>
+    <div id="listaInventarios" class="inv-history"></div>
+  </div>
+</section>
+
 <section id="catalogo" class="view">
   <div class="top"><div><h2>📖 Catálogo para Clientes</h2><p class="muted">Mostra somente produtos ativos e disponíveis em estoque.</p></div><div class="catalog-share-actions"><button class="soft" onclick="copiarCatalogoTexto()">📋 Copiar lista</button><button class="primary" onclick="abrirCatalogoCliente()">✨ Abrir catálogo / PDF</button></div></div>
   <div class="catalog-help"><b>Como compartilhar:</b> filtre a categoria que quiser e clique em <b>Abrir catálogo / PDF</b>. Na página que abrir, você pode imprimir, salvar em PDF ou compartilhar. Cada produto terá um botão <b>Pedir pelo WhatsApp</b> usando o número cadastrado em Configurações.</div>
@@ -671,9 +701,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},inventario:{label:'Inventário',icone:'📋'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','inventario','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -755,7 +785,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc,inv,ii]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('inventarios').select('*').eq('user_id',user.id).order('data_inventario',{ascending:false}),sb.from('itens_inventario').select('*').eq('user_id',user.id)]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error||inv.error||ii.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];inventarios=inv.data||[];itensInventario=ii.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -958,6 +988,68 @@ async function copiarCatalogoTexto(){
   const lista=catalogoProdutosFiltrados();if(!lista.length)return alert('Não há produtos disponíveis neste filtro.');const nome=configLoja?.nome_loja||'Essência & Encanto';let txt=`✨ ${nome} — Catálogo disponível\n\n`+lista.map(p=>`• ${p.nome} — ${promocaoAtiva(p)?money(precoVendaProduto(p))+' (promoção)':money(precoVendaProduto(p))}`).join('\n');if(configLoja?.whatsapp)txt+=`\n\n📲 WhatsApp: ${configLoja.whatsapp}`;try{await navigator.clipboard.writeText(txt);alert('✅ Lista do catálogo copiada. Agora é só colar no WhatsApp.')}catch(e){alert('Não foi possível copiar automaticamente. Abra o catálogo e compartilhe por lá.')}
 }
 
+
+function itensDoInventario(id){return itensInventario.filter(i=>i.inventario_id===id)}
+function renderInventarios(){
+  const alvo=document.getElementById('listaInventarios');if(!alvo)return;
+  const andamento=inventarios.filter(i=>i.status==='em_andamento').length,fin=inventarios.filter(i=>i.status==='finalizado').length;
+  const diverg=itensInventario.filter(i=>i.estoque_contado!=null&&Math.abs(num(i.diferenca))>0.0001).length,aj=itensInventario.filter(i=>i.ajuste_aplicado).length;
+  [['invAndamento',andamento],['invFinalizados',fin],['invDivergentes',diverg],['invAjustes',aj]].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v});
+  alvo.innerHTML=inventarios.length?inventarios.map(inv=>{
+    const its=itensDoInventario(inv.id),contados=its.filter(i=>i.estoque_contado!=null).length,difs=its.filter(i=>i.estoque_contado!=null&&Math.abs(num(i.diferenca))>0.0001).length;
+    return `<div class="inv-card"><div class="top"><div><h4 style="margin:0">Inventário de ${formatarData(inv.data_inventario)}</h4><div class="muted">${contados}/${its.length} itens contados • ${difs} divergência(s)</div></div><span class="inv-status ${inv.status}">${inv.status==='finalizado'?'Finalizado':'Em andamento'}</span></div><div class="inv-actions"><button class="soft" onclick="abrirInventario('${inv.id}')">📋 Abrir</button>${inv.status!=='finalizado'?`<button class="primary" onclick="finalizarInventario('${inv.id}')">✅ Finalizar</button>`:''}<button class="danger" onclick="excluirInventario('${inv.id}')">🗑️ Excluir</button></div></div>`;
+  }).join(''):'<div class="empty-state"><div class="icon">📋</div><h3>Nenhum inventário criado</h3><p class="muted">Crie uma nova contagem para conferir seu estoque.</p></div>';
+}
+async function novoInventario(){
+  const abertos=inventarios.filter(i=>i.status==='em_andamento');if(abertos.length)return alert('Já existe um inventário em andamento. Finalize ou exclua antes de criar outro.');
+  if(!produtos.length)return alert('Cadastre produtos antes de iniciar o inventário.');
+  const r=await sb.from('inventarios').insert({user_id:user.id,data_inventario:caixaDataISO(),status:'em_andamento'}).select('id').single();
+  if(r.error)return alert('Não foi possível criar o inventário: '+r.error.message);
+  const itens=produtos.map(p=>({user_id:user.id,inventario_id:r.data.id,produto_id:p.id,produto_nome:p.nome,estoque_sistema:num(p.estoque),estoque_contado:null,diferenca:null}));
+  const r2=await sb.from('itens_inventario').insert(itens);if(r2.error){await sb.from('inventarios').delete().eq('id',r.data.id);return alert('Inventário criado, mas os itens não puderam ser incluídos: '+r2.error.message)}
+  await carregar();ativarAba('inventario');abrirInventario(r.data.id);
+}
+function abrirInventario(id){
+  const inv=inventarios.find(x=>x.id===id);if(!inv)return;const its=itensDoInventario(id).slice().sort((a,b)=>(a.produto_nome||'').localeCompare(b.produto_nome||'','pt-BR'));
+  openModal(`<h2>📋 Inventário de ${formatarData(inv.data_inventario)}</h2><p class="muted">${inv.status==='finalizado'?'Inventário finalizado.':'Digite a quantidade contada fisicamente para cada produto.'}</p><div style="max-height:60vh;overflow:auto"><table class="inv-table"><thead><tr><th>Produto</th><th>Sistema</th><th>Contado</th><th>Diferença</th><th>Motivo</th><th>Ajuste</th></tr></thead><tbody>${its.map(i=>`<tr><td><b>${esc(i.produto_nome||'Produto')}</b></td><td>${num(i.estoque_sistema)}</td><td>${inv.status==='finalizado'?num(i.estoque_contado):`<input id="invCnt_${i.id}" type="number" min="0" step="0.01" value="${i.estoque_contado??''}" style="width:90px" oninput="previewItemInventario('${i.id}')">`}</td><td id="invDif_${i.id}" class="inv-diff ${num(i.diferenca)>0?'pos':num(i.diferenca)<0?'neg':'zero'}">${i.estoque_contado==null?'—':num(i.diferenca)}</td><td>${inv.status==='finalizado'?esc(i.motivo_ajuste||'—'):`<input id="invMot_${i.id}" value="${esc(i.motivo_ajuste||'')}" placeholder="Opcional">`}</td><td>${i.ajuste_aplicado?'✅ Aplicado':inv.status==='finalizado'?'—':'⏳'}</td></tr>`).join('')}</tbody></table></div><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="soft" onclick="closeModal()">Fechar</button>${inv.status!=='finalizado'?`<button class="primary" onclick="salvarContagemInventario('${inv.id}')">💾 Salvar contagem</button>`:''}</div>`);
+}
+function previewItemInventario(itemId){
+  const i=itensInventario.find(x=>x.id===itemId),el=document.getElementById('invCnt_'+itemId),d=document.getElementById('invDif_'+itemId);if(!i||!el||!d)return;
+  if(el.value===''){d.textContent='—';d.className='inv-diff zero';return}
+  const dif=num(el.value)-num(i.estoque_sistema);d.textContent=dif;d.className='inv-diff '+(dif>0?'pos':dif<0?'neg':'zero');
+}
+async function salvarContagemInventario(id){
+  const its=itensDoInventario(id);let falhas=[];
+  for(const i of its){
+    const el=document.getElementById('invCnt_'+i.id);if(!el||el.value==='')continue;
+    const contado=Math.max(0,num(el.value)),dif=contado-num(i.estoque_sistema),mot=document.getElementById('invMot_'+i.id)?.value.trim()||null;
+    const r=await sb.from('itens_inventario').update({estoque_contado:contado,diferenca:dif,motivo_ajuste:mot,updated_at:new Date().toISOString()}).eq('id',i.id).eq('user_id',user.id);if(r.error)falhas.push(i.produto_nome);
+  }
+  if(falhas.length)return alert('Alguns itens não puderam ser salvos: '+falhas.join(', '));
+  closeModal();await carregar();ativarAba('inventario');alert('✅ Contagem salva.');
+}
+async function finalizarInventario(id){
+  const inv=inventarios.find(x=>x.id===id);if(!inv)return;const its=itensDoInventario(id);
+  if(its.some(i=>i.estoque_contado==null))return alert('Conte todos os produtos antes de finalizar.');
+  if(!confirm('Finalizar este inventário e aplicar os ajustes ao estoque?'))return;
+  for(const i of its){
+    const dif=num(i.diferenca);if(Math.abs(dif)<0.0001)continue;
+    const p=produtos.find(x=>x.id===i.produto_id);if(!p)continue;
+    const r=await sb.from('produtos').update({estoque:num(i.estoque_contado),updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);if(r.error)return alert('Erro ao ajustar '+(i.produto_nome||'produto')+': '+r.error.message);
+    await sb.from('itens_inventario').update({ajuste_aplicado:true,ajustado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',i.id).eq('user_id',user.id);
+  }
+  const r=await sb.from('inventarios').update({status:'finalizado',finalizado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Os ajustes foram aplicados, mas não foi possível finalizar o inventário: '+r.error.message);
+  await carregar();ativarAba('inventario');alert('✅ Inventário finalizado e estoque ajustado.');
+}
+async function excluirInventario(id){
+  const inv=inventarios.find(x=>x.id===id);if(!inv)return;
+  if(inv.status==='finalizado')return alert('Por segurança, inventários finalizados não podem ser excluídos.');
+  if(!confirm('Excluir este inventário em andamento?'))return;
+  const r=await sb.from('inventarios').delete().eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível excluir: '+r.error.message);
+  await carregar();ativarAba('inventario');
+}
+
 function renderProdutos(){
   const busca=(document.getElementById('produtoBusca')?.value||'').trim().toLowerCase();
   const cat=document.getElementById('produtoCategoria')?.value||'';
@@ -1052,7 +1144,7 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const promoTab=document.querySelector('.tab[data-v="promocoes"]');if(promoTab&&meuPerfil&&meuPerfil.papel!=='administrador'&&!pode('pode_editar_produtos'))promoTab.style.display='none';
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',inventario:'pode_editar_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -1141,7 +1233,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderCatalogo();renderCupons();renderNotificacoes();
+  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderInventarios();renderCatalogo();renderCupons();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
