@@ -334,12 +334,28 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .product-focus{outline:3px solid var(--cor-principal);outline-offset:4px;animation:focusPulse 1.2s ease 2}
 @keyframes focusPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.01)}}
 
+
+/* Separação de pedidos */
+.sep-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.sep-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.sep-kpi span{display:block;font-size:11px;color:#777}.sep-kpi b{display:block;font-size:20px;margin-top:5px;color:var(--cor-principal)}
+.sep-list{display:grid;gap:10px}
+.sep-card{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px}
+.sep-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.sep-items{margin-top:10px;display:grid;gap:6px}
+.sep-item{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;background:#00000004;border-radius:10px}
+.sep-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.sep-status.pendente{background:#fff3cd;color:#7a5b00}.sep-status.separado{background:#e7f0ff;color:#245b9b}.sep-status.pronto{background:#e8f7ec;color:#26743b}
+.sep-meta{font-size:12px;color:#777;line-height:1.55;margin-top:5px}
+.sep-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+@media(max-width:900px){.sep-kpis{grid-template-columns:1fr 1fr}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="etiquetas">🏷️ Etiquetas</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="etiquetas">🏷️ Etiquetas</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="separacao">🧾 Separação</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -640,6 +656,34 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
   </div>
 </section>
 
+
+
+<section id="separacao" class="view">
+  <div class="top">
+    <div><h2>🧾 Separação de Pedidos</h2><p class="muted">Organize o que precisa ser separado e acompanhe os pedidos até ficarem prontos.</p></div>
+    <button class="primary" onclick="imprimirListaSeparacao()">🖨️ Imprimir lista</button>
+  </div>
+
+  <div class="sep-kpis">
+    <div class="sep-kpi"><span>Pendentes</span><b id="sepPendentes">0</b></div>
+    <div class="sep-kpi"><span>Separados</span><b id="sepSeparados">0</b></div>
+    <div class="sep-kpi"><span>Prontos</span><b id="sepProntos">0</b></div>
+    <div class="sep-kpi"><span>Itens a separar</span><b id="sepItens">0</b></div>
+  </div>
+
+  <div class="panel">
+    <div class="order-toolbar">
+      <input id="sepBusca" placeholder="🔎 Buscar cliente ou produto" oninput="renderSeparacao()">
+      <select id="sepStatusFiltro" onchange="renderSeparacao()">
+        <option value="">Todos</option>
+        <option value="pendente">Pendentes</option>
+        <option value="separado">Separados</option>
+        <option value="pronto">Prontos</option>
+      </select>
+    </div>
+    <div id="listaSeparacao" class="sep-list"></div>
+  </div>
+</section>
 
 <section id="trocas" class="view">
   <div class="top">
@@ -943,8 +987,8 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
 const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[],precificacoes=[],reposicoesSugeridas=[],configEtiquetas=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},precificacao:{label:'Precificação',icone:'💲'},inventario:{label:'Inventário',icone:'🧮'},reposicao:{label:'Reposição',icone:'📦'},etiquetas:{label:'Etiquetas',icone:'🏷️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','precificacao','inventario','reposicao','etiquetas','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},precificacao:{label:'Precificação',icone:'💲'},inventario:{label:'Inventário',icone:'🧮'},reposicao:{label:'Reposição',icone:'📦'},etiquetas:{label:'Etiquetas',icone:'🏷️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},separacao:{label:'Separação',icone:'🧾'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','separacao','trocas','agenda','produtos','precificacao','inventario','reposicao','etiquetas','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -1899,7 +1943,7 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const promoTab=document.querySelector('.tab[data-v="promocoes"]');if(promoTab&&meuPerfil&&meuPerfil.papel!=='administrador'&&!pode('pode_editar_produtos'))promoTab.style.display='none';
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',precificacao:'pode_editar_produtos',inventario:'pode_editar_produtos',reposicao:'pode_ver_fornecedores',etiquetas:'pode_editar_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',precificacao:'pode_editar_produtos',inventario:'pode_editar_produtos',reposicao:'pode_ver_fornecedores',etiquetas:'pode_editar_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',separacao:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -1988,7 +2032,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderPrecificacoes();renderInventarios();renderReposicoes();renderEtiquetas();renderCatalogo();renderCupons();renderNotificacoes();setTimeout(focarProdutoDoLink,80);
+  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderSeparacao();renderTrocas();renderPrecificacoes();renderInventarios();renderReposicoes();renderEtiquetas();renderCatalogo();renderCupons();renderNotificacoes();setTimeout(focarProdutoDoLink,80);
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
@@ -2278,6 +2322,91 @@ async function excluirTroca(id){
     return alert('Não foi possível excluir: '+r.error.message);
   }
   await carregar();ativarAba('trocas');
+}
+
+
+function sepStatusPedido(p){return p.status_separacao||'pendente'}
+function sepStatusNome(s){return s==='separado'?'Separado':s==='pronto'?'Pronto para entrega':'Pendente'}
+function pedidoElegivelSeparacao(p){
+  return !['entregue','cancelado'].includes(String(p.status||'')) && ['pendente','separado','pronto'].includes(sepStatusPedido(p));
+}
+function renderSeparacao(){
+  const alvo=document.getElementById('listaSeparacao');if(!alvo)return;
+  const busca=String(document.getElementById('sepBusca')?.value||'').toLowerCase().trim();
+  const filtro=document.getElementById('sepStatusFiltro')?.value||'';
+  const listaBase=pedidos.filter(pedidoElegivelSeparacao);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('sepPendentes',listaBase.filter(p=>sepStatusPedido(p)==='pendente').length);
+  set('sepSeparados',listaBase.filter(p=>sepStatusPedido(p)==='separado').length);
+  set('sepProntos',listaBase.filter(p=>sepStatusPedido(p)==='pronto').length);
+  set('sepItens',listaBase.filter(p=>sepStatusPedido(p)!=='pronto').reduce((s,p)=>s+pedidoItens(p.id).reduce((a,i)=>a+num(i.quantidade),0),0));
+
+  const lista=listaBase.filter(p=>{
+    if(filtro&&sepStatusPedido(p)!==filtro)return false;
+    const c=pedidoCliente(p.cliente_id),it=pedidoItens(p.id).map(i=>i.produto_nome||produtoNome(i.produto_id)||'').join(' ');
+    const txt=[c?.nome,it,p.observacoes].join(' ').toLowerCase();
+    return !busca||txt.includes(busca);
+  }).sort((a,b)=>{
+    const pa={pendente:0,separado:1,pronto:2},sa=pa[sepStatusPedido(a)]??9,sb=pa[sepStatusPedido(b)]??9;
+    if(sa!==sb)return sa-sb;
+    return new Date(a.previsao_entrega||'2999-12-31')-new Date(b.previsao_entrega||'2999-12-31');
+  });
+
+  alvo.innerHTML=lista.length?lista.map(p=>{
+    const c=pedidoCliente(p.cliente_id),its=pedidoItens(p.id),st=sepStatusPedido(p);
+    return `<article class="sep-card">
+      <div class="sep-head">
+        <div>
+          <h4 style="margin:0">${esc(c?.nome||'Cliente')}</h4>
+          <div class="sep-meta">Pedido ${String(p.id).slice(0,8)} • ${p.previsao_entrega?'Entrega '+formatarData(p.previsao_entrega):'Sem previsão de entrega'}</div>
+        </div>
+        <span class="sep-status ${st}">${esc(sepStatusNome(st))}</span>
+      </div>
+      <div class="sep-items">${its.length?its.map(i=>`<div class="sep-item"><span>${esc(i.produto_nome||produtoNome(i.produto_id)||'Produto')}</span><b>${num(i.quantidade)} un.</b></div>`).join(''):'<div class="muted">Pedido sem itens.</div>'}</div>
+      <div class="sep-actions">
+        <button class="soft" onclick="verPedido('${p.id}')">👁️ Ver pedido</button>
+        ${st==='pendente'?`<button class="primary" onclick="alterarSeparacaoPedido('${p.id}','separado')">✅ Marcar separado</button>`:''}
+        ${st==='separado'?`<button class="primary" onclick="alterarSeparacaoPedido('${p.id}','pronto')">📦 Pronto para entrega</button><button class="soft" onclick="alterarSeparacaoPedido('${p.id}','pendente')">↩️ Voltar para pendente</button>`:''}
+        ${st==='pronto'?`<button class="soft" onclick="alterarSeparacaoPedido('${p.id}','separado')">↩️ Voltar para separado</button>`:''}
+      </div>
+    </article>`;
+  }).join(''):'<div class="empty-state"><div class="icon">🧾</div><h3>Nenhum pedido para separar</h3><p class="muted">Os pedidos ativos aparecerão aqui automaticamente.</p></div>';
+}
+function abrirSeparacaoPedido(id){
+  ativarAba('separacao');
+  setTimeout(()=>{const busca=document.getElementById('sepBusca'),p=pedidos.find(x=>x.id===id),c=p?pedidoCliente(p.cliente_id):null;if(busca){busca.value=c?.nome||'';renderSeparacao()}},50);
+}
+async function alterarSeparacaoPedido(id,status){
+  const p=pedidos.find(x=>x.id===id);if(!p)return;
+  const agora=new Date().toISOString();
+  const obj={status_separacao:status,updated_at:agora};
+  if(status==='separado'){obj.separado_em=agora;obj.separado_por=user.id}
+  if(status==='pendente'){obj.separado_em=null;obj.pronto_entrega_em=null;obj.separado_por=null}
+  if(status==='pronto'){obj.pronto_entrega_em=agora;if(!p.separado_em)obj.separado_em=agora;if(!p.separado_por)obj.separado_por=user.id}
+  const r=await sb.from('pedidos').update(obj).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível atualizar a separação: '+r.error.message);
+  await carregar();ativarAba('separacao');
+}
+function pedidosVisiveisSeparacao(){
+  const busca=String(document.getElementById('sepBusca')?.value||'').toLowerCase().trim();
+  const filtro=document.getElementById('sepStatusFiltro')?.value||'';
+  return pedidos.filter(pedidoElegivelSeparacao).filter(p=>{
+    if(filtro&&sepStatusPedido(p)!==filtro)return false;
+    const c=pedidoCliente(p.cliente_id),it=pedidoItens(p.id).map(i=>i.produto_nome||produtoNome(i.produto_id)||'').join(' ');
+    return !busca||[c?.nome,it,p.observacoes].join(' ').toLowerCase().includes(busca);
+  });
+}
+function imprimirListaSeparacao(){
+  const lista=pedidosVisiveisSeparacao();
+  if(!lista.length)return alert('Não há pedidos nessa lista para imprimir.');
+  const loja=esc(configLoja?.nome_loja||'Essência & Encanto');
+  const htmlPedidos=lista.map(p=>{
+    const c=pedidoCliente(p.cliente_id),its=pedidoItens(p.id),st=sepStatusNome(sepStatusPedido(p));
+    return `<section class="pedido"><div class="cab"><div><h3>${esc(c?.nome||'Cliente')}</h3><small>Pedido ${String(p.id).slice(0,8)} • ${p.previsao_entrega?'Entrega '+formatarData(p.previsao_entrega):'Sem previsão'}</small></div><b>${esc(st)}</b></div><table><thead><tr><th></th><th>Produto</th><th>Qtd.</th></tr></thead><tbody>${its.map(i=>`<tr><td class="check">□</td><td>${esc(i.produto_nome||produtoNome(i.produto_id)||'Produto')}</td><td>${num(i.quantidade)}</td></tr>`).join('')}</tbody></table></section>`;
+  }).join('');
+  const w=window.open('','_blank');if(!w)return alert('O navegador bloqueou a janela de impressão.');
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Lista de separação</title><style>@page{size:A4;margin:12mm}body{font-family:Arial,sans-serif;color:#111;margin:0}h1{font-size:22px;margin:0 0 4px}header{margin-bottom:18px}.muted{color:#666;font-size:12px}.pedido{border:1px solid #bbb;border-radius:10px;padding:12px;margin-bottom:12px;break-inside:avoid}.cab{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.cab h3{margin:0 0 4px}.cab small{color:#666}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{text-align:left;padding:7px;border-top:1px solid #ddd;font-size:12px}.check{width:25px;font-size:18px}@media print{button{display:none}}</style></head><body><header><h1>🧾 Lista de Separação</h1><div class="muted">${loja} • ${new Date().toLocaleString('pt-BR')}</div></header>${htmlPedidos}</body></html>`);
+  w.document.close();setTimeout(()=>w.print(),200);
 }
 
 function renderPedidos(){
