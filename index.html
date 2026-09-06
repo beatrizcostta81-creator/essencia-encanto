@@ -235,12 +235,27 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .return-status.concluido{background:#e8f7ec;color:#26743b}.return-status.aberto{background:#fff3cd;color:#7a5b00}.return-status.em_analise{background:#e7f0ff;color:#245b9b}.return-status.cancelado{background:#fde8e8;color:#9a2d2d}
 @media(max-width:900px){.return-kpis{grid-template-columns:1fr 1fr}.return-values{grid-template-columns:1fr 1fr}}
 
+
+/* Controle de caixa */
+.cash-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}
+.cash-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.cash-kpi span{display:block;font-size:11px;color:#777}.cash-kpi b{display:block;font-size:19px;margin-top:5px;color:var(--cor-principal)}.cash-kpi small{display:block;color:#888;margin-top:3px}
+.cash-status{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:900}
+.cash-status.aberto{background:#e8f7ec;color:#26743b}.cash-status.fechado{background:#eee;color:#555}
+.cash-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+.cash-mov-list{display:grid;gap:8px}.cash-mov{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border:1px solid #00000010;border-radius:13px}
+.cash-mov .meta{font-size:11px;color:#777;margin-top:3px}.cash-mov .valor.entrada{color:#26743b}.cash-mov .valor.saida{color:#a33131}
+.cash-history{display:grid;gap:8px}.cash-history-row{display:grid;grid-template-columns:1fr repeat(4,120px) auto;align-items:center;gap:10px;padding:11px;border:1px solid #00000010;border-radius:13px}
+.cash-diff.ok{color:#26743b}.cash-diff.bad{color:#a33131}
+@media(max-width:1000px){.cash-kpis{grid-template-columns:repeat(2,1fr)}.cash-grid{grid-template-columns:1fr}.cash-history-row{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.cash-kpis{grid-template-columns:1fr 1fr}.cash-kpi:first-child{grid-column:1/-1}.cash-mov{align-items:flex-start}.cash-history-row{grid-template-columns:1fr}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -519,6 +534,42 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </section>
 
 
+
+<section id="caixa" class="view">
+  <div class="top">
+    <div><h2>💰 Controle de Caixa</h2><p class="muted">Abra, movimente, confira e feche o caixa do dia.</p></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="soft" onclick="abrirMovimentoCaixa('entrada')">➕ Entrada</button>
+      <button class="soft" onclick="abrirMovimentoCaixa('saida')">➖ Saída</button>
+      <button class="primary" id="btnAcaoCaixa" onclick="acaoPrincipalCaixa()">Abrir caixa</button>
+    </div>
+  </div>
+
+  <div class="cash-kpis">
+    <div class="cash-kpi"><span>Status de hoje</span><b id="caixaStatusHoje">Não aberto</b><small id="caixaDataHoje"></small></div>
+    <div class="cash-kpi"><span>Valor inicial</span><b id="caixaInicial">R$ 0,00</b><small>Fundo de caixa</small></div>
+    <div class="cash-kpi"><span>Vendas do dia</span><b id="caixaVendasDia">R$ 0,00</b><small id="caixaVendasDinheiro">R$ 0,00 em dinheiro</small></div>
+    <div class="cash-kpi"><span>Entradas / Saídas</span><b id="caixaMovResumo">R$ 0,00</b><small id="caixaMovDetalhe">Entradas R$ 0,00 • Saídas R$ 0,00</small></div>
+    <div class="cash-kpi"><span>Saldo esperado</span><b id="caixaEsperado">R$ 0,00</b><small id="caixaDiferencaHoje">Aguardando conferência</small></div>
+  </div>
+
+  <div class="cash-grid">
+    <div class="panel">
+      <div class="top"><div><h3>🧾 Movimentações de hoje</h3><p class="muted">Entradas e saídas manuais do caixa.</p></div></div>
+      <div id="caixaMovLista" class="cash-mov-list"></div>
+    </div>
+    <div class="panel">
+      <div class="top"><div><h3>📌 Resumo do caixa</h3><p class="muted">Conferência do caixa atual.</p></div></div>
+      <div id="caixaResumoAtual"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:14px">
+    <div class="top"><div><h3>📚 Histórico de caixas</h3><p class="muted">Aberturas e fechamentos anteriores.</p></div></div>
+    <div id="caixaHistorico" class="cash-history"></div>
+  </div>
+</section>
+
 <section id="usuarios" class="view">
   <div class="top"><div><h2>🔐 Usuários e Permissões</h2><p class="muted">Controle o que cada pessoa pode visualizar ou alterar no sistema.</p></div><button class="soft" onclick="recarregarPerfis()">↻ Atualizar</button></div>
   <div class="panel">
@@ -620,9 +671,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -704,7 +755,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -1001,7 +1052,7 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const promoTab=document.querySelector('.tab[data-v="promocoes"]');if(promoTab&&meuPerfil&&meuPerfil.papel!=='administrador'&&!pode('pode_editar_produtos'))promoTab.style.display='none';
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -1090,7 +1141,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderCatalogo();renderCupons();renderNotificacoes();
+  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderCatalogo();renderCupons();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
@@ -1454,6 +1505,136 @@ function finClienteNome(id){return clientes.find(c=>c.id===id)?.nome||'Cliente'}
 function finTexto(v){return String(v??'').toLowerCase()}
 function finDespesaPaga(d){return d.pago===true||String(d.status||'').toLowerCase()==='pago'||String(d.status||'').toLowerCase()==='paga'}
 function finParcelaPaga(p){return p.pago===true||String(p.status||'').toLowerCase()==='pago'}
+
+function caixaDataISO(d=new Date()){
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dia=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dia}`;
+}
+function caixaHoje(){return caixas.find(c=>String(c.data_caixa).slice(0,10)===caixaDataISO())||null}
+function caixaMovs(caixaId){return movimentacoesCaixa.filter(m=>m.caixa_id===caixaId)}
+function caixaEhDinheiro(v){
+  const f=String(v.forma_pagamento||v.forma||'').toLowerCase();
+  return f.includes('dinheiro')||f==='cash';
+}
+function caixaVendasNaData(data){
+  return vendas.filter(v=>{
+    const d=dataVenda(v);return d&&caixaDataISO(d)===String(data).slice(0,10);
+  });
+}
+function caixaCalculos(c){
+  if(!c)return {vendasTotal:0,vendasDinheiro:0,entradas:0,saidas:0,esperado:0};
+  const vs=caixaVendasNaData(c.data_caixa);
+  const vendasTotal=vs.reduce((s,v)=>s+num(v.total),0);
+  const vendasDinheiro=vs.filter(caixaEhDinheiro).reduce((s,v)=>s+num(v.valor_pago??v.total),0);
+  const movs=caixaMovs(c.id);
+  const entradas=movs.filter(m=>m.tipo==='entrada').reduce((s,m)=>s+num(m.valor),0);
+  const saidas=movs.filter(m=>m.tipo==='saida').reduce((s,m)=>s+num(m.valor),0);
+  const esperado=num(c.valor_inicial)+vendasDinheiro+entradas-saidas;
+  return {vendasTotal,vendasDinheiro,entradas,saidas,esperado};
+}
+function renderCaixa(){
+  const alvo=document.getElementById('caixaStatusHoje');if(!alvo)return;
+  const hoje=caixaHoje(),set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('caixaDataHoje',new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}));
+  const btn=document.getElementById('btnAcaoCaixa');
+  if(!hoje){
+    set('caixaStatusHoje','Não aberto');alvo.className='';
+    set('caixaInicial',money(0));set('caixaVendasDia',money(0));set('caixaVendasDinheiro',money(0)+' em dinheiro');
+    set('caixaMovResumo',money(0));set('caixaMovDetalhe','Entradas R$ 0,00 • Saídas R$ 0,00');set('caixaEsperado',money(0));set('caixaDiferencaHoje','Abra o caixa para começar');
+    if(btn){btn.textContent='🔓 Abrir caixa';btn.disabled=false}
+    const ml=document.getElementById('caixaMovLista');if(ml)ml.innerHTML='<div class="empty-state"><div class="icon">💰</div><h3>Caixa ainda não aberto</h3><p class="muted">Abra o caixa de hoje para registrar entradas e saídas.</p></div>';
+    const ra=document.getElementById('caixaResumoAtual');if(ra)ra.innerHTML='<p class="muted">Nenhum caixa aberto hoje.</p>';
+  }else{
+    const calc=caixaCalculos(hoje),fechado=hoje.status==='fechado';
+    set('caixaStatusHoje',fechado?'Fechado':'Aberto');alvo.className='cash-status '+(fechado?'fechado':'aberto');
+    set('caixaInicial',money(hoje.valor_inicial));set('caixaVendasDia',money(calc.vendasTotal));set('caixaVendasDinheiro',money(calc.vendasDinheiro)+' em dinheiro');
+    set('caixaMovResumo',money(calc.entradas-calc.saidas));set('caixaMovDetalhe',`Entradas ${money(calc.entradas)} • Saídas ${money(calc.saidas)}`);
+    set('caixaEsperado',money(calc.esperado));
+    if(fechado){
+      const dif=num(hoje.diferenca);set('caixaDiferencaHoje',`Contado ${money(hoje.saldo_contado)} • Diferença ${money(dif)}`);
+      if(btn){btn.textContent='✅ Caixa fechado';btn.disabled=true}
+    }else{
+      set('caixaDiferencaHoje','Aguardando fechamento');
+      if(btn){btn.textContent='🔒 Fechar caixa';btn.disabled=false}
+    }
+    renderMovimentacoesCaixa(hoje);
+    renderResumoCaixa(hoje,calc);
+  }
+  renderHistoricoCaixa();
+}
+function renderMovimentacoesCaixa(c){
+  const alvo=document.getElementById('caixaMovLista');if(!alvo)return;
+  const movs=caixaMovs(c.id);
+  alvo.innerHTML=movs.length?movs.map(m=>`<div class="cash-mov"><div><b>${m.tipo==='entrada'?'➕':'➖'} ${esc(m.descricao||m.categoria||'Movimentação')}</b><div class="meta">${esc(m.categoria||'Sem categoria')} • ${new Date(m.created_at).toLocaleString('pt-BR')}</div></div><div style="text-align:right"><b class="valor ${m.tipo}">${m.tipo==='entrada'?'+':'-'} ${money(m.valor)}</b>${c.status!=='fechado'?`<div><button class="danger" style="margin-top:5px" onclick="excluirMovimentoCaixa('${m.id}')">Excluir</button></div>`:''}</div></div>`).join(''):'<div class="empty-state"><div class="icon">🧾</div><h3>Sem movimentações manuais</h3><p class="muted">As vendas em dinheiro entram automaticamente no saldo esperado.</p></div>';
+}
+function renderResumoCaixa(c,calc){
+  const alvo=document.getElementById('caixaResumoAtual');if(!alvo)return;
+  const dif=c.status==='fechado'?num(c.diferenca):null;
+  alvo.innerHTML=`<div class="detail-grid">
+    <div><small>Fundo inicial</small><b>${money(c.valor_inicial)}</b></div>
+    <div><small>Vendas em dinheiro</small><b>${money(calc.vendasDinheiro)}</b></div>
+    <div><small>Entradas manuais</small><b>${money(calc.entradas)}</b></div>
+    <div><small>Saídas manuais</small><b>${money(calc.saidas)}</b></div>
+    <div><small>Saldo esperado</small><b>${money(calc.esperado)}</b></div>
+    <div><small>Saldo contado</small><b>${c.saldo_contado==null?'—':money(c.saldo_contado)}</b></div>
+  </div>${c.status==='fechado'?`<p style="margin-top:12px"><b>Diferença:</b> <span class="cash-diff ${Math.abs(dif)<0.01?'ok':'bad'}">${money(dif)}</span></p>`:'<p class="muted" style="margin-top:12px">O saldo esperado considera apenas vendas recebidas em <b>dinheiro</b>, além das entradas e saídas manuais.</p>'}${c.observacoes?`<p><b>Observações:</b> ${esc(c.observacoes)}</p>`:''}`;
+}
+function renderHistoricoCaixa(){
+  const alvo=document.getElementById('caixaHistorico');if(!alvo)return;
+  alvo.innerHTML=caixas.length?caixas.map(c=>{
+    const calc=caixaCalculos(c),dif=c.status==='fechado'?num(c.diferenca):null;
+    return `<div class="cash-history-row"><div><b>${formatarData(c.data_caixa)}</b><div class="meta"><span class="cash-status ${c.status==='fechado'?'fechado':'aberto'}">${c.status==='fechado'?'Fechado':'Aberto'}</span></div></div><div><small>Inicial</small><br><b>${money(c.valor_inicial)}</b></div><div><small>Vendas</small><br><b>${money(calc.vendasTotal)}</b></div><div><small>Esperado</small><br><b>${money(calc.esperado)}</b></div><div><small>Diferença</small><br><b class="cash-diff ${dif!=null&&Math.abs(dif)<0.01?'ok':dif!=null?'bad':''}">${dif==null?'—':money(dif)}</b></div><button class="soft" onclick="verCaixa('${c.id}')">👁️ Ver</button></div>`;
+  }).join(''):'<p class="muted">Ainda não há histórico de caixa.</p>';
+}
+function acaoPrincipalCaixa(){
+  const c=caixaHoje();if(!c)return abrirCaixa();if(c.status==='aberto')return fecharCaixa(c.id);
+}
+function abrirCaixa(){
+  if(caixaHoje())return alert('O caixa de hoje já foi aberto.');
+  openModal(`<h2>🔓 Abrir caixa</h2><p class="muted">Informe quanto dinheiro existe no caixa antes de começar as vendas.</p><div class="form-grid"><div><label>Valor inicial</label><input id="cxInicial" type="number" min="0" step="0.01" value="0"></div><div class="full"><label>Observações</label><textarea id="cxObs" placeholder="Opcional"></textarea></div></div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarAberturaCaixa()">Abrir caixa</button></div>`);
+}
+async function salvarAberturaCaixa(){
+  const obj={user_id:user.id,data_caixa:caixaDataISO(),status:'aberto',valor_inicial:Math.max(0,num(document.getElementById('cxInicial').value)),saldo_esperado:0,observacoes:document.getElementById('cxObs').value.trim()||null,aberto_em:new Date().toISOString(),updated_at:new Date().toISOString()};
+  const r=await sb.from('caixas').insert(obj);if(r.error)return alert('Não foi possível abrir o caixa: '+r.error.message);
+  closeModal();await carregar();ativarAba('caixa');alert('✅ Caixa aberto com sucesso.');
+}
+function abrirMovimentoCaixa(tipo){
+  const c=caixaHoje();if(!c)return alert('Abra o caixa de hoje primeiro.');if(c.status==='fechado')return alert('O caixa de hoje já está fechado.');
+  openModal(`<h2>${tipo==='entrada'?'➕ Nova entrada':'➖ Nova saída'}</h2><div class="form-grid"><div><label>Valor *</label><input id="mcValor" type="number" min="0.01" step="0.01" placeholder="0,00"></div><div><label>Categoria</label><select id="mcCat">${tipo==='entrada'?'<option>Reforço de caixa</option><option>Recebimento extra</option><option>Outros</option>':'<option>Retirada</option><option>Despesa</option><option>Troco/ajuste</option><option>Outros</option>'}</select></div><div class="full"><label>Descrição *</label><input id="mcDesc" placeholder="${tipo==='entrada'?'Ex.: reforço para troco':'Ex.: compra de material'}"></div></div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarMovimentoCaixa('${tipo}')">Salvar</button></div>`);
+}
+async function salvarMovimentoCaixa(tipo){
+  const c=caixaHoje(),valor=Math.max(0,num(document.getElementById('mcValor').value)),descricao=document.getElementById('mcDesc').value.trim();
+  if(!c||c.status!=='aberto')return alert('Não há caixa aberto.');if(valor<=0)return alert('Informe um valor maior que zero.');if(!descricao)return alert('Informe a descrição.');
+  const r=await sb.from('movimentacoes_caixa').insert({user_id:user.id,caixa_id:c.id,tipo,categoria:document.getElementById('mcCat').value||null,descricao,valor});
+  if(r.error)return alert('Não foi possível salvar: '+r.error.message);
+  closeModal();await carregar();ativarAba('caixa');
+}
+async function excluirMovimentoCaixa(id){
+  const c=caixaHoje();if(!c||c.status!=='aberto')return alert('Só é possível excluir movimentações enquanto o caixa estiver aberto.');
+  if(!confirm('Excluir esta movimentação?'))return;
+  const r=await sb.from('movimentacoes_caixa').delete().eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível excluir: '+r.error.message);
+  await carregar();ativarAba('caixa');
+}
+function fecharCaixa(id){
+  const c=caixas.find(x=>x.id===id);if(!c||c.status!=='aberto')return;
+  const calc=caixaCalculos(c);
+  openModal(`<h2>🔒 Fechar caixa</h2><p class="muted">Conte o dinheiro físico que está no caixa e informe o valor abaixo.</p><div class="detail-grid"><div><small>Saldo esperado</small><b>${money(calc.esperado)}</b></div><div><small>Vendas em dinheiro</small><b>${money(calc.vendasDinheiro)}</b></div><div><small>Entradas</small><b>${money(calc.entradas)}</b></div><div><small>Saídas</small><b>${money(calc.saidas)}</b></div></div><div class="form-grid" style="margin-top:14px"><div><label>Saldo contado *</label><input id="cxContado" type="number" min="0" step="0.01" oninput="previewDiferencaCaixa(${calc.esperado})"></div><div><label>Diferença</label><input id="cxDiffPreview" disabled value="${money(-calc.esperado)}"></div><div class="full"><label>Observações</label><textarea id="cxFechaObs">${esc(c.observacoes||'')}</textarea></div></div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarFechamentoCaixa('${c.id}',${calc.esperado})">Confirmar fechamento</button></div>`);
+}
+function previewDiferencaCaixa(esperado){
+  const contado=Math.max(0,num(document.getElementById('cxContado')?.value)),e=document.getElementById('cxDiffPreview');if(e)e.value=money(contado-esperado);
+}
+async function salvarFechamentoCaixa(id,esperado){
+  const el=document.getElementById('cxContado');if(!el||el.value==='')return alert('Informe o saldo contado.');
+  const contado=Math.max(0,num(el.value)),dif=contado-num(esperado);
+  const r=await sb.from('caixas').update({status:'fechado',saldo_esperado:esperado,saldo_contado:contado,diferenca:dif,fechado_em:new Date().toISOString(),observacoes:document.getElementById('cxFechaObs').value.trim()||null,updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível fechar o caixa: '+r.error.message);
+  closeModal();await carregar();ativarAba('caixa');alert(`✅ Caixa fechado. Diferença: ${money(dif)}`);
+}
+function verCaixa(id){
+  const c=caixas.find(x=>x.id===id);if(!c)return;const calc=caixaCalculos(c),movs=caixaMovs(c.id);
+  openModal(`<h2>💰 Caixa de ${formatarData(c.data_caixa)}</h2><div class="detail-grid"><div><small>Status</small><b>${c.status==='fechado'?'Fechado':'Aberto'}</b></div><div><small>Valor inicial</small><b>${money(c.valor_inicial)}</b></div><div><small>Vendas do dia</small><b>${money(calc.vendasTotal)}</b></div><div><small>Vendas em dinheiro</small><b>${money(calc.vendasDinheiro)}</b></div><div><small>Entradas</small><b>${money(calc.entradas)}</b></div><div><small>Saídas</small><b>${money(calc.saidas)}</b></div><div><small>Esperado</small><b>${money(calc.esperado)}</b></div><div><small>Contado</small><b>${c.saldo_contado==null?'—':money(c.saldo_contado)}</b></div><div><small>Diferença</small><b>${c.diferenca==null?'—':money(c.diferenca)}</b></div></div><h3 style="margin-top:16px">Movimentações</h3>${movs.length?movs.map(m=>`<p>${m.tipo==='entrada'?'➕':'➖'} ${esc(m.descricao||'Movimentação')} — <b>${money(m.valor)}</b></p>`).join(''):'<p class="muted">Sem movimentações manuais.</p>'}${c.observacoes?`<p><b>Observações:</b> ${esc(c.observacoes)}</p>`:''}<div style="display:flex;justify-content:flex-end"><button class="soft" onclick="closeModal()">Fechar</button></div>`);
+}
+
 function renderFinanceiro(){
   const mesInput=document.getElementById('finMes');if(!mesInput)return;
   if(!mesInput.value)mesInput.value=finMesAtual();
