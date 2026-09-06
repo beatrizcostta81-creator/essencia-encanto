@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Essência & Encanto - Dashboard profissional + logo + vendas + produtos + clientes + personalização --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Essência & Encanto - Sistema completo + catálogo para clientes --><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Essência & Encanto Online</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -195,12 +195,18 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .order-item-row input,.order-item-row select{margin:0}.order-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.order-summary>div{background:var(--cor-fundo);border:1px solid var(--borda);padding:10px;border-radius:10px}.order-summary small{display:block;color:#88766f;font-size:11px}.order-summary b{display:block;margin-top:3px}
 @media(max-width:760px){.order-stats,.order-values,.order-summary{grid-template-columns:repeat(2,1fr)}.order-toolbar{grid-template-columns:1fr}.order-item-row{grid-template-columns:1fr 1fr}.order-item-row .order-prod{grid-column:1/-1}}
 
+/* Catálogo para clientes */
+.catalog-toolbar{display:grid;grid-template-columns:1fr 220px auto auto;gap:9px;align-items:end;margin-bottom:14px}.catalog-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.catalog-card{background:var(--painel);border:1px solid var(--borda);border-radius:16px;overflow:hidden;box-shadow:0 5px 16px rgba(50,30,30,.05);display:flex;flex-direction:column}.catalog-photo{aspect-ratio:1/1;background:var(--cor-secundaria);display:grid;place-items:center;overflow:hidden}.catalog-photo img{width:100%;height:100%;object-fit:cover}.catalog-photo .catalog-no-photo{font-size:38px;opacity:.65}.catalog-body{padding:13px;display:flex;flex-direction:column;gap:7px;flex:1}.catalog-category{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#8b7770}.catalog-name{font-weight:850;font-size:15px;line-height:1.25}.catalog-desc{font-size:12px;color:#786a66;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.catalog-price{font-size:20px;font-weight:900;color:var(--cor-principal);margin-top:auto}.catalog-stock{font-size:11px;color:#7c6b65}.catalog-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}.catalog-actions button{flex:1}.catalog-empty{padding:28px;text-align:center;color:#806f69;border:1px dashed var(--borda);border-radius:14px;grid-column:1/-1}.catalog-preview-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}.catalog-preview-head img{width:52px;height:52px;border-radius:14px;object-fit:contain;border:1px solid var(--borda);background:white}.catalog-count{font-size:12px;color:#85736d}.catalog-help{background:var(--cor-secundaria);border:1px solid var(--borda);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:12px;line-height:1.45}.catalog-share-actions{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:1050px){.catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.catalog-toolbar{grid-template-columns:1fr 1fr}.catalog-toolbar .catalog-wide{grid-column:1/-1}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.catalog-grid{grid-template-columns:1fr}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -264,6 +270,21 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     <div id="listaProdutos"></div>
   </div>
 </section>
+<section id="catalogo" class="view">
+  <div class="top"><div><h2>📖 Catálogo para Clientes</h2><p class="muted">Mostra somente produtos ativos e disponíveis em estoque.</p></div><div class="catalog-share-actions"><button class="soft" onclick="copiarCatalogoTexto()">📋 Copiar lista</button><button class="primary" onclick="abrirCatalogoCliente()">✨ Abrir catálogo / PDF</button></div></div>
+  <div class="catalog-help"><b>Como compartilhar:</b> filtre a categoria que quiser e clique em <b>Abrir catálogo / PDF</b>. Na página que abrir, você pode imprimir, salvar em PDF ou compartilhar. Cada produto terá um botão <b>Pedir pelo WhatsApp</b> usando o número cadastrado em Configurações.</div>
+  <div class="panel">
+    <div class="catalog-toolbar">
+      <div class="catalog-wide"><label>Buscar produto</label><input id="catalogoBusca" placeholder="🔎 Nome, categoria ou descrição" oninput="renderCatalogo()"></div>
+      <div><label>Categoria</label><select id="catalogoCategoria" onchange="renderCatalogo()"><option value="">Todas as categorias</option></select></div>
+      <button class="soft" onclick="renderCatalogo()">↻ Atualizar</button>
+      <button class="soft" onclick="abrirCatalogoCliente()">🖨️ Imprimir / PDF</button>
+    </div>
+    <div class="catalog-preview-head"><img id="catalogoLogo" alt="Logo"><div><b id="catalogoNomeLoja">Essência & Encanto</b><div id="catalogoContato" class="catalog-count"></div><div id="catalogoQtd" class="catalog-count"></div></div></div>
+    <div id="catalogoGrid" class="catalog-grid"></div>
+  </div>
+</section>
+
 <section id="clientes" class="view">
   <div class="top"><div><h2>👥 Clientes</h2><p class="muted">Cadastre, encontre e acompanhe seus clientes.</p></div><button class="primary" onclick="novoCliente()">+ Novo cliente</button></div>
   <div class="client-stats">
@@ -515,8 +536,8 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
 const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[];
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','agenda','produtos','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},catalogo:{label:'Catálogo',icone:'📖'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','agenda','produtos','catalogo','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -747,6 +768,50 @@ function estoqueBaixo(p){return num(p.estoque)<=num(p.estoque_minimo)}
 function lucroProduto(p){return precoVendaProduto(p)-precoCustoProduto(p)}
 function margemProduto(p){const venda=precoVendaProduto(p);return venda>0?(lucroProduto(p)/venda)*100:0}
 function preencherFiltroCategorias(){const el=document.getElementById('produtoCategoria');if(!el)return;const atual=el.value;el.innerHTML='<option value="">Todas as categorias</option>'+[...categorias].sort((a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR')).map(c=>`<option value="${esc(c.id)}">${esc(c.nome)}</option>`).join('');el.value=atual}
+function catalogoProdutosFiltrados(){
+  const busca=String(document.getElementById('catalogoBusca')?.value||'').toLowerCase().trim();
+  const cat=String(document.getElementById('catalogoCategoria')?.value||'');
+  return produtos.filter(p=>p.ativo!==false&&num(p.estoque)>0).filter(p=>{
+    if(cat&&String(p.categoria||'')!==cat)return false;
+    if(busca&&!String([p.nome,p.categoria,p.descricao,p.sku].join(' ')).toLowerCase().includes(busca))return false;
+    return true;
+  }).sort((a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR'));
+}
+function preencherCatalogoCategorias(){
+  const sel=document.getElementById('catalogoCategoria');if(!sel)return;
+  const atual=sel.value;const cats=[...new Set(produtos.filter(p=>p.ativo!==false&&num(p.estoque)>0).map(p=>String(p.categoria||'Sem categoria').trim()||'Sem categoria'))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  sel.innerHTML='<option value="">Todas as categorias</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  if(cats.includes(atual))sel.value=atual;
+}
+function catalogoContatoTexto(){
+  const partes=[];if(configLoja?.whatsapp)partes.push('WhatsApp: '+configLoja.whatsapp);if(configLoja?.instagram)partes.push(configLoja.instagram.startsWith('@')?configLoja.instagram:'@'+configLoja.instagram);return partes.join(' • ');
+}
+function renderCatalogo(){
+  const grid=document.getElementById('catalogoGrid');if(!grid)return;preencherCatalogoCategorias();
+  const lista=catalogoProdutosFiltrados();const nome=configLoja?.nome_loja||'Essência & Encanto';
+  const n=document.getElementById('catalogoNomeLoja');if(n)n.textContent=nome;
+  const ct=document.getElementById('catalogoContato');if(ct)ct.textContent=catalogoContatoTexto();
+  const q=document.getElementById('catalogoQtd');if(q)q.textContent=`${lista.length} ${lista.length===1?'produto disponível':'produtos disponíveis'}`;
+  const logo=document.getElementById('catalogoLogo');if(logo){if(configLoja?.logo_url){logo.src=configLoja.logo_url;logo.style.display='block'}else logo.style.display='none'}
+  grid.innerHTML=lista.length?lista.map(p=>`<article class="catalog-card"><div class="catalog-photo">${p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nome||'Produto')}" loading="lazy">`:'<div class="catalog-no-photo">🛍️</div>'}</div><div class="catalog-body"><div class="catalog-category">${esc(p.categoria||'Sem categoria')}</div><div class="catalog-name">${esc(p.nome||'Produto')}</div>${p.descricao?`<div class="catalog-desc">${esc(p.descricao)}</div>`:''}<div class="catalog-price">${money(p.preco_venda)}</div><div class="catalog-stock">Disponível em estoque</div><div class="catalog-actions"><button class="success" onclick="pedirProdutoWhatsapp('${p.id}')">📲 Pedir</button></div></div></article>`).join(''):'<div class="catalog-empty">Nenhum produto disponível para este filtro.</div>';
+}
+function pedirProdutoWhatsapp(id){
+  const p=produtos.find(x=>x.id===id);if(!p)return;const tel=whatsappNumero(configLoja?.whatsapp||'');if(!tel)return alert('Cadastre o WhatsApp da loja em Configurações primeiro.');
+  const msg=`Olá! Tenho interesse no produto ${p.nome||'Produto'} (${money(p.preco_venda)}). Poderia me passar mais informações?`;
+  window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function catalogoHtmlCliente(){
+  const lista=catalogoProdutosFiltrados(),nome=configLoja?.nome_loja||'Essência & Encanto',logo=configLoja?.logo_url||'',cor=configLoja?.cor_principal||'#8f4f66',sec=configLoja?.cor_secundaria||'#f5e5eb',tel=whatsappNumero(configLoja?.whatsapp||''),contato=catalogoContatoTexto(),endereco=configLoja?.endereco||'';
+  const cards=lista.map(p=>{const msg=`Olá! Tenho interesse no produto ${p.nome||'Produto'} (${money(p.preco_venda)}). Poderia me passar mais informações?`;const link=tel?`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`:'#';return `<article class="p"><div class="pic">${p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nome||'Produto')}">`:'<span>🛍️</span>'}</div><div class="body"><small>${esc(p.categoria||'Sem categoria')}</small><h3>${esc(p.nome||'Produto')}</h3>${p.descricao?`<p>${esc(p.descricao)}</p>`:''}<b>${money(p.preco_venda)}</b>${tel?`<a href="${link}" target="_blank">📲 Pedir pelo WhatsApp</a>`:''}</div></article>`}).join('');
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Catálogo - ${esc(nome)}</title><style>*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#2f2729}.wrap{max-width:1100px;margin:auto;padding:28px}.head{display:flex;align-items:center;gap:16px;border-bottom:2px solid ${cor};padding-bottom:18px;margin-bottom:22px}.head img{width:76px;height:76px;object-fit:contain;border-radius:18px;border:1px solid #eee}.head h1{margin:0;font-size:26px}.meta{color:#76686c;font-size:13px;margin-top:5px}.actions{margin-left:auto;display:flex;gap:8px}.actions button{border:0;border-radius:10px;padding:10px 14px;background:${cor};color:white;font-weight:700;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.p{border:1px solid #eee;border-radius:16px;overflow:hidden;break-inside:avoid;background:#fff}.pic{aspect-ratio:1/1;background:${sec};display:grid;place-items:center;overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover}.pic span{font-size:48px}.body{padding:14px}.body small{text-transform:uppercase;font-weight:700;color:#8b777d}.body h3{margin:7px 0;font-size:17px}.body p{font-size:12px;line-height:1.45;color:#716469;min-height:34px}.body b{display:block;color:${cor};font-size:21px;margin:10px 0}.body a{display:block;text-align:center;text-decoration:none;background:${cor};color:#fff;border-radius:10px;padding:10px;font-weight:700}.foot{text-align:center;color:#8b7b80;font-size:12px;margin-top:28px;padding-top:15px;border-top:1px solid #eee}@media(max-width:720px){.wrap{padding:16px}.grid{grid-template-columns:repeat(2,1fr)}.actions{display:none}}@media(max-width:480px){.grid{grid-template-columns:1fr}}@media print{.actions{display:none}.wrap{max-width:none;padding:10mm}.grid{grid-template-columns:repeat(3,1fr);gap:10px}.body a{border:1px solid ${cor};color:${cor};background:#fff}}</style></head><body><div class="wrap"><header class="head">${logo?`<img src="${esc(logo)}" alt="Logo">`:''}<div><h1>${esc(nome)}</h1><div class="meta">${esc(contato)}</div>${endereco?`<div class="meta">${esc(endereco)}</div>`:''}</div><div class="actions"><button onclick="window.print()">🖨️ Imprimir / Salvar PDF</button></div></header><main class="grid">${cards||'<p>Nenhum produto disponível.</p>'}</main><footer class="foot">Catálogo gerado em ${new Date().toLocaleDateString('pt-BR')} • Valores e disponibilidade sujeitos a alteração.</footer></div></body></html>`;
+}
+function abrirCatalogoCliente(){
+  const lista=catalogoProdutosFiltrados();if(!lista.length)return alert('Não há produtos disponíveis neste filtro.');const w=window.open('','_blank');if(!w)return alert('O navegador bloqueou a nova janela. Permita pop-ups para abrir o catálogo.');w.document.open();w.document.write(catalogoHtmlCliente());w.document.close();
+}
+async function copiarCatalogoTexto(){
+  const lista=catalogoProdutosFiltrados();if(!lista.length)return alert('Não há produtos disponíveis neste filtro.');const nome=configLoja?.nome_loja||'Essência & Encanto';let txt=`✨ ${nome} — Catálogo disponível\n\n`+lista.map(p=>`• ${p.nome} — ${money(p.preco_venda)}`).join('\n');if(configLoja?.whatsapp)txt+=`\n\n📲 WhatsApp: ${configLoja.whatsapp}`;try{await navigator.clipboard.writeText(txt);alert('✅ Lista do catálogo copiada. Agora é só colar no WhatsApp.')}catch(e){alert('Não foi possível copiar automaticamente. Abra o catálogo e compartilhe por lá.')}
+}
+
 function renderProdutos(){
   const busca=(document.getElementById('produtoBusca')?.value||'').trim().toLowerCase();
   const cat=document.getElementById('produtoCategoria')?.value||'';
@@ -840,7 +905,7 @@ const PERMISSOES_ACESSO=[
 function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -885,7 +950,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderUsuarios();renderAgenda();renderPedidos();renderNotificacoes();
+  renderFinanceiro();renderUsuarios();renderAgenda();renderPedidos();renderCatalogo();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
