@@ -886,6 +886,366 @@ body.menu-lateral .header-actions button{
   .scan-inline .scan-btn{width:100%}
 }
 
+
+/* =========================================================
+   CORREÇÃO MOBILE — layout responsivo estável
+   ========================================================= */
+@media (max-width:720px){
+
+  html,body{max-width:100%;overflow-x:hidden}
+  body{font-size:14px}
+
+  /* Cabeçalho */
+  header,
+  body.menu-lateral header{
+    position:relative!important;
+    top:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:10px 12px!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:9px!important;
+    align-items:center!important;
+  }
+  header .brand{
+    min-width:0!important;
+    gap:9px!important;
+  }
+  header .brand img{
+    width:38px!important;
+    height:38px!important;
+    border-radius:11px!important;
+    flex:0 0 38px!important;
+  }
+  header .brand-copy{min-width:0!important}
+  header .brand-copy b{
+    display:block!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    font-size:14px!important;
+  }
+  header .brand-copy small{font-size:8px!important}
+
+  .header-actions{
+    display:flex!important;
+    align-items:center!important;
+    gap:5px!important;
+    margin:0!important;
+    min-width:0!important;
+  }
+  .header-actions #userEmail{display:none!important}
+  .header-actions button{
+    min-height:36px!important;
+    height:36px!important;
+    padding:7px 9px!important;
+    font-size:11px!important;
+    white-space:nowrap!important;
+  }
+  .notify-btn{
+    width:36px!important;
+    min-width:36px!important;
+    padding:0!important;
+  }
+  .notify-panel{
+    position:fixed!important;
+    top:58px!important;
+    left:10px!important;
+    right:10px!important;
+    width:auto!important;
+    max-width:none!important;
+    max-height:70vh!important;
+  }
+
+  /* Busca global em uma linha própria */
+  .global-search{
+    grid-column:1/-1!important;
+    grid-row:auto!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    order:initial!important;
+  }
+  .global-search-box{
+    width:100%!important;
+    height:42px!important;
+    box-sizing:border-box!important;
+  }
+  .global-search input{
+    width:100%!important;
+    min-width:0!important;
+    font-size:13px!important;
+  }
+  .global-search-kbd{display:none!important}
+  .global-search-results{
+    position:absolute!important;
+    top:48px!important;
+    left:0!important;
+    right:0!important;
+    width:auto!important;
+    max-height:62vh!important;
+  }
+
+  /* Menu no celular: barra horizontal limpa */
+  body.menu-lateral .tabs,
+  body.menu-topo .tabs,
+  body.menu-embaixo .tabs,
+  .tabs{
+    position:sticky!important;
+    top:0!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    z-index:60!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    gap:5px!important;
+    padding:7px 8px!important;
+    margin:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scrollbar-width:none!important;
+    background:var(--cor-card)!important;
+    border:0!important;
+    border-bottom:1px solid var(--borda)!important;
+    border-radius:0!important;
+    box-shadow:0 5px 14px rgba(0,0,0,.04)!important;
+  }
+  .tabs::-webkit-scrollbar{display:none!important}
+  body.menu-lateral .tabs:before,
+  body.menu-lateral .menu-group-label{display:none!important}
+  body.menu-lateral .tab,
+  body.menu-topo .tab,
+  body.menu-embaixo .tab,
+  .tab{
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:max-content!important;
+    min-height:36px!important;
+    margin:0!important;
+    padding:8px 10px!important;
+    border-radius:9px!important;
+    font-size:11px!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+  }
+  body.menu-lateral .tab.active{
+    box-shadow:inset 0 -3px 0 var(--cor-principal)!important;
+  }
+  body.menu-lateral .tab.active:before,
+  body.menu-lateral .tab[data-v]:before{display:none!important}
+
+  /* Conteúdo */
+  body.menu-lateral main,
+  body.menu-topo main,
+  body.menu-embaixo main,
+  main{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:14px 10px 88px!important;
+    box-sizing:border-box!important;
+    overflow-x:hidden!important;
+  }
+  body.menu-lateral .view,
+  .view{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+  }
+  .view>.top:first-child{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    padding-bottom:12px!important;
+    margin-bottom:14px!important;
+  }
+  .view>.top:first-child h2{
+    font-size:20px!important;
+    line-height:1.2!important;
+  }
+  .view>.top:first-child>button,
+  .view>.top:first-child>div:last-child,
+  .view>.top:first-child>div:last-child button{
+    width:100%!important;
+  }
+
+  /* Painéis, cards e grades */
+  .panel,.card,
+  .product-card,.client-card,.sale-card,.order-card,.return-card,
+  .cash-card,.inv-card,.price-card,.restock-card,.sep-card,
+  .dashboard-hero,.dashboard-kpi,.seller-card,.goal-card,.alert-kpi,
+  .user-access-card{
+    width:100%!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    border-radius:13px!important;
+  }
+  .panel{padding:13px!important}
+
+  .cards,
+  .product-grid,.client-grid,.dashboard-grid,.dashboard-stack,
+  .seller-grid,.goal-kpis,.alert-kpis,.alert-grid,.user-access-grid,
+  .price-kpis,.return-kpis,.cash-kpis,.inv-kpis,.restock-kpis,
+  .sep-kpis,.catalog-grid{
+    grid-template-columns:1fr!important;
+    gap:9px!important;
+  }
+  .dashboard-kpis{
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  .dashboard-kpi{
+    min-height:90px!important;
+    padding:11px!important;
+  }
+  .dashboard-kpi b{font-size:18px!important}
+
+  /* Filtros e formulários */
+  .product-filters,.client-filters,.quick-actions,.pay-grid,.form-grid,
+  .fin-form-grid,.access-form,.access-checks,.seller-values{
+    grid-template-columns:1fr!important;
+    display:grid!important;
+    width:100%!important;
+    gap:8px!important;
+  }
+  .product-filters>*,
+  .client-filters>*,
+  .pay-grid>*,
+  .form-grid>*,
+  .fin-form-grid>*{
+    width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  input,select,textarea{
+    width:100%!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    font-size:16px!important; /* evita zoom automático no iPhone */
+  }
+  button{max-width:100%}
+
+  /* Ações dos cards */
+  .product-actions,.client-actions,.sale-actions,.order-actions,
+  .return-actions,.finance-actions,.alert-actions,.sep-actions,
+  .qcart-actions,.scanner-actions,.catalog-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+    width:100%!important;
+  }
+  .product-actions button,.client-actions button,.sale-actions button,
+  .order-actions button,.return-actions button,.finance-actions button,
+  .alert-actions button,.sep-actions button,.qcart-actions button,
+  .scanner-actions button,.catalog-actions button{
+    width:100%!important;
+    min-width:0!important;
+    white-space:normal!important;
+  }
+
+  /* Tabelas: rolagem dentro do bloco, nunca estoura a tela */
+  .cart-wrap,
+  [style*="overflow:auto"],
+  .table-wrap{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  table{
+    width:max-content!important;
+    min-width:100%!important;
+    max-width:none!important;
+  }
+  th,td{
+    padding:9px 8px!important;
+    font-size:11px!important;
+    white-space:nowrap!important;
+  }
+
+  /* Carrinho */
+  .quick-cart-bar{
+    right:10px!important;
+    left:10px!important;
+    bottom:10px!important;
+    width:auto!important;
+    justify-content:center!important;
+    box-sizing:border-box!important;
+  }
+  .qcart-item{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+  .qcart-item input{width:100%!important}
+  .qcart-item .qcart-price{grid-column:auto!important}
+  .qcart-summary{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+  }
+
+  /* Modal */
+  .modal{
+    padding:8px!important;
+    align-items:flex-start!important;
+    overflow-y:auto!important;
+  }
+  .modal .box,
+  #modalBox{
+    width:100%!important;
+    max-width:100%!important;
+    max-height:none!important;
+    margin:8px 0 24px!important;
+    padding:14px!important;
+    box-sizing:border-box!important;
+    border-radius:14px!important;
+    overflow-x:hidden!important;
+  }
+  .modal .box h2,#modalBox h2{font-size:19px!important}
+
+  /* Scanner */
+  .scanner-video-wrap{
+    width:100%!important;
+    min-height:220px!important;
+    max-height:56vh!important;
+  }
+  .scanner-video{
+    width:100%!important;
+    max-height:56vh!important;
+  }
+  .scanner-manual,.scan-inline{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+    width:100%!important;
+  }
+  .scan-inline>input,.scan-inline>select,.scan-inline>button,
+  .scanner-manual>*{width:100%!important;min-width:0!important}
+
+  /* textos longos */
+  .sale-title,.order-title,.client-name,.product-name,
+  .sale-meta,.order-meta,.client-meta,.inv-meta{
+    overflow-wrap:anywhere!important;
+    word-break:break-word!important;
+  }
+}
+
+@media (max-width:390px){
+  .dashboard-kpis{grid-template-columns:1fr!important}
+  .product-actions,.client-actions,.sale-actions,.order-actions,
+  .return-actions,.finance-actions,.alert-actions,.sep-actions,
+  .qcart-actions,.scanner-actions,.catalog-actions{
+    grid-template-columns:1fr!important;
+  }
+}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
