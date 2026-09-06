@@ -359,11 +359,255 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .qcart-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.qcart-summary div{background:#00000004;border-radius:12px;padding:10px}.qcart-summary small{display:block;color:#777;font-size:10px}.qcart-summary b{font-size:15px}
 .qcart-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.qcart-empty{text-align:center;padding:24px;color:#777}
 @media(max-width:700px){.qcart-item{grid-template-columns:1fr 70px auto}.qcart-item .qcart-price{grid-column:1/3}.qcart-summary{grid-template-columns:1fr 1fr}.qcart-actions button{flex:1}}
+
+/* =========================================================
+   VISUAL PROFISSIONAL 2026 — organização geral + menu lateral
+   ========================================================= */
+:root{
+  --pro-sidebar:248px;
+  --pro-header:72px;
+  --pro-gap:18px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb,var(--cor-principal) 7%,transparent), transparent 26rem),
+    var(--cor-fundo);
+  letter-spacing:.01em;
+}
+header{
+  position:sticky;top:0;z-index:70;
+  height:var(--pro-header);
+  padding:0 24px;
+  backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--cor-card) 92%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--borda) 72%,transparent);
+  box-shadow:0 5px 24px rgba(38,25,20,.045);
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand img{
+  width:42px;height:42px;object-fit:cover;border-radius:13px;
+  border:1px solid var(--borda);background:#fff;
+  box-shadow:0 5px 14px rgba(0,0,0,.06)
+}
+.brand b{font-size:16px;letter-spacing:.01em;max-width:290px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.header-actions{gap:10px}
+.header-actions #userEmail{
+  max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  padding:7px 10px;border-radius:10px;background:var(--cor-fundo)
+}
+.notify-btn{box-shadow:none;transition:.18s ease}
+.notify-btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--cor-principal) 35%,var(--borda))}
+main{max-width:1440px;padding:26px 30px 42px}
+.view>.top:first-child{margin-bottom:20px}
+.view>.top:first-child h2{font-size:24px;line-height:1.15;margin:0 0 6px;letter-spacing:-.02em}
+.view>.top:first-child .muted{margin:0;line-height:1.55}
+.card,.panel,.box,.product-card,.client-card,.sale-card,.order-card,.return-card,.cash-card,.inv-card,.price-card,.restock-card,.sep-card{
+  border:1px solid color-mix(in srgb,var(--borda) 82%,transparent);
+  box-shadow:0 8px 24px rgba(38,25,20,.045);
+}
+.panel{padding:19px}
+button,.tab,input,select,textarea{transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease,background .16s ease}
+input,select,textarea{
+  min-height:42px;
+  border-color:color-mix(in srgb,var(--borda) 90%,transparent);
+  background:color-mix(in srgb,var(--cor-card) 97%,var(--cor-fundo));
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:color-mix(in srgb,var(--cor-principal) 55%,var(--borda));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--cor-principal) 12%,transparent)
+}
+button:hover{transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+button.primary{
+  box-shadow:0 6px 14px color-mix(in srgb,var(--cor-principal) 18%,transparent)
+}
+table{
+  overflow:hidden;border-radius:14px;
+  background:var(--cor-card)
+}
+th{
+  font-size:11px;text-transform:uppercase;letter-spacing:.055em;
+  color:#766860;background:color-mix(in srgb,var(--cor-fundo) 78%,var(--cor-card));
+  padding-top:12px;padding-bottom:12px
+}
+td{vertical-align:middle}
+tr:hover td{background:color-mix(in srgb,var(--cor-principal) 2.8%,var(--cor-card))}
+.muted{line-height:1.45}
+.cards{gap:14px}
+.quick-actions{gap:10px;margin:15px 0 18px}
+.quick-actions button{min-height:42px}
+.dashboard-hero{
+  border:1px solid color-mix(in srgb,var(--borda) 80%,transparent);
+  box-shadow:0 10px 30px rgba(38,25,20,.055);
+  padding:22px
+}
+.dashboard-kpis{gap:12px}
+.dashboard-kpi{
+  border:1px solid color-mix(in srgb,var(--borda) 80%,transparent);
+  box-shadow:0 7px 20px rgba(38,25,20,.04);
+  min-height:112px
+}
+.dashboard-kpi span{font-weight:700;letter-spacing:.015em}
+.dashboard-kpi b{letter-spacing:-.025em}
+.dashboard-grid{gap:16px}
+.dashboard-stack{gap:16px}
+.dash-row{transition:.15s ease}
+.dash-row:hover{transform:translateX(2px);border-color:color-mix(in srgb,var(--cor-principal) 25%,var(--borda))}
+.product-filters,.client-filters{gap:10px}
+.product-grid,.client-grid{gap:13px}
+
+/* -------- Menu superior mais limpo -------- */
+body.menu-topo .tabs{
+  gap:7px;margin:0 0 22px;padding:5px;
+  background:color-mix(in srgb,var(--cor-card) 80%,transparent);
+  border:1px solid var(--borda);border-radius:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.025)
+}
+body.menu-topo .tab{
+  border:0;min-height:39px;padding:9px 12px;font-weight:700
+}
+
+/* -------- Menu lateral profissional -------- */
+body.menu-lateral header{
+  padding-left:calc(var(--pro-sidebar) + 24px);
+}
+body.menu-lateral .tabs{
+  top:0;bottom:0;width:var(--pro-sidebar);
+  padding:20px 14px 18px;
+  padding-top:92px;
+  gap:3px;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--cor-card) 99%,var(--cor-principal) 1%),
+      var(--cor-card));
+  border-right:1px solid color-mix(in srgb,var(--borda) 84%,transparent);
+  box-shadow:10px 0 30px rgba(38,25,20,.035);
+  scrollbar-width:thin
+}
+body.menu-lateral .tabs:before{
+  content:"NAVEGAÇÃO";
+  position:absolute;top:74px;left:18px;
+  font-size:9px;font-weight:900;letter-spacing:.13em;color:#9a8b84
+}
+body.menu-lateral .tab{
+  position:relative;
+  width:100%;min-height:42px;
+  display:flex;align-items:center;
+  text-align:left;
+  padding:10px 12px;
+  border-radius:11px!important;
+  border:1px solid transparent!important;
+  background:transparent!important;
+  color:color-mix(in srgb,var(--cor-texto) 86%,#777);
+  font-size:13px;font-weight:700;
+  box-shadow:none!important
+}
+body.menu-lateral .tab:hover{
+  transform:none;
+  background:color-mix(in srgb,var(--cor-principal) 6%,var(--cor-card))!important;
+  color:var(--cor-texto);
+  border-color:color-mix(in srgb,var(--cor-principal) 7%,var(--borda))!important
+}
+body.menu-lateral .tab.active{
+  color:var(--cor-principal)!important;
+  background:color-mix(in srgb,var(--cor-principal) 10%,var(--cor-card))!important;
+  border-color:color-mix(in srgb,var(--cor-principal) 15%,var(--borda))!important;
+  box-shadow:inset 3px 0 0 var(--cor-principal)!important
+}
+body.menu-lateral .tab.active:after{
+  content:"";margin-left:auto;width:7px;height:7px;border-radius:50%;
+  background:var(--cor-principal);opacity:.8
+}
+body.menu-lateral .tab[data-v="produtos"],
+body.menu-lateral .tab[data-v="clientes"],
+body.menu-lateral .tab[data-v="fornecedores"],
+body.menu-lateral .tab[data-v="financeiro"],
+body.menu-lateral .tab[data-v="usuarios"]{margin-top:13px}
+body.menu-lateral main{
+  max-width:none;
+  margin-left:var(--pro-sidebar);
+  padding:28px 34px 50px;
+  width:calc(100% - var(--pro-sidebar))
+}
+body.menu-lateral .view{
+  max-width:1380px;margin:0 auto
+}
+
+/* deixa grupos visualmente separados sem alterar funcionalidade */
+body.menu-lateral .tab[data-v="produtos"]:before,
+body.menu-lateral .tab[data-v="clientes"]:before,
+body.menu-lateral .tab[data-v="fornecedores"]:before,
+body.menu-lateral .tab[data-v="financeiro"]:before,
+body.menu-lateral .tab[data-v="usuarios"]:before{
+  content:"";position:absolute;left:4px;right:4px;top:-7px;height:1px;
+  background:color-mix(in srgb,var(--borda) 75%,transparent)
+}
+
+/* cards e cabeçalhos internos */
+.product-head,.client-head,.sale-head,.order-head,.return-head,.inv-head,.sep-head{gap:14px}
+.product-card,.client-card,.sale-card,.order-card,.return-card,.inv-card,.sep-card{transition:.17s ease}
+.product-card:hover,.client-card:hover,.sale-card:hover,.order-card:hover,.return-card:hover,.inv-card:hover,.sep-card:hover{
+  box-shadow:0 12px 28px rgba(38,25,20,.07);
+  border-color:color-mix(in srgb,var(--cor-principal) 16%,var(--borda))
+}
+
+/* Modal mais profissional */
+.modal{backdrop-filter:blur(4px);background:rgba(25,18,16,.42)}
+.modal .box{
+  border:1px solid color-mix(in srgb,var(--borda) 86%,transparent);
+  box-shadow:0 24px 70px rgba(24,18,15,.18);
+  padding:22px
+}
+.modal .box h2{letter-spacing:-.02em}
+
+/* Carrinho flutuante */
+.quick-cart-bar{
+  right:24px;bottom:24px;
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 14px 34px color-mix(in srgb,var(--cor-principal) 24%,rgba(0,0,0,.18))
+}
+
+/* responsividade */
+@media(max-width:980px){
+  body.menu-lateral{--pro-sidebar:210px}
+  body.menu-lateral header{padding-left:calc(var(--pro-sidebar) + 16px)}
+  body.menu-lateral main{padding:22px 20px 40px}
+  .header-actions #userEmail{display:none}
+}
+@media(max-width:720px){
+  header{height:64px;padding:0 12px}
+  main{padding:15px}
+  body.menu-lateral header{padding-left:12px}
+  body.menu-lateral .tabs{
+    position:sticky;top:64px;left:auto;right:auto;
+    width:auto;height:auto;bottom:auto;padding:8px;margin:0;
+    flex-direction:row;overflow-x:auto;overflow-y:hidden;
+    border-right:0;border-bottom:1px solid var(--borda);
+    box-shadow:0 5px 15px rgba(0,0,0,.035);
+    z-index:55
+  }
+  body.menu-lateral .tabs:before{display:none}
+  body.menu-lateral .tab{
+    width:auto!important;min-width:max-content;
+    padding:8px 10px;font-size:12px
+  }
+  body.menu-lateral .tab[data-v]{margin-top:0}
+  body.menu-lateral .tab[data-v]:before{display:none}
+  body.menu-lateral .tab.active{box-shadow:inset 0 -3px 0 var(--cor-principal)!important}
+  body.menu-lateral main{margin-left:0;width:auto;padding:16px 12px 34px}
+  body.menu-lateral .view{max-width:none}
+  .view>.top:first-child{align-items:flex-start;gap:10px;flex-direction:column}
+  .view>.top:first-child>div:last-child{width:100%;display:flex;gap:7px;flex-wrap:wrap}
+  .view>.top:first-child>div:last-child button{flex:1}
+}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
-<section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
+<section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><div class="brand-copy"><b id="headerNomeLoja">Essência & Encanto</b><small style="display:block;font-size:10px;color:#998a83;margin-top:2px">Gestão do negócio</small></div></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
 <div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="etiquetas">🏷️ Etiquetas</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="separacao">🧾 Separação</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
