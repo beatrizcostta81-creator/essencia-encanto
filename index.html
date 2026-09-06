@@ -816,6 +816,76 @@ body.menu-lateral .header-actions button{
   .brand b{max-width:150px}
 }
 
+
+/* =========================================================
+   LEITOR DE CÓDIGO DE BARRAS
+   ========================================================= */
+.scan-inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.scan-inline>input,.scan-inline>select{flex:1;min-width:180px}
+.scan-btn{white-space:nowrap}
+.scanner-box{display:grid;gap:14px}
+.scanner-video-wrap{
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  background:#111;
+  min-height:240px;
+  display:grid;
+  place-items:center
+}
+.scanner-video{
+  width:100%;
+  max-height:58vh;
+  object-fit:cover;
+  display:block;
+  background:#111
+}
+.scanner-guide{
+  position:absolute;
+  inset:50% auto auto 50%;
+  transform:translate(-50%,-50%);
+  width:min(78%,420px);
+  height:120px;
+  border:2px solid rgba(255,255,255,.92);
+  border-radius:14px;
+  box-shadow:0 0 0 999px rgba(0,0,0,.18);
+  pointer-events:none
+}
+.scanner-guide:before,.scanner-guide:after{
+  content:"";
+  position:absolute;
+  left:8%;right:8%;
+  height:2px;
+  background:var(--cor-principal);
+  box-shadow:0 0 10px rgba(255,255,255,.65)
+}
+.scanner-guide:before{top:50%}
+.scanner-status{
+  padding:10px 12px;
+  border-radius:11px;
+  background:color-mix(in srgb,var(--cor-principal) 7%,var(--cor-card));
+  color:var(--cor-texto);
+  font-size:12px
+}
+.scanner-manual{
+  display:flex;gap:8px;align-items:center
+}
+.scanner-manual input{flex:1}
+.scanner-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.scanner-result{
+  padding:12px;
+  border:1px solid var(--borda);
+  border-radius:12px;
+  background:var(--cor-card)
+}
+@media(max-width:720px){
+  .scanner-video-wrap{min-height:210px}
+  .scanner-manual{flex-direction:column;align-items:stretch}
+  .scanner-manual button{width:100%}
+  .scan-inline{align-items:stretch}
+  .scan-inline .scan-btn{width:100%}
+}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -884,7 +954,7 @@ body.menu-lateral .header-actions button{
   </div>
   <div class="panel">
     <div class="product-filters">
-      <input id="produtoBusca" placeholder="🔎 Buscar por nome, código ou descrição" oninput="renderProdutos()">
+      <div class="scan-inline"><input id="produtoBusca" placeholder="🔎 Buscar por nome, código ou descrição" oninput="renderProdutos()"><button class="soft scan-btn" type="button" onclick="abrirLeitorCodigo('produto')">📷 Ler código</button></div>
       <select id="produtoCategoria" onchange="renderProdutos()"><option value="">Todas as categorias</option></select>
       <select id="produtoStatus" onchange="renderProdutos()"><option value="">Todos os status</option><option value="ativo">Ativos</option><option value="inativo">Inativos</option></select>
       <select id="produtoEstoqueFiltro" onchange="renderProdutos()"><option value="">Todo estoque</option><option value="baixo">Estoque baixo</option><option value="zerado">Zerados</option><option value="disponivel">Com estoque</option></select>
@@ -1751,6 +1821,152 @@ document.addEventListener('click',e=>{
   if(wrap&&!wrap.contains(e.target))fecharBuscaGlobal();
 });
 
+
+let scannerStream=null,scannerTimer=null,scannerContexto=null,scannerInventarioId=null,scannerDetector=null,scannerProcessando=false;
+
+function normalizarCodigoLido(v){return String(v??'').trim()}
+function localizarProdutoPorCodigo(codigo){
+  const c=normalizarCodigoLido(codigo).toLowerCase();
+  if(!c)return null;
+  return produtos.find(p=>String(p.sku||'').trim().toLowerCase()===c)
+      || produtos.find(p=>String(p.id||'').trim().toLowerCase()===c)
+      || produtos.find(p=>String(p.id||'').trim().toLowerCase().startsWith(c))
+      || null;
+}
+function nomeContextoScanner(ctx){
+  return ctx==='venda'?'Venda':ctx==='inventario'?'Inventário':'Produtos';
+}
+async function abrirLeitorCodigo(contexto='produto',inventarioId=null){
+  scannerContexto=contexto;scannerInventarioId=inventarioId||null;scannerProcessando=false;
+  openModal(`<div class="scanner-box">
+    <div>
+      <h2 style="margin-bottom:5px">📷 Ler código de barras</h2>
+      <p class="muted" style="margin:0">Aponte a câmera para o código do produto. Modo: <b>${nomeContextoScanner(contexto)}</b>.</p>
+    </div>
+    <div class="scanner-video-wrap">
+      <video id="scannerVideo" class="scanner-video" autoplay playsinline muted></video>
+      <div class="scanner-guide"></div>
+    </div>
+    <div id="scannerStatus" class="scanner-status">Iniciando câmera...</div>
+    <div class="scanner-manual">
+      <input id="scannerManual" placeholder="Ou digite o SKU / código do produto" onkeydown="if(event.key==='Enter'){event.preventDefault();usarCodigoScannerManual()}">
+      <button class="soft" type="button" onclick="usarCodigoScannerManual()">Buscar código</button>
+    </div>
+    <div class="scanner-actions">
+      <button class="soft" type="button" onclick="fecharLeitorCodigo()">Fechar</button>
+    </div>
+  </div>`);
+  await iniciarCameraScanner();
+}
+async function iniciarCameraScanner(){
+  const status=document.getElementById('scannerStatus'),video=document.getElementById('scannerVideo');
+  if(!video)return;
+  try{
+    if(!navigator.mediaDevices?.getUserMedia)throw new Error('A câmera não está disponível neste navegador.');
+    scannerStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+    video.srcObject=scannerStream;
+    await video.play();
+    if('BarcodeDetector' in window){
+      let formatos;
+      try{
+        const sup=await BarcodeDetector.getSupportedFormats();
+        formatos=sup.filter(x=>['ean_13','ean_8','upc_a','upc_e','code_128','code_39','codabar','itf','qr_code'].includes(x));
+      }catch(e){}
+      scannerDetector=new BarcodeDetector(formatos?.length?{formats:formatos}:undefined);
+      if(status)status.textContent='✅ Câmera pronta. Centralize o código dentro da área marcada.';
+      scannerTimer=setInterval(detectarCodigoCamera,300);
+    }else{
+      if(status)status.innerHTML='A câmera abriu, mas este navegador não possui leitura automática de código. Você pode digitar o <b>SKU</b> no campo abaixo.';
+    }
+  }catch(e){
+    if(status)status.innerHTML='⚠️ Não foi possível abrir a câmera. Verifique a permissão do navegador ou digite o SKU abaixo.<br><small>'+esc(e.message||'')+'</small>';
+  }
+}
+async function detectarCodigoCamera(){
+  if(scannerProcessando||!scannerDetector)return;
+  const video=document.getElementById('scannerVideo');
+  if(!video||video.readyState<2)return;
+  scannerProcessando=true;
+  try{
+    const achados=await scannerDetector.detect(video);
+    if(achados?.length){
+      const codigo=normalizarCodigoLido(achados[0].rawValue);
+      if(codigo){
+        clearInterval(scannerTimer);scannerTimer=null;
+        await processarCodigoScanner(codigo);
+        return;
+      }
+    }
+  }catch(e){}
+  scannerProcessando=false;
+}
+async function usarCodigoScannerManual(){
+  const codigo=document.getElementById('scannerManual')?.value||'';
+  if(!codigo.trim())return alert('Digite o SKU ou código do produto.');
+  await processarCodigoScanner(codigo);
+}
+async function processarCodigoScanner(codigo){
+  scannerProcessando=true;
+  const p=localizarProdutoPorCodigo(codigo),status=document.getElementById('scannerStatus');
+  if(!p){
+    if(status)status.innerHTML=`❌ Código <b>${esc(codigo)}</b> não encontrado. Confira se ele está salvo no campo SKU do produto.`;
+    scannerProcessando=false;
+    if(scannerDetector&&!scannerTimer)scannerTimer=setInterval(detectarCodigoCamera,450);
+    return;
+  }
+  if(status)status.innerHTML=`✅ <b>${esc(p.nome||'Produto')}</b> encontrado.`;
+  const ctx=scannerContexto,invId=scannerInventarioId;
+  await pararCameraScanner();
+  closeModal();
+  setTimeout(()=>{
+    if(ctx==='produto'){
+      ativarAba('produtos');setTimeout(()=>editarProduto(p.id),80);
+    }else if(ctx==='venda'){
+      adicionarProdutoLidoVenda(p.id);
+    }else if(ctx==='inventario'){
+      abrirProdutoLidoInventario(invId,p.id);
+    }
+  },90);
+}
+function adicionarProdutoLidoVenda(produtoId){
+  const p=produtos.find(x=>x.id===produtoId);if(!p)return;
+  if(num(p.estoque)<=0)return alert(`"${p.nome}" está sem estoque.`);
+  let item=carrinhoVenda.find(i=>i.produto_id===produtoId);
+  if(item){
+    if(num(item.quantidade)+1>num(p.estoque))return alert(`Estoque disponível de "${p.nome}": ${num(p.estoque)}.`);
+    item.quantidade=num(item.quantidade)+1;
+  }else{
+    const vazio=carrinhoVenda.find(i=>!i.produto_id);
+    if(vazio){vazio.produto_id=p.id;vazio.quantidade=1;vazio.preco=precoVendaProduto(p)}
+    else carrinhoVenda.push({produto_id:p.id,quantidade:1,preco:precoVendaProduto(p)});
+  }
+  renderCarrinhoVenda();
+  alert(`✅ ${p.nome} adicionado à venda.`);
+}
+function abrirProdutoLidoInventario(invId,produtoId){
+  const inv=inventarios.find(i=>i.id===invId);
+  if(!inv)return alert('Inventário não encontrado.');
+  const item=itensInventario.find(i=>i.inventario_id===invId&&i.produto_id===produtoId);
+  if(!item)return alert('Este produto não faz parte deste inventário.');
+  abrirInventario(invId);
+  setTimeout(()=>{
+    const tr=document.querySelector(`tr[data-invitem="${item.id}"]`);
+    if(!tr)return;
+    tr.scrollIntoView({behavior:'smooth',block:'center'});
+    tr.style.outline='3px solid color-mix(in srgb,var(--cor-principal) 45%,transparent)';
+    tr.style.outlineOffset='-3px';
+    const inp=tr.querySelector('.invContado');
+    if(inp){inp.focus();inp.select()}
+    setTimeout(()=>{tr.style.outline=''},1800);
+  },100);
+}
+async function pararCameraScanner(){
+  if(scannerTimer){clearInterval(scannerTimer);scannerTimer=null}
+  if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null}
+  scannerDetector=null;scannerProcessando=false;
+}
+async function fecharLeitorCodigo(){await pararCameraScanner();closeModal()}
+
 function ativarAba(chave){const alvo=document.querySelector(`.tab[data-v="${chave}"]`);if(!alvo||alvo.style.display==='none')return;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));alvo.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));const sec=document.getElementById(chave);if(sec)sec.classList.add('active')}
 
 function aplicarLogoVisual(url){
@@ -2089,7 +2305,7 @@ async function criarInventario(){
 function abrirInventario(id){
   const inv=inventarios.find(i=>i.id===id);if(!inv)return;
   const its=itensDoInventario(id).slice().sort((a,b)=>(a.produto_nome||'').localeCompare(b.produto_nome||'','pt-BR'));
-  openModal(`<h2>🧮 Inventário de ${formatarData(inv.data_inventario)}</h2><p class="muted">${inv.status==='finalizado'?'Inventário finalizado.':'Informe a quantidade física contada de cada produto.'}</p><div style="overflow:auto"><table class="inv-table"><thead><tr><th>Produto</th><th>Sistema</th><th>Contado</th><th>Diferença</th><th>Motivo</th><th>Ajuste</th></tr></thead><tbody>${its.map(i=>`<tr data-invitem="${i.id}"><td><b>${esc(i.produto_nome||'Produto')}</b></td><td>${num(i.estoque_sistema)}</td><td>${inv.status==='finalizado'?(i.estoque_contado==null?'—':num(i.estoque_contado)):`<input class="invContado" type="number" min="0" step="1" value="${i.estoque_contado==null?'':num(i.estoque_contado)}" oninput="calcInvLinha(this)">`}</td><td class="invDiff ${num(i.diferenca)>0?'pos':num(i.diferenca)<0?'neg':'zero'}">${i.estoque_contado==null?'—':num(i.diferenca)}</td><td>${inv.status==='finalizado'?esc(i.motivo_ajuste||'—'):`<input class="invMotivo" value="${esc(i.motivo_ajuste||'')}" placeholder="Opcional">`}</td><td>${i.ajuste_aplicado?'✅ Aplicado':inv.status==='finalizado'?'—':`<button class="soft" onclick="aplicarAjusteItemInventario('${i.id}')">Aplicar</button>`}</td></tr>`).join('')}</tbody></table></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap">${inv.status!=='finalizado'?`<button class="soft" onclick="salvarContagemInventario('${inv.id}',false)">💾 Salvar contagem</button><button class="primary" onclick="salvarContagemInventario('${inv.id}',true)">✅ Salvar e finalizar</button>`:''}<button class="soft" onclick="closeModal()">Fechar</button></div>`);
+  openModal(`<h2>🧮 Inventário de ${formatarData(inv.data_inventario)}</h2><p class="muted">${inv.status==='finalizado'?'Inventário finalizado.':'Informe a quantidade física contada de cada produto.'}</p>${inv.status!=='finalizado'?`<div style="margin-bottom:12px"><button class="primary scan-btn" type="button" onclick="abrirLeitorCodigo('inventario','${inv.id}')">📷 Ler produto no inventário</button></div>`:''}<div style="overflow:auto"><table class="inv-table"><thead><tr><th>Produto</th><th>Sistema</th><th>Contado</th><th>Diferença</th><th>Motivo</th><th>Ajuste</th></tr></thead><tbody>${its.map(i=>`<tr data-invitem="${i.id}"><td><b>${esc(i.produto_nome||'Produto')}</b></td><td>${num(i.estoque_sistema)}</td><td>${inv.status==='finalizado'?(i.estoque_contado==null?'—':num(i.estoque_contado)):`<input class="invContado" type="number" min="0" step="1" value="${i.estoque_contado==null?'':num(i.estoque_contado)}" oninput="calcInvLinha(this)">`}</td><td class="invDiff ${num(i.diferenca)>0?'pos':num(i.diferenca)<0?'neg':'zero'}">${i.estoque_contado==null?'—':num(i.diferenca)}</td><td>${inv.status==='finalizado'?esc(i.motivo_ajuste||'—'):`<input class="invMotivo" value="${esc(i.motivo_ajuste||'')}" placeholder="Opcional">`}</td><td>${i.ajuste_aplicado?'✅ Aplicado':inv.status==='finalizado'?'—':`<button class="soft" onclick="aplicarAjusteItemInventario('${i.id}')">Aplicar</button>`}</td></tr>`).join('')}</tbody></table></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap">${inv.status!=='finalizado'?`<button class="soft" onclick="salvarContagemInventario('${inv.id}',false)">💾 Salvar contagem</button><button class="primary" onclick="salvarContagemInventario('${inv.id}',true)">✅ Salvar e finalizar</button>`:''}<button class="soft" onclick="closeModal()">Fechar</button></div>`);
 }
 function calcInvLinha(inp){
   const tr=inp.closest('tr'),item=itensInventario.find(i=>i.id===tr.dataset.invitem),sis=num(item?.estoque_sistema),cont=inp.value===''?null:num(inp.value),d=tr.querySelector('.invDiff');
@@ -3480,7 +3696,7 @@ async function excluirDespesa(id){if(!confirm('Excluir esta conta a pagar?'))ret
 async function sincronizarVendaFinanceiro(vendaId){if(!vendaId)return;const {data:ps,error}=await sb.from('parcelas_receber').select('valor,pago,status').eq('venda_id',vendaId).eq('user_id',user.id);if(error)return;const aberto=(ps||[]).filter(p=>!finParcelaPaga(p)).reduce((s,p)=>s+num(p.valor),0);const v=vendas.find(x=>x.id===vendaId);if(!v)return;const total=num(v.total),pago=Math.max(0,total-aberto);await sb.from('vendas').update({valor_aberto:aberto,valor_pago:pago,status_pagamento:aberto>0.005?'aberto':'pago',updated_at:new Date().toISOString()}).eq('id',vendaId).eq('user_id',user.id)}
 async function receberParcela(id){const p=parcelasReceber.find(x=>x.id===id);if(!p)return;if(!confirm(`Confirmar recebimento de ${money(p.valor)}?`))return;const forma=prompt('Forma de pagamento (Pix, Dinheiro, Cartão...):',p.forma_pagamento||'Pix');if(forma===null)return;const agora=new Date().toISOString();const r=await sb.from('parcelas_receber').update({pago:true,status:'pago',forma_pagamento:forma.trim()||p.forma_pagamento||null,data_pagamento:agora,recebido_em:agora,updated_at:agora}).eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível registrar o recebimento: '+r.error.message);await sincronizarVendaFinanceiro(p.venda_id);await carregar();alert('Recebimento registrado com sucesso!')}
 
-function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){document.getElementById('modal').classList.remove('show')}
+function openModal(h){document.getElementById('modalBox').innerHTML=h;document.getElementById('modal').classList.add('show')}function closeModal(){if(scannerStream||scannerTimer)pararCameraScanner();document.getElementById('modal').classList.remove('show')}
 function produtoForm(p={}){
   const editar=!!p.id;const catOpts='<option value="">Sem categoria</option>'+categorias.map(c=>`<option value="${esc(c.id)}" ${p.categoria_id===c.id?'selected':''}>${esc(c.nome)}</option>`).join('');
   const fotoAtual=p.foto_url||'';
@@ -3623,7 +3839,7 @@ function renderVendas(){
 function novaVenda(){
   carrinhoVenda=[];vendaCupom=null;
   const cliOpts='<option value="">Consumidor / sem cliente</option>'+clientes.filter(c=>c.ativo!==false).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('');
-  openModal(`<h2>🧾 Nova venda</h2><p class="muted">Escolha o cliente, adicione os produtos e informe o pagamento.</p><div class="pay-grid"><div><label>Cliente</label><select id="vCliente">${cliOpts}</select></div><div><label>Vendedor</label><select id="vVendedor"><option value="">Sem vendedor</option>${vendedores.filter(x=>x.ativo!==false).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(x=>`<option value="${x.id}">${esc(x.nome)}</option>`).join('')}</select></div></div><h3>Produtos</h3><div class="cart-wrap"><table class="cart-table"><thead><tr><th>Produto</th><th>Qtd.</th><th>Preço</th><th>Subtotal</th><th></th></tr></thead><tbody id="vCarrinho"></tbody></table></div><button class="soft" type="button" onclick="adicionarItemVenda()">+ Adicionar produto</button><div class="cart-summary"><div><small>Subtotal</small><b id="vSubtotal">R$ 0,00</b></div><div><small>Desconto</small><b id="vDescResumo">R$ 0,00</b></div><div><small>Total</small><b id="vTotal">R$ 0,00</b></div><div><small>Em aberto</small><b id="vAberto">R$ 0,00</b></div></div><div class="pay-grid"><div><label>Desconto manual (R$)</label><input id="vDesconto" type="number" min="0" step="0.01" value="0" oninput="calcularVenda()"></div><div><label>Cupom</label><div class="coupon-apply"><input id="vCupomCodigo" placeholder="Ex.: BIA10" style="text-transform:uppercase"><button type="button" class="soft" onclick="aplicarCupomVenda()">Aplicar</button></div><div id="vCupomMsg" class="coupon-ok"></div></div><div><label>Forma de pagamento</label><select id="vForma"><option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option><option value="Cartão de débito">Cartão de débito</option><option value="Cartão de crédito">Cartão de crédito</option><option value="Fiado / a receber">Fiado / a receber</option><option value="Outro">Outro</option></select></div><div><label>Tipo</label><select id="vTipo" onchange="ajustarPagamentoVenda()"><option value="avista">À vista</option><option value="parcelado">Parcelado</option></select></div><div><label>Quantidade de parcelas</label><input id="vParcelas" type="number" min="1" max="36" step="1" value="1" oninput="calcularVenda()"></div><div><label>Valor pago agora</label><input id="vPago" type="number" min="0" step="0.01" value="0" oninput="calcularVenda()"></div><div><label>Primeiro vencimento</label><input id="vVencimento" type="date"></div><div class="full"><label>Observações</label><textarea id="vObs" placeholder="Observações da venda"></textarea></div></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap"><button class="soft" onclick="closeModal()">Cancelar</button><button id="btnSalvarVenda" class="primary" onclick="salvarVenda()">Finalizar venda</button></div>`);
+  openModal(`<h2>🧾 Nova venda</h2><p class="muted">Escolha o cliente, adicione os produtos e informe o pagamento.</p><div class="pay-grid"><div><label>Cliente</label><select id="vCliente">${cliOpts}</select></div><div><label>Vendedor</label><select id="vVendedor"><option value="">Sem vendedor</option>${vendedores.filter(x=>x.ativo!==false).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(x=>`<option value="${x.id}">${esc(x.nome)}</option>`).join('')}</select></div></div><h3>Produtos</h3><div class="cart-wrap"><table class="cart-table"><thead><tr><th>Produto</th><th>Qtd.</th><th>Preço</th><th>Subtotal</th><th></th></tr></thead><tbody id="vCarrinho"></tbody></table></div><div class="scan-inline"><button class="soft" type="button" onclick="adicionarItemVenda()">+ Adicionar produto</button><button class="primary scan-btn" type="button" onclick="abrirLeitorCodigo('venda')">📷 Ler código de barras</button></div><div class="cart-summary"><div><small>Subtotal</small><b id="vSubtotal">R$ 0,00</b></div><div><small>Desconto</small><b id="vDescResumo">R$ 0,00</b></div><div><small>Total</small><b id="vTotal">R$ 0,00</b></div><div><small>Em aberto</small><b id="vAberto">R$ 0,00</b></div></div><div class="pay-grid"><div><label>Desconto manual (R$)</label><input id="vDesconto" type="number" min="0" step="0.01" value="0" oninput="calcularVenda()"></div><div><label>Cupom</label><div class="coupon-apply"><input id="vCupomCodigo" placeholder="Ex.: BIA10" style="text-transform:uppercase"><button type="button" class="soft" onclick="aplicarCupomVenda()">Aplicar</button></div><div id="vCupomMsg" class="coupon-ok"></div></div><div><label>Forma de pagamento</label><select id="vForma"><option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option><option value="Cartão de débito">Cartão de débito</option><option value="Cartão de crédito">Cartão de crédito</option><option value="Fiado / a receber">Fiado / a receber</option><option value="Outro">Outro</option></select></div><div><label>Tipo</label><select id="vTipo" onchange="ajustarPagamentoVenda()"><option value="avista">À vista</option><option value="parcelado">Parcelado</option></select></div><div><label>Quantidade de parcelas</label><input id="vParcelas" type="number" min="1" max="36" step="1" value="1" oninput="calcularVenda()"></div><div><label>Valor pago agora</label><input id="vPago" type="number" min="0" step="0.01" value="0" oninput="calcularVenda()"></div><div><label>Primeiro vencimento</label><input id="vVencimento" type="date"></div><div class="full"><label>Observações</label><textarea id="vObs" placeholder="Observações da venda"></textarea></div></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap"><button class="soft" onclick="closeModal()">Cancelar</button><button id="btnSalvarVenda" class="primary" onclick="salvarVenda()">Finalizar venda</button></div>`);
   adicionarItemVenda();ajustarPagamentoVenda();
 }
 function produtoOptionsVenda(sel=''){return '<option value="">Selecione</option>'+produtos.filter(p=>p.ativo!==false&&num(p.estoque)>0).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.nome)} • estoque ${num(p.estoque)} • ${money(precoVendaProduto(p))}</option>`).join('')}
