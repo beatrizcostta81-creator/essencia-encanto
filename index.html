@@ -328,6 +328,12 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .lbl-help{font-size:11px;color:#777;line-height:1.5}
 @media(max-width:900px){.lbl-layout{grid-template-columns:1fr}.lbl-preview-wrap{min-height:280px}}
 
+
+/* Links públicos de produtos */
+.share-link-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.product-focus{outline:3px solid var(--cor-principal);outline-offset:4px;animation:focusPulse 1.2s ease 2}
+@keyframes focusPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.01)}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
@@ -1721,6 +1727,58 @@ function imprimirEtiquetas(){
   w.document.close();
 }
 
+
+function gerarSlugLocalProduto(p){
+  const base=String(p?.nome||'produto').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  return `${base||'produto'}-${String(p?.id||'').slice(0,6)}`;
+}
+function slugProduto(p){return String(p?.slug_publico||'').trim()||gerarSlugLocalProduto(p)}
+function linkProdutoPublico(p){
+  const base=window.location.origin+window.location.pathname;
+  return `${base}?produto=${encodeURIComponent(slugProduto(p))}`;
+}
+async function copiarTextoSeguro(txt){
+  try{
+    if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(txt);return true}
+  }catch(e){}
+  try{
+    const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');ta.remove();return ok;
+  }catch(e){return false}
+}
+async function copiarLinkProduto(id){
+  const p=produtos.find(x=>x.id===id);if(!p)return alert('Produto não encontrado.');
+  const link=linkProdutoPublico(p);
+  const ok=await copiarTextoSeguro(link);
+  if(ok)alert('✅ Link do produto copiado.');
+  else prompt('Copie este link:',link);
+}
+async function compartilharProduto(id){
+  const p=produtos.find(x=>x.id===id);if(!p)return;
+  const link=linkProdutoPublico(p);
+  const texto=`${p.nome} • ${money(precoVendaProduto(p))}`;
+  if(navigator.share){
+    try{await navigator.share({title:p.nome,text:texto,url:link});return}catch(e){if(e?.name==='AbortError')return}
+  }
+  const ok=await copiarTextoSeguro(`${texto}\n${link}`);
+  if(ok)alert('✅ Informações do produto copiadas para compartilhar.');
+  else prompt('Copie para compartilhar:',`${texto}\n${link}`);
+}
+function produtoPorSlug(slug){
+  return produtos.find(p=>slugProduto(p)===slug)||null;
+}
+function focarProdutoDoLink(){
+  const params=new URLSearchParams(window.location.search),slug=params.get('produto');
+  if(!slug)return;
+  const p=produtoPorSlug(slug);if(!p)return;
+  ativarAba('catalogo');
+  setTimeout(()=>{
+    const busca=document.getElementById('catalogoBusca');if(busca){busca.value=p.nome||'';renderCatalogo()}
+    const cards=[...document.querySelectorAll('[data-catalogo-produto]')];
+    const card=cards.find(c=>c.dataset.catalogoProduto===p.id);
+    if(card){card.classList.add('product-focus');card.scrollIntoView({behavior:'smooth',block:'center'})}
+  },120);
+}
+
 function renderCatalogo(){
   const grid=document.getElementById('catalogoGrid');if(!grid)return;preencherCatalogoCategorias();
   const lista=catalogoProdutosFiltrados();const nome=configLoja?.nome_loja||'Essência & Encanto';
@@ -1728,7 +1786,7 @@ function renderCatalogo(){
   const ct=document.getElementById('catalogoContato');if(ct)ct.textContent=catalogoContatoTexto();
   const q=document.getElementById('catalogoQtd');if(q)q.textContent=`${lista.length} ${lista.length===1?'produto disponível':'produtos disponíveis'}`;
   const logo=document.getElementById('catalogoLogo');if(logo){if(configLoja?.logo_url){logo.src=configLoja.logo_url;logo.style.display='block'}else logo.style.display='none'}
-  grid.innerHTML=lista.length?lista.map(p=>`<article class="catalog-card"><div class="catalog-photo">${p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nome||'Produto')}" loading="lazy">`:'<div class="catalog-no-photo">🛍️</div>'}</div><div class="catalog-body"><div class="catalog-category">${esc(p.categoria||'Sem categoria')}</div><div class="catalog-name">${esc(p.nome||'Produto')}</div>${p.descricao?`<div class="catalog-desc">${esc(p.descricao)}</div>`:''}<div class="catalog-price">${money(precoVendaProduto(p))}</div><div class="catalog-stock">Disponível em estoque</div><div class="catalog-actions"><button class="success" onclick="pedirProdutoWhatsapp('${p.id}')">📲 Pedir</button></div></div></article>`).join(''):'<div class="catalog-empty">Nenhum produto disponível para este filtro.</div>';
+  grid.innerHTML=lista.length?lista.map(p=>`<article class="catalog-card" data-catalogo-produto="${p.id}"><div class="catalog-photo">${p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nome||'Produto')}" loading="lazy">`:'<div class="catalog-no-photo">🛍️</div>'}</div><div class="catalog-body"><div class="catalog-category">${esc(p.categoria||'Sem categoria')}</div><div class="catalog-name">${esc(p.nome||'Produto')}</div>${p.descricao?`<div class="catalog-desc">${esc(p.descricao)}</div>`:''}<div class="catalog-price">${money(precoVendaProduto(p))}</div><div class="catalog-stock">Disponível em estoque</div><div class="catalog-actions"><button class="success" onclick="pedirProdutoWhatsapp('${p.id}')">📲 Pedir</button></div></div></article>`).join(''):'<div class="catalog-empty">Nenhum produto disponível para este filtro.</div>';
 }
 function pedirProdutoWhatsapp(id){
   const p=produtos.find(x=>x.id===id);if(!p)return;const tel=whatsappNumero(configLoja?.whatsapp||'');if(!tel)return alert('Cadastre o WhatsApp da loja em Configurações primeiro.');
@@ -1769,7 +1827,7 @@ function renderProdutos(){
   alvo.innerHTML='<div class="product-grid">'+lista.map(p=>{
     const venda=precoVendaProduto(p),custo=precoCustoProduto(p),lucro=lucroProduto(p),margem=margemProduto(p),est=num(p.estoque),min=num(p.estoque_minimo),baixo=estoqueBaixo(p),zero=est===0,ativo=p.ativo!==false;
     const foto=p.foto_url?`<img class="product-photo" src="${esc(p.foto_url)}" alt="${esc(p.nome)}" onerror="this.outerHTML='<div class=&quot;product-photo-placeholder&quot;>🛍️</div>'">`:'<div class="product-photo-placeholder">🛍️</div>';
-    return `<article class="product-card">${foto}<div><div class="product-head"><div><div class="product-name">${esc(p.nome||'Sem nome')}</div><div class="product-meta">${p.sku?'Código: '+esc(p.sku)+' • ':''}${esc(categoriaNome(p.categoria_id))}</div></div></div><div class="badges">${!ativo?'<span class="badge off">Inativo</span>':''}${promocaoAtiva(p)?'<span class="promo-badge">PROMOÇÃO</span>':''}${zero?'<span class="badge zero">Sem estoque</span>':baixo?'<span class="badge low">Estoque baixo</span>':'<span class="badge">Em estoque</span>'}</div>${p.descricao?`<div class="product-meta">${esc(p.descricao)}</div>`:''}<div class="product-values"><div class="product-value"><small>Estoque</small><b>${est} ${esc(p.unidade||'un')}</b></div><div class="product-value"><small>Custo</small><b>${money(custo)}</b></div><div class="product-value"><small>Venda</small><b>${money(venda)}</b></div><div class="product-value"><small>Lucro</small><b>${money(lucro)} · ${margem.toFixed(1).replace('.',',')}%</b></div></div><div class="product-actions"><button class="soft" onclick="editarProduto('${p.id}')">✏️ Editar</button><button class="soft" onclick="abrirEtiquetaProduto('${p.id}')">🏷️ Etiqueta</button><button class="warning" onclick="abrirAjusteEstoque('${p.id}')">📦 Estoque</button><button class="danger" onclick="excluirProduto('${p.id}')">🗑️ Excluir</button></div></div></article>`
+    return `<article class="product-card">${foto}<div><div class="product-head"><div><div class="product-name">${esc(p.nome||'Sem nome')}</div><div class="product-meta">${p.sku?'Código: '+esc(p.sku)+' • ':''}${esc(categoriaNome(p.categoria_id))}</div></div></div><div class="badges">${!ativo?'<span class="badge off">Inativo</span>':''}${promocaoAtiva(p)?'<span class="promo-badge">PROMOÇÃO</span>':''}${zero?'<span class="badge zero">Sem estoque</span>':baixo?'<span class="badge low">Estoque baixo</span>':'<span class="badge">Em estoque</span>'}</div>${p.descricao?`<div class="product-meta">${esc(p.descricao)}</div>`:''}<div class="product-values"><div class="product-value"><small>Estoque</small><b>${est} ${esc(p.unidade||'un')}</b></div><div class="product-value"><small>Custo</small><b>${money(custo)}</b></div><div class="product-value"><small>Venda</small><b>${money(venda)}</b></div><div class="product-value"><small>Lucro</small><b>${money(lucro)} · ${margem.toFixed(1).replace('.',',')}%</b></div></div><div class="product-actions"><button class="soft" onclick="editarProduto('${p.id}')">✏️ Editar</button><button class="soft" onclick="abrirEtiquetaProduto('${p.id}')">🏷️ Etiqueta</button><button class="soft" onclick="copiarLinkProduto('${p.id}')">🔗 Link</button><button class="warning" onclick="abrirAjusteEstoque('${p.id}')">📦 Estoque</button><button class="danger" onclick="excluirProduto('${p.id}')">🗑️ Excluir</button></div></div></article>`
   }).join('')+'</div>';
 }
 function atualizarResumoProdutos(){
@@ -1930,7 +1988,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderPrecificacoes();renderInventarios();renderReposicoes();renderEtiquetas();renderCatalogo();renderCupons();renderNotificacoes();
+  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderPrecificacoes();renderInventarios();renderReposicoes();renderEtiquetas();renderCatalogo();renderCupons();renderNotificacoes();setTimeout(focarProdutoDoLink,80);
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
