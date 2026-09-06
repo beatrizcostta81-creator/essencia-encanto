@@ -704,11 +704,130 @@ body.menu-lateral .header-actions button{
   body.menu-lateral main{padding:16px 12px 34px}
 }
 
+
+/* =========================================================
+   BUSCA GLOBAL
+   ========================================================= */
+.global-search{
+  position:relative;
+  width:min(430px,38vw);
+  margin-left:auto;
+  margin-right:14px;
+  z-index:86
+}
+.global-search-box{
+  height:40px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:0 11px;
+  border:1px solid color-mix(in srgb,var(--borda) 90%,transparent);
+  border-radius:11px;
+  background:color-mix(in srgb,var(--cor-card) 96%,var(--cor-fundo));
+  transition:.16s ease
+}
+.global-search-box:focus-within{
+  border-color:color-mix(in srgb,var(--cor-principal) 45%,var(--borda));
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--cor-principal) 10%,transparent);
+  background:var(--cor-card)
+}
+.global-search-icon{font-size:15px;opacity:.72}
+.global-search input{
+  flex:1;
+  min-width:0;
+  height:38px!important;
+  min-height:38px!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  padding:0!important;
+  font-size:13px
+}
+.global-search input:focus{box-shadow:none!important}
+.global-search-kbd{
+  font-size:9px;
+  color:#8d817a;
+  border:1px solid var(--borda);
+  border-radius:6px;
+  padding:3px 5px;
+  background:var(--cor-fundo);
+  white-space:nowrap
+}
+.global-search-results{
+  display:none;
+  position:absolute;
+  top:48px;left:0;right:0;
+  max-height:min(520px,70vh);
+  overflow-y:auto;
+  padding:7px;
+  border:1px solid var(--borda);
+  border-radius:14px;
+  background:var(--cor-card);
+  box-shadow:0 20px 55px rgba(28,20,16,.16);
+  z-index:120
+}
+.global-search-results.show{display:block}
+.gs-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 9px 8px;
+  color:#8d817a;font-size:10px;font-weight:850;letter-spacing:.07em;
+  text-transform:uppercase
+}
+.gs-item{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:10px 9px;
+  border:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:var(--cor-texto)!important;
+  text-align:left;
+  box-shadow:none!important;
+  transform:none!important
+}
+.gs-item:hover,.gs-item.gs-selected{
+  background:color-mix(in srgb,var(--cor-principal) 7%,var(--cor-card))!important
+}
+.gs-ico{
+  flex:0 0 34px;height:34px;
+  display:grid;place-items:center;
+  border-radius:9px;
+  background:color-mix(in srgb,var(--cor-principal) 8%,var(--cor-card));
+  font-size:16px
+}
+.gs-main{min-width:0;flex:1}
+.gs-title{font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gs-sub{font-size:10.5px;color:#8d817a;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gs-value{font-size:11px;font-weight:800;white-space:nowrap;color:var(--cor-principal)}
+.gs-empty{padding:25px 12px;text-align:center;color:#8d817a;font-size:12px}
+.gs-tip{padding:7px 9px;border-top:1px solid color-mix(in srgb,var(--borda) 72%,transparent);font-size:9.5px;color:#9a8e88}
+
+@media(max-width:980px){
+  .global-search{width:min(330px,40vw);margin-right:8px}
+  .global-search-kbd{display:none}
+}
+@media(max-width:720px){
+  header{flex-wrap:wrap;height:auto!important;min-height:64px;padding-top:8px;padding-bottom:8px}
+  .global-search{order:3;width:100%;margin:7px 0 0}
+  .global-search-results{top:45px;position:absolute}
+  .header-actions{margin-left:auto}
+  .brand b{max-width:150px}
+}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
-<section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><div class="brand-copy"><b id="headerNomeLoja">Essência & Encanto</b><small style="display:block;font-size:10px;color:#998a83;margin-top:2px">Gestão do negócio</small></div></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
+<section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><div class="brand-copy"><b id="headerNomeLoja">Essência & Encanto</b><small style="display:block;font-size:10px;color:#998a83;margin-top:2px">Gestão do negócio</small></div></div><div class="global-search" id="globalSearchWrap">
+  <div class="global-search-box">
+    <span class="global-search-icon">🔎</span>
+    <input id="globalSearchInput" type="search" autocomplete="off" placeholder="Buscar produto, cliente, venda ou pedido..." oninput="buscarGlobal(this.value)" onfocus="buscarGlobal(this.value)" onkeydown="globalSearchKeydown(event)">
+    <span class="global-search-kbd">Ctrl K</span>
+  </div>
+  <div class="global-search-results" id="globalSearchResults"></div>
+</div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
 <div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="separacao">🧾 Separação</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="etiquetas">🏷️ Etiquetas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
@@ -1491,6 +1610,147 @@ function moverMenuItem(k,dir){const i=menuOrdemRascunho.indexOf(k),j=i+dir;if(i<
 function alternarMenuItem(k,mostrar){if(k==='configuracoes')return;if(mostrar)menuOcultosRascunho=menuOcultosRascunho.filter(x=>x!==k);else if(!menuOcultosRascunho.includes(k))menuOcultosRascunho.push(k);previsualizarMenu()}
 function previsualizarMenu(){aplicarMenuVisual({menu_posicao:document.getElementById('cfgMenuPosicao')?.value||'topo',menu_estilo:document.getElementById('cfgMenuEstilo')?.value||'botoes',menu_ordem:menuOrdemRascunho,menu_ocultos:menuOcultosRascunho})}
 function restaurarMenuPadrao(){menuOrdemRascunho=[...MENU_PADRAO];menuOcultosRascunho=[];document.getElementById('cfgMenuPosicao').value='topo';document.getElementById('cfgMenuEstilo').value='botoes';renderMenuControles();previsualizarMenu()}
+
+let resultadosBuscaGlobal=[],indiceBuscaGlobal=-1;
+
+function normalizarBuscaGlobal(v){
+  return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+function moduloDisponivel(chave){
+  const el=document.querySelector(`.tab[data-v="${chave}"]`);
+  return !!el && el.style.display!=='none';
+}
+function resumoVendaBusca(v){
+  const cliente=clienteNome(v.cliente_id);
+  const n=v.numero?`#${v.numero}`:`${String(v.id||'').slice(0,8)}`;
+  return `${n} • ${cliente||'Cliente não informado'} • ${money(v.total)}`;
+}
+function resumoPedidoBusca(p){
+  const c=pedidoCliente(p.cliente_id);
+  const n=p.numero?`#${p.numero}`:`${String(p.id||'').slice(0,8)}`;
+  return `${n} • ${c?.nome||'Cliente não informado'} • ${money(p.total)}`;
+}
+function construirResultadosBuscaGlobal(termo){
+  const q=normalizarBuscaGlobal(termo);
+  if(q.length<2)return [];
+  const r=[];
+
+  if(moduloDisponivel('produtos')){
+    produtos.forEach(p=>{
+      const texto=normalizarBuscaGlobal([p.nome,p.sku,p.descricao,categoriaNome(p.categoria_id)].join(' '));
+      if(texto.includes(q))r.push({
+        tipo:'produto',icone:'🛍️',titulo:p.nome||'Produto',
+        sub:[p.sku&&`SKU ${p.sku}`,categoriaNome(p.categoria_id),`Estoque ${num(p.estoque)}`].filter(Boolean).join(' • '),
+        valor:money(precoVendaProduto(p)),id:p.id,aba:'produtos'
+      });
+    });
+  }
+
+  if(moduloDisponivel('clientes')){
+    clientes.forEach(c=>{
+      const texto=normalizarBuscaGlobal([c.nome,c.whatsapp,c.telefone,c.email,c.cpf,c.cidade,c.endereco].join(' '));
+      if(texto.includes(q))r.push({
+        tipo:'cliente',icone:'👥',titulo:c.nome||'Cliente',
+        sub:[c.whatsapp||c.telefone,c.cidade].filter(Boolean).join(' • ')||'Cliente cadastrado',
+        valor:'',id:c.id,aba:'clientes'
+      });
+    });
+  }
+
+  if(moduloDisponivel('vendas')){
+    vendas.forEach(v=>{
+      const its=itensVenda.filter(i=>i.venda_id===v.id);
+      const nomes=its.map(i=>produtoNome(i.produto_id)||i.produto_nome||'').join(' ');
+      const texto=normalizarBuscaGlobal([v.numero,v.id,clienteNome(v.cliente_id),v.forma_pagamento,v.status_pagamento,v.status,nomes].join(' '));
+      if(texto.includes(q))r.push({
+        tipo:'venda',icone:'🧾',titulo:`Venda ${v.numero?'#'+v.numero:''}`.trim(),
+        sub:`${clienteNome(v.cliente_id)||'Cliente não informado'} • ${formatarDataHora(v.data_venda||v.created_at)}`,
+        valor:money(v.total),id:v.id,aba:'vendas'
+      });
+    });
+  }
+
+  if(moduloDisponivel('pedidos')){
+    pedidos.forEach(p=>{
+      const its=pedidoItens(p.id);
+      const nomes=its.map(i=>i.produto_nome||produtoNome(i.produto_id)||'').join(' ');
+      const cli=pedidoCliente(p.cliente_id);
+      const texto=normalizarBuscaGlobal([p.numero,p.id,cli?.nome,p.status,p.forma_pagamento,p.observacoes,nomes].join(' '));
+      if(texto.includes(q))r.push({
+        tipo:'pedido',icone:'📦',titulo:`Pedido ${p.numero?'#'+p.numero:''}`.trim(),
+        sub:`${cli?.nome||'Cliente não informado'} • ${p.status||'Sem status'} • ${formatarDataHora(p.data_pedido||p.created_at)}`,
+        valor:money(p.total),id:p.id,aba:'pedidos'
+      });
+    });
+  }
+
+  const prioridade={produto:1,cliente:2,venda:3,pedido:4};
+  return r.sort((a,b)=>{
+    const ae=normalizarBuscaGlobal(a.titulo).startsWith(q)?0:1;
+    const be=normalizarBuscaGlobal(b.titulo).startsWith(q)?0:1;
+    return ae-be || prioridade[a.tipo]-prioridade[b.tipo] || a.titulo.localeCompare(b.titulo,'pt-BR');
+  }).slice(0,18);
+}
+function buscarGlobal(valor){
+  const box=document.getElementById('globalSearchResults');if(!box)return;
+  const q=String(valor||'').trim();
+  if(q.length<2){
+    resultadosBuscaGlobal=[];indiceBuscaGlobal=-1;
+    box.innerHTML=q.length?'<div class="gs-empty">Digite pelo menos 2 letras ou números.</div>':'<div class="gs-empty">Busque em produtos, clientes, vendas e pedidos.</div><div class="gs-tip">Dica: use Ctrl + K para abrir a busca rapidamente.</div>';
+    box.classList.add('show');return;
+  }
+  resultadosBuscaGlobal=construirResultadosBuscaGlobal(q);indiceBuscaGlobal=-1;
+  if(!resultadosBuscaGlobal.length){
+    box.innerHTML=`<div class="gs-empty">Nenhum resultado para <b>${esc(q)}</b>.</div>`;
+    box.classList.add('show');return;
+  }
+  const grupos={produto:'Produtos',cliente:'Clientes',venda:'Vendas',pedido:'Pedidos'};
+  let atual='',h='';
+  resultadosBuscaGlobal.forEach((x,i)=>{
+    if(x.tipo!==atual){atual=x.tipo;h+=`<div class="gs-head"><span>${grupos[x.tipo]}</span></div>`}
+    h+=`<button type="button" class="gs-item" data-gs-index="${i}" onclick="abrirResultadoBuscaGlobal(${i})"><span class="gs-ico">${x.icone}</span><span class="gs-main"><span class="gs-title">${esc(x.titulo)}</span><span class="gs-sub">${esc(x.sub||'')}</span></span>${x.valor?`<span class="gs-value">${esc(x.valor)}</span>`:''}</button>`;
+  });
+  h+=`<div class="gs-tip">${resultadosBuscaGlobal.length} resultado(s) • ↑ ↓ para navegar • Enter para abrir • Esc para fechar</div>`;
+  box.innerHTML=h;box.classList.add('show');
+}
+function selecionarBuscaGlobal(idx){
+  indiceBuscaGlobal=idx;
+  document.querySelectorAll('#globalSearchResults .gs-item').forEach((el,i)=>el.classList.toggle('gs-selected',i===idx));
+  const el=document.querySelector(`#globalSearchResults .gs-item[data-gs-index="${idx}"]`);if(el)el.scrollIntoView({block:'nearest'});
+}
+function globalSearchKeydown(e){
+  if(e.key==='Escape'){fecharBuscaGlobal();e.currentTarget.blur();return}
+  if(!resultadosBuscaGlobal.length)return;
+  if(e.key==='ArrowDown'){e.preventDefault();selecionarBuscaGlobal((indiceBuscaGlobal+1)%resultadosBuscaGlobal.length)}
+  if(e.key==='ArrowUp'){e.preventDefault();selecionarBuscaGlobal((indiceBuscaGlobal-1+resultadosBuscaGlobal.length)%resultadosBuscaGlobal.length)}
+  if(e.key==='Enter'){e.preventDefault();abrirResultadoBuscaGlobal(indiceBuscaGlobal>=0?indiceBuscaGlobal:0)}
+}
+function fecharBuscaGlobal(){
+  document.getElementById('globalSearchResults')?.classList.remove('show');
+  indiceBuscaGlobal=-1;
+}
+function abrirResultadoBuscaGlobal(i){
+  const x=resultadosBuscaGlobal[i];if(!x)return;
+  fecharBuscaGlobal();
+  const inp=document.getElementById('globalSearchInput');if(inp)inp.value='';
+  ativarAba(x.aba);
+  setTimeout(()=>{
+    if(x.tipo==='produto')editarProduto(x.id);
+    else if(x.tipo==='cliente')editarCliente(x.id);
+    else if(x.tipo==='venda')verVenda(x.id);
+    else if(x.tipo==='pedido')verPedido(x.id);
+  },80);
+}
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&String(e.key).toLowerCase()==='k'){
+    e.preventDefault();const inp=document.getElementById('globalSearchInput');if(inp){inp.focus();buscarGlobal(inp.value)}
+  }
+});
+document.addEventListener('click',e=>{
+  const wrap=document.getElementById('globalSearchWrap');
+  if(wrap&&!wrap.contains(e.target))fecharBuscaGlobal();
+});
+
 function ativarAba(chave){const alvo=document.querySelector(`.tab[data-v="${chave}"]`);if(!alvo||alvo.style.display==='none')return;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));alvo.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));const sec=document.getElementById(chave);if(sec)sec.classList.add('active')}
 
 function aplicarLogoVisual(url){
