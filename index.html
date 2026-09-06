@@ -254,20 +254,42 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 /* Inventário */
 .inv-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
 .inv-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
-.inv-kpi span{display:block;font-size:11px;color:#777}.inv-kpi b{display:block;font-size:19px;margin-top:5px;color:var(--cor-principal)}
-.inv-table{width:100%;border-collapse:collapse}.inv-table th,.inv-table td{padding:10px;border-bottom:1px solid #0000000f;text-align:left;font-size:12px}.inv-table th{color:#666;font-size:11px}
+.inv-kpi span{display:block;font-size:11px;color:#777}.inv-kpi b{display:block;font-size:20px;margin-top:5px;color:var(--cor-principal)}
+.inv-list{display:grid;gap:10px}
+.inv-card{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:14px}
+.inv-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.inv-meta{font-size:12px;color:#777;line-height:1.55;margin-top:5px}
+.inv-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900;background:#fff3cd;color:#7a5b00}
+.inv-status.finalizado{background:#e8f7ec;color:#26743b}
+.inv-table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.inv-table th{font-size:11px;color:#777;text-align:left;padding:0 8px}
+.inv-table td{background:#00000004;padding:8px;border-top:1px solid #00000008;border-bottom:1px solid #00000008}
+.inv-table td:first-child{border-radius:10px 0 0 10px}.inv-table td:last-child{border-radius:0 10px 10px 0}
 .inv-diff.pos{color:#26743b}.inv-diff.neg{color:#a33131}.inv-diff.zero{color:#777}
-.inv-actions{display:flex;gap:7px;flex-wrap:wrap}
-.inv-history{display:grid;gap:9px}.inv-card{border:1px solid #00000010;border-radius:15px;padding:13px;background:var(--card,#fff)}
-.inv-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}.inv-status.em_andamento{background:#fff3cd;color:#7a5b00}.inv-status.finalizado{background:#e8f7ec;color:#26743b}
-@media(max-width:900px){.inv-kpis{grid-template-columns:1fr 1fr}.inv-table{display:block;overflow-x:auto}}
+@media(max-width:900px){.inv-kpis{grid-template-columns:1fr 1fr}.inv-table{display:block;overflow:auto;white-space:nowrap}}
+
+
+/* Precificação */
+.price-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.price-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.price-kpi span{display:block;font-size:11px;color:#777}.price-kpi b{display:block;font-size:20px;margin-top:5px;color:var(--cor-principal)}
+.price-table-wrap{overflow:auto}
+.price-table{width:100%;border-collapse:separate;border-spacing:0 8px;min-width:1100px}
+.price-table th{font-size:11px;color:#777;text-align:left;padding:0 8px;white-space:nowrap}
+.price-table td{padding:9px 8px;background:#00000004;border-top:1px solid #00000008;border-bottom:1px solid #00000008;vertical-align:middle}
+.price-table td:first-child{border-radius:11px 0 0 11px}.price-table td:last-child{border-radius:0 11px 11px 0}
+.price-table .money-cell{font-weight:700;white-space:nowrap}.price-table .suggested{color:var(--cor-principal);font-weight:900}
+.price-calc-box{background:#00000004;border:1px solid #00000010;border-radius:15px;padding:14px;margin:12px 0}
+.price-calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.price-calc-grid div{background:var(--card,#fff);border-radius:12px;padding:10px}.price-calc-grid small{display:block;color:#777;font-size:10px}.price-calc-grid b{font-size:15px}
+@media(max-width:900px){.price-kpis{grid-template-columns:1fr 1fr}.price-calc-grid{grid-template-columns:1fr 1fr}}
 
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="inventario">📋 Inventário</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -332,20 +354,69 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
   </div>
 </section>
 
+
+<section id="precificacao" class="view">
+  <div class="top">
+    <div><h2>💲 Precificação</h2><p class="muted">Calcule o preço de venda considerando custo, frete, embalagem e a margem de lucro desejada.</p></div>
+    <button class="primary" onclick="novaPrecificacao()">+ Nova precificação</button>
+  </div>
+
+  <div class="price-kpis">
+    <div class="price-kpi"><span>Itens precificados</span><b id="precTotal">0</b></div>
+    <div class="price-kpi"><span>Custo médio</span><b id="precCustoMedio">R$ 0,00</b></div>
+    <div class="price-kpi"><span>Preço médio sugerido</span><b id="precPrecoMedio">R$ 0,00</b></div>
+    <div class="price-kpi"><span>Margem média</span><b id="precMargemMedia">0%</b></div>
+  </div>
+
+  <div class="panel">
+    <div class="product-filters">
+      <input id="precBusca" placeholder="🔎 Buscar produto" oninput="renderPrecificacoes()">
+      <select id="precOrdenar" onchange="renderPrecificacoes()">
+        <option value="recente">Mais recentes</option>
+        <option value="produto">Produto A–Z</option>
+        <option value="margem">Maior margem</option>
+        <option value="preco">Maior preço</option>
+      </select>
+    </div>
+
+    <div class="price-table-wrap">
+      <table class="price-table">
+        <thead><tr>
+          <th>Produto</th>
+          <th>Valor pago</th>
+          <th>Frete</th>
+          <th>Embalagem</th>
+          <th>Outros</th>
+          <th>Custo total</th>
+          <th>Margem</th>
+          <th>Lucro</th>
+          <th>Preço sugerido</th>
+          <th>Preço final</th>
+          <th>Ações</th>
+        </tr></thead>
+        <tbody id="precTabela"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section id="inventario" class="view">
   <div class="top">
-    <div><h2>📋 Inventário / Contagem de Estoque</h2><p class="muted">Compare o estoque do sistema com a contagem física e ajuste diferenças.</p></div>
+    <div><h2>🧮 Inventário / Contagem de Estoque</h2><p class="muted">Conte o estoque físico, veja diferenças e ajuste o sistema com segurança.</p></div>
     <button class="primary" onclick="novoInventario()">+ Nova contagem</button>
   </div>
   <div class="inv-kpis">
     <div class="inv-kpi"><span>Em andamento</span><b id="invAndamento">0</b></div>
     <div class="inv-kpi"><span>Finalizados</span><b id="invFinalizados">0</b></div>
-    <div class="inv-kpi"><span>Itens divergentes</span><b id="invDivergentes">0</b></div>
+    <div class="inv-kpi"><span>Itens com diferença</span><b id="invDiferencas">0</b></div>
     <div class="inv-kpi"><span>Ajustes aplicados</span><b id="invAjustes">0</b></div>
   </div>
   <div class="panel">
-    <div class="top"><div><h3>📚 Histórico de inventários</h3></div></div>
-    <div id="listaInventarios" class="inv-history"></div>
+    <div class="product-filters">
+      <input id="invBusca" placeholder="🔎 Buscar por data ou observação" oninput="renderInventarios()">
+      <select id="invFiltroStatus" onchange="renderInventarios()"><option value="">Todos</option><option value="em_andamento">Em andamento</option><option value="finalizado">Finalizado</option></select>
+    </div>
+    <div id="listaInventarios" class="inv-list"></div>
   </div>
 </section>
 
@@ -701,9 +772,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},inventario:{label:'Inventário',icone:'📋'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','inventario','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[],precificacoes=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},precificacao:{label:'Precificação',icone:'💲'},inventario:{label:'Inventário',icone:'🧮'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','precificacao','inventario','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -785,7 +856,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc,inv,ii]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('inventarios').select('*').eq('user_id',user.id).order('data_inventario',{ascending:false}),sb.from('itens_inventario').select('*').eq('user_id',user.id)]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error||inv.error||ii.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];inventarios=inv.data||[];itensInventario=ii.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc,inv,ii,px]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('inventarios').select('*').eq('user_id',user.id).order('data_inventario',{ascending:false}),sb.from('itens_inventario').select('*').eq('user_id',user.id),sb.from('precificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error||inv.error||ii.error||px.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];inventarios=inv.data||[];itensInventario=ii.data||[];precificacoes=px.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -962,6 +1033,211 @@ function preencherCatalogoCategorias(){
 function catalogoContatoTexto(){
   const partes=[];if(configLoja?.whatsapp)partes.push('WhatsApp: '+configLoja.whatsapp);if(configLoja?.instagram)partes.push(configLoja.instagram.startsWith('@')?configLoja.instagram:'@'+configLoja.instagram);return partes.join(' • ');
 }
+
+
+function precProdutoNome(x){return x.produto_nome||produtos.find(p=>p.id===x.produto_id)?.nome||'Produto'}
+function precCalcularValores(valorPago,frete,embalagem,outros,margem){
+  const custo=Math.max(0,num(valorPago))+Math.max(0,num(frete))+Math.max(0,num(embalagem))+Math.max(0,num(outros));
+  const m=Math.max(0,Math.min(99.99,num(margem)));
+  // Margem real: lucro representa m% do preço de venda.
+  const sugerido=custo<=0?0:custo/(1-m/100);
+  const lucro=Math.max(0,sugerido-custo);
+  return {custo,margem:m,sugerido,lucro};
+}
+function renderPrecificacoes(){
+  const body=document.getElementById('precTabela');if(!body)return;
+  const busca=String(document.getElementById('precBusca')?.value||'').toLowerCase().trim(),ord=document.getElementById('precOrdenar')?.value||'recente';
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  const n=precificacoes.length,custo=n?precificacoes.reduce((s,x)=>s+num(x.custo_total),0)/n:0,preco=n?precificacoes.reduce((s,x)=>s+num(x.preco_final||x.preco_sugerido),0)/n:0,marg=n?precificacoes.reduce((s,x)=>s+num(x.margem_lucro),0)/n:0;
+  set('precTotal',n);set('precCustoMedio',money(custo));set('precPrecoMedio',money(preco));set('precMargemMedia',marg.toFixed(1).replace('.',',')+'%');
+
+  let lista=precificacoes.filter(x=>!busca||precProdutoNome(x).toLowerCase().includes(busca)||String(x.observacoes||'').toLowerCase().includes(busca));
+  if(ord==='produto')lista.sort((a,b)=>precProdutoNome(a).localeCompare(precProdutoNome(b),'pt-BR'));
+  else if(ord==='margem')lista.sort((a,b)=>num(b.margem_lucro)-num(a.margem_lucro));
+  else if(ord==='preco')lista.sort((a,b)=>num(b.preco_final||b.preco_sugerido)-num(a.preco_final||a.preco_sugerido));
+  else lista.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+
+  body.innerHTML=lista.length?lista.map(x=>`<tr>
+    <td><b>${esc(precProdutoNome(x))}</b>${x.observacoes?`<div class="muted" style="font-size:10px">${esc(x.observacoes)}</div>`:''}</td>
+    <td class="money-cell">${money(x.valor_pago)}</td>
+    <td class="money-cell">${money(x.frete)}</td>
+    <td class="money-cell">${money(x.embalagem)}</td>
+    <td class="money-cell">${money(x.outros_custos)}</td>
+    <td class="money-cell">${money(x.custo_total)}</td>
+    <td><b>${num(x.margem_lucro).toFixed(1).replace('.',',')}%</b></td>
+    <td class="money-cell">${money(x.lucro_valor)}</td>
+    <td class="money-cell suggested">${money(x.preco_sugerido)}</td>
+    <td class="money-cell">${money(x.preco_final||x.preco_sugerido)}</td>
+    <td><div style="display:flex;gap:5px;white-space:nowrap"><button class="soft" onclick="editarPrecificacao('${x.id}')">✏️</button><button class="soft" onclick="usarPrecoNoProduto('${x.id}')">🛍️ Usar preço</button><button class="danger" onclick="excluirPrecificacao('${x.id}')">🗑️</button></div></td>
+  </tr>`).join(''):`<tr><td colspan="11"><div class="empty-state"><div class="icon">💲</div><h3>Nenhuma precificação</h3><p class="muted">Clique em “Nova precificação” para calcular seu primeiro produto.</p></div></td></tr>`;
+}
+function novaPrecificacao(){abrirFormPrecificacao(null)}
+function editarPrecificacao(id){const x=precificacoes.find(p=>p.id===id);if(x)abrirFormPrecificacao(x)}
+function abrirFormPrecificacao(x){
+  const opts=`<option value="">Produto avulso / digitar nome</option>`+produtos.slice().sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(p=>`<option value="${p.id}" ${x?.produto_id===p.id?'selected':''}>${esc(p.nome)}</option>`).join('');
+  openModal(`<h2>${x?'✏️ Editar precificação':'💲 Nova precificação'}</h2>
+  <div class="form-grid">
+    <div><label>Produto cadastrado</label><select id="pcProduto" onchange="precProdutoMudou()">${opts}</select></div>
+    <div><label>Nome do produto *</label><input id="pcNome" value="${esc(x?.produto_nome||'')}" placeholder="Ex.: Perfume Kiss Me"></div>
+    <div><label>Valor pago *</label><input id="pcPago" type="number" min="0" step="0.01" value="${num(x?.valor_pago)||''}" placeholder="0,00" oninput="previewPrecificacao()"></div>
+    <div><label>Frete</label><input id="pcFrete" type="number" min="0" step="0.01" value="${num(x?.frete)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Embalagem</label><input id="pcEmbalagem" type="number" min="0" step="0.01" value="${num(x?.embalagem)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Outros custos</label><input id="pcOutros" type="number" min="0" step="0.01" value="${num(x?.outros_custos)||0}" oninput="previewPrecificacao()"></div>
+    <div><label>Margem de lucro desejada (%) *</label><input id="pcMargem" type="number" min="0" max="99.99" step="0.1" value="${num(x?.margem_lucro)||40}" oninput="previewPrecificacao()"></div>
+    <div><label>Preço final</label><input id="pcFinal" type="number" min="0" step="0.01" value="${x?.preco_final!=null?num(x.preco_final):''}" placeholder="Opcional, ex.: 119,90"></div>
+    <div class="full"><label>Observações</label><textarea id="pcObs" placeholder="Opcional">${esc(x?.observacoes||'')}</textarea></div>
+  </div>
+  <div class="price-calc-box">
+    <div class="price-calc-grid">
+      <div><small>Custo total</small><b id="pcPrevCusto">R$ 0,00</b></div>
+      <div><small>Lucro em R$</small><b id="pcPrevLucro">R$ 0,00</b></div>
+      <div><small>Preço sugerido</small><b id="pcPrevSug">R$ 0,00</b></div>
+      <div><small>Margem</small><b id="pcPrevMargem">0%</b></div>
+    </div>
+    <p class="muted" style="font-size:11px;margin:10px 0 0">A margem é calculada sobre o preço de venda. Ex.: margem de 40% significa que 40% do preço final é lucro bruto.</p>
+  </div>
+  <div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarPrecificacao(${x?.id?`'${x.id}'`:'null'})">Salvar precificação</button></div>`);
+  previewPrecificacao();
+}
+function precProdutoMudou(){
+  const id=document.getElementById('pcProduto')?.value,p=produtos.find(x=>x.id===id);
+  if(p){
+    document.getElementById('pcNome').value=p.nome||'';
+    const custo=num(p.preco_custo);
+    if(custo>0&&!num(document.getElementById('pcPago').value))document.getElementById('pcPago').value=custo.toFixed(2);
+  }
+  previewPrecificacao();
+}
+function previewPrecificacao(){
+  const r=precCalcularValores(document.getElementById('pcPago')?.value,document.getElementById('pcFrete')?.value,document.getElementById('pcEmbalagem')?.value,document.getElementById('pcOutros')?.value,document.getElementById('pcMargem')?.value);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('pcPrevCusto',money(r.custo));set('pcPrevLucro',money(r.lucro));set('pcPrevSug',money(r.sugerido));set('pcPrevMargem',r.margem.toFixed(1).replace('.',',')+'%');
+  return r;
+}
+async function salvarPrecificacao(id=null){
+  const nome=document.getElementById('pcNome').value.trim(),produto_id=document.getElementById('pcProduto').value||null,r=previewPrecificacao();
+  if(!nome)return alert('Informe o nome do produto.');
+  if(r.custo<=0)return alert('Informe o valor pago ou algum custo do produto.');
+  if(r.margem>=100)return alert('A margem precisa ser menor que 100%.');
+  const finalTxt=document.getElementById('pcFinal').value;
+  const precoFinal=finalTxt===''?null:Math.max(0,num(finalTxt));
+  const obj={user_id:user.id,produto_id,produto_nome:nome,valor_pago:Math.max(0,num(document.getElementById('pcPago').value)),frete:Math.max(0,num(document.getElementById('pcFrete').value)),embalagem:Math.max(0,num(document.getElementById('pcEmbalagem').value)),outros_custos:Math.max(0,num(document.getElementById('pcOutros').value)),custo_total:r.custo,margem_lucro:r.margem,lucro_valor:r.lucro,preco_sugerido:r.sugerido,preco_final:precoFinal,observacoes:document.getElementById('pcObs').value.trim()||null,updated_at:new Date().toISOString()};
+  const q=id?sb.from('precificacoes').update(obj).eq('id',id).eq('user_id',user.id):sb.from('precificacoes').insert(obj);
+  const res=await q;if(res.error)return alert('Não foi possível salvar: '+res.error.message);
+  closeModal();await carregar();ativarAba('precificacao');
+}
+async function usarPrecoNoProduto(id){
+  const x=precificacoes.find(p=>p.id===id);if(!x)return;
+  if(!x.produto_id)return alert('Esta precificação não está vinculada a um produto cadastrado.');
+  const p=produtos.find(z=>z.id===x.produto_id);if(!p)return alert('Produto não encontrado.');
+  const preco=num(x.preco_final||x.preco_sugerido);
+  if(preco<=0)return alert('A precificação não possui preço válido.');
+  if(!confirm(`Atualizar o preço de venda de "${p.nome}" para ${money(preco)}?`))return;
+  const r=await sb.from('produtos').update({preco_venda:preco,preco_custo:num(x.custo_total),updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível atualizar o produto: '+r.error.message);
+  await carregar();ativarAba('precificacao');alert('✅ Preço de venda e custo do produto atualizados.');
+}
+async function excluirPrecificacao(id){
+  if(!confirm('Excluir esta precificação?'))return;
+  const r=await sb.from('precificacoes').delete().eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível excluir: '+r.error.message);
+  await carregar();ativarAba('precificacao');
+}
+
+function itensDoInventario(id){return itensInventario.filter(i=>i.inventario_id===id)}
+function invStatusNome(s){return s==='finalizado'?'Finalizado':'Em andamento'}
+function renderInventarios(){
+  const alvo=document.getElementById('listaInventarios');if(!alvo)return;
+  const busca=String(document.getElementById('invBusca')?.value||'').toLowerCase().trim(),f=document.getElementById('invFiltroStatus')?.value||'';
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('invAndamento',inventarios.filter(i=>i.status!=='finalizado').length);
+  set('invFinalizados',inventarios.filter(i=>i.status==='finalizado').length);
+  set('invDiferencas',itensInventario.filter(i=>i.estoque_contado!=null&&num(i.diferenca)!==0).length);
+  set('invAjustes',itensInventario.filter(i=>i.ajuste_aplicado===true).length);
+  const lista=inventarios.filter(i=>{
+    if(f&&i.status!==f)return false;
+    const txt=[i.data_inventario,i.observacoes].join(' ').toLowerCase();
+    return !busca||txt.includes(busca);
+  });
+  alvo.innerHTML=lista.length?lista.map(inv=>{
+    const its=itensDoInventario(inv.id),contados=its.filter(x=>x.estoque_contado!=null).length,difs=its.filter(x=>x.estoque_contado!=null&&num(x.diferenca)!==0).length;
+    return `<article class="inv-card"><div class="inv-head"><div><h4 style="margin:0">Inventário de ${formatarData(inv.data_inventario)}</h4><div class="inv-meta">${its.length} produtos • ${contados} contados • ${difs} com diferença${inv.observacoes?'<br>'+esc(inv.observacoes):''}</div></div><span class="inv-status ${inv.status==='finalizado'?'finalizado':''}">${invStatusNome(inv.status)}</span></div><div class="return-actions"><button class="soft" onclick="abrirInventario('${inv.id}')">👁️ ${inv.status==='finalizado'?'Ver':'Continuar contagem'}</button>${inv.status!=='finalizado'?`<button class="primary" onclick="finalizarInventario('${inv.id}')">✅ Finalizar</button>`:''}<button class="danger" onclick="excluirInventario('${inv.id}')">🗑️ Excluir</button></div></article>`;
+  }).join(''):'<div class="empty-state"><div class="icon">🧮</div><h3>Nenhum inventário</h3><p class="muted">Crie uma nova contagem para conferir seu estoque.</p></div>';
+}
+function novoInventario(){
+  if(inventarios.some(i=>i.status!=='finalizado'))return alert('Já existe um inventário em andamento. Finalize ou exclua-o antes de iniciar outro.');
+  openModal(`<h2>🧮 Nova contagem de estoque</h2><p class="muted">O sistema vai copiar o estoque atual dos produtos ativos para você informar a quantidade física.</p><div class="form-grid"><div><label>Data</label><input id="invData" type="date" value="${caixaDataISO()}"></div><div class="full"><label>Observações</label><textarea id="invObs" placeholder="Ex.: contagem mensal"></textarea></div></div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="criarInventario()">Criar contagem</button></div>`);
+}
+async function criarInventario(){
+  const data=document.getElementById('invData').value||caixaDataISO(),obs=document.getElementById('invObs').value.trim()||null;
+  const r=await sb.from('inventarios').insert({user_id:user.id,data_inventario:data,status:'em_andamento',observacoes:obs}).select('id').single();
+  if(r.error)return alert('Não foi possível criar o inventário: '+r.error.message);
+  const lista=produtos.filter(p=>p.ativo!==false).map(p=>({user_id:user.id,inventario_id:r.data.id,produto_id:p.id,produto_nome:p.nome,estoque_sistema:num(p.estoque),estoque_contado:null,diferenca:null,motivo_ajuste:null,ajuste_aplicado:false}));
+  if(lista.length){
+    const ri=await sb.from('itens_inventario').insert(lista);
+    if(ri.error){await sb.from('inventarios').delete().eq('id',r.data.id).eq('user_id',user.id);return alert('Não foi possível criar os itens do inventário: '+ri.error.message);}
+  }
+  closeModal();await carregar();ativarAba('inventario');abrirInventario(r.data.id);
+}
+function abrirInventario(id){
+  const inv=inventarios.find(i=>i.id===id);if(!inv)return;
+  const its=itensDoInventario(id).slice().sort((a,b)=>(a.produto_nome||'').localeCompare(b.produto_nome||'','pt-BR'));
+  openModal(`<h2>🧮 Inventário de ${formatarData(inv.data_inventario)}</h2><p class="muted">${inv.status==='finalizado'?'Inventário finalizado.':'Informe a quantidade física contada de cada produto.'}</p><div style="overflow:auto"><table class="inv-table"><thead><tr><th>Produto</th><th>Sistema</th><th>Contado</th><th>Diferença</th><th>Motivo</th><th>Ajuste</th></tr></thead><tbody>${its.map(i=>`<tr data-invitem="${i.id}"><td><b>${esc(i.produto_nome||'Produto')}</b></td><td>${num(i.estoque_sistema)}</td><td>${inv.status==='finalizado'?(i.estoque_contado==null?'—':num(i.estoque_contado)):`<input class="invContado" type="number" min="0" step="1" value="${i.estoque_contado==null?'':num(i.estoque_contado)}" oninput="calcInvLinha(this)">`}</td><td class="invDiff ${num(i.diferenca)>0?'pos':num(i.diferenca)<0?'neg':'zero'}">${i.estoque_contado==null?'—':num(i.diferenca)}</td><td>${inv.status==='finalizado'?esc(i.motivo_ajuste||'—'):`<input class="invMotivo" value="${esc(i.motivo_ajuste||'')}" placeholder="Opcional">`}</td><td>${i.ajuste_aplicado?'✅ Aplicado':inv.status==='finalizado'?'—':`<button class="soft" onclick="aplicarAjusteItemInventario('${i.id}')">Aplicar</button>`}</td></tr>`).join('')}</tbody></table></div><div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap">${inv.status!=='finalizado'?`<button class="soft" onclick="salvarContagemInventario('${inv.id}',false)">💾 Salvar contagem</button><button class="primary" onclick="salvarContagemInventario('${inv.id}',true)">✅ Salvar e finalizar</button>`:''}<button class="soft" onclick="closeModal()">Fechar</button></div>`);
+}
+function calcInvLinha(inp){
+  const tr=inp.closest('tr'),item=itensInventario.find(i=>i.id===tr.dataset.invitem),sis=num(item?.estoque_sistema),cont=inp.value===''?null:num(inp.value),d=tr.querySelector('.invDiff');
+  if(cont==null){d.textContent='—';d.className='invDiff zero'}else{const dif=cont-sis;d.textContent=dif;d.className='invDiff '+(dif>0?'pos':dif<0?'neg':'zero')}
+}
+async function salvarContagemInventario(invId,finalizar=false){
+  const inv=inventarios.find(i=>i.id===invId);if(!inv||inv.status==='finalizado')return;
+  const rows=[...document.querySelectorAll('tr[data-invitem]')];
+  if(finalizar&&rows.some(tr=>tr.querySelector('.invContado')?.value==='')&&!confirm('Alguns produtos ainda não foram contados. Deseja finalizar mesmo assim?'))return;
+  for(const tr of rows){
+    const id=tr.dataset.invitem,item=itensInventario.find(i=>i.id===id),inp=tr.querySelector('.invContado'),mot=tr.querySelector('.invMotivo');
+    if(!item||!inp)continue;
+    const contado=inp.value===''?null:Math.max(0,num(inp.value)),dif=contado==null?null:contado-num(item.estoque_sistema);
+    const r=await sb.from('itens_inventario').update({estoque_contado:contado,diferenca:dif,motivo_ajuste:mot?.value.trim()||null,updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+    if(r.error)return alert('Erro ao salvar a contagem de '+(item.produto_nome||'produto')+': '+r.error.message);
+  }
+  if(finalizar){
+    const r=await sb.from('inventarios').update({status:'finalizado',finalizado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',invId).eq('user_id',user.id);
+    if(r.error)return alert('Não foi possível finalizar: '+r.error.message);
+  }
+  closeModal();await carregar();ativarAba('inventario');if(finalizar)alert('✅ Inventário finalizado com sucesso.');
+}
+async function aplicarAjusteItemInventario(itemId){
+  const item=itensInventario.find(i=>i.id===itemId);if(!item)return;
+  const tr=document.querySelector(`tr[data-invitem="${itemId}"]`),inp=tr?.querySelector('.invContado'),mot=tr?.querySelector('.invMotivo');
+  const contado=inp&&inp.value!==''?Math.max(0,num(inp.value)):item.estoque_contado;
+  if(contado==null)return alert('Informe a quantidade contada primeiro.');
+  if(item.ajuste_aplicado)return alert('Este ajuste já foi aplicado.');
+  const p=produtos.find(x=>x.id===item.produto_id);if(!p)return alert('Produto não encontrado.');
+  const dif=contado-num(item.estoque_sistema);
+  if(!confirm(`O estoque de "${item.produto_nome}" será ajustado para ${contado}. Deseja continuar?`))return;
+  const rp=await sb.from('produtos').update({estoque:contado,updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);
+  if(rp.error)return alert('Não foi possível ajustar o produto: '+rp.error.message);
+  const ri=await sb.from('itens_inventario').update({estoque_contado:contado,diferenca:dif,motivo_ajuste:mot?.value.trim()||null,ajuste_aplicado:true,ajustado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',itemId).eq('user_id',user.id);
+  if(ri.error)return alert('Produto ajustado, mas houve erro ao registrar o inventário: '+ri.error.message);
+  await carregar();abrirInventario(item.inventario_id);
+}
+async function finalizarInventario(id){
+  const inv=inventarios.find(i=>i.id===id);if(!inv||inv.status==='finalizado')return;
+  const nao=itensDoInventario(id).filter(i=>i.estoque_contado==null).length;
+  if(nao>0&&!confirm(`Ainda existem ${nao} produto(s) sem contagem. Finalizar mesmo assim?`))return;
+  const r=await sb.from('inventarios').update({status:'finalizado',finalizado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível finalizar: '+r.error.message);
+  await carregar();ativarAba('inventario');
+}
+async function excluirInventario(id){
+  const inv=inventarios.find(i=>i.id===id);if(!inv)return;
+  const aplicados=itensDoInventario(id).filter(i=>i.ajuste_aplicado).length;
+  if(aplicados>0){if(!confirm(`Este inventário possui ${aplicados} ajuste(s) já aplicados ao estoque. Excluir o histórico NÃO desfaz esses ajustes. Deseja continuar?`))return}
+  else if(!confirm('Excluir este inventário?'))return;
+  const r=await sb.from('inventarios').delete().eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível excluir: '+r.error.message);
+  await carregar();ativarAba('inventario');
+}
+
 function renderCatalogo(){
   const grid=document.getElementById('catalogoGrid');if(!grid)return;preencherCatalogoCategorias();
   const lista=catalogoProdutosFiltrados();const nome=configLoja?.nome_loja||'Essência & Encanto';
@@ -986,68 +1262,6 @@ function abrirCatalogoCliente(){
 }
 async function copiarCatalogoTexto(){
   const lista=catalogoProdutosFiltrados();if(!lista.length)return alert('Não há produtos disponíveis neste filtro.');const nome=configLoja?.nome_loja||'Essência & Encanto';let txt=`✨ ${nome} — Catálogo disponível\n\n`+lista.map(p=>`• ${p.nome} — ${promocaoAtiva(p)?money(precoVendaProduto(p))+' (promoção)':money(precoVendaProduto(p))}`).join('\n');if(configLoja?.whatsapp)txt+=`\n\n📲 WhatsApp: ${configLoja.whatsapp}`;try{await navigator.clipboard.writeText(txt);alert('✅ Lista do catálogo copiada. Agora é só colar no WhatsApp.')}catch(e){alert('Não foi possível copiar automaticamente. Abra o catálogo e compartilhe por lá.')}
-}
-
-
-function itensDoInventario(id){return itensInventario.filter(i=>i.inventario_id===id)}
-function renderInventarios(){
-  const alvo=document.getElementById('listaInventarios');if(!alvo)return;
-  const andamento=inventarios.filter(i=>i.status==='em_andamento').length,fin=inventarios.filter(i=>i.status==='finalizado').length;
-  const diverg=itensInventario.filter(i=>i.estoque_contado!=null&&Math.abs(num(i.diferenca))>0.0001).length,aj=itensInventario.filter(i=>i.ajuste_aplicado).length;
-  [['invAndamento',andamento],['invFinalizados',fin],['invDivergentes',diverg],['invAjustes',aj]].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v});
-  alvo.innerHTML=inventarios.length?inventarios.map(inv=>{
-    const its=itensDoInventario(inv.id),contados=its.filter(i=>i.estoque_contado!=null).length,difs=its.filter(i=>i.estoque_contado!=null&&Math.abs(num(i.diferenca))>0.0001).length;
-    return `<div class="inv-card"><div class="top"><div><h4 style="margin:0">Inventário de ${formatarData(inv.data_inventario)}</h4><div class="muted">${contados}/${its.length} itens contados • ${difs} divergência(s)</div></div><span class="inv-status ${inv.status}">${inv.status==='finalizado'?'Finalizado':'Em andamento'}</span></div><div class="inv-actions"><button class="soft" onclick="abrirInventario('${inv.id}')">📋 Abrir</button>${inv.status!=='finalizado'?`<button class="primary" onclick="finalizarInventario('${inv.id}')">✅ Finalizar</button>`:''}<button class="danger" onclick="excluirInventario('${inv.id}')">🗑️ Excluir</button></div></div>`;
-  }).join(''):'<div class="empty-state"><div class="icon">📋</div><h3>Nenhum inventário criado</h3><p class="muted">Crie uma nova contagem para conferir seu estoque.</p></div>';
-}
-async function novoInventario(){
-  const abertos=inventarios.filter(i=>i.status==='em_andamento');if(abertos.length)return alert('Já existe um inventário em andamento. Finalize ou exclua antes de criar outro.');
-  if(!produtos.length)return alert('Cadastre produtos antes de iniciar o inventário.');
-  const r=await sb.from('inventarios').insert({user_id:user.id,data_inventario:caixaDataISO(),status:'em_andamento'}).select('id').single();
-  if(r.error)return alert('Não foi possível criar o inventário: '+r.error.message);
-  const itens=produtos.map(p=>({user_id:user.id,inventario_id:r.data.id,produto_id:p.id,produto_nome:p.nome,estoque_sistema:num(p.estoque),estoque_contado:null,diferenca:null}));
-  const r2=await sb.from('itens_inventario').insert(itens);if(r2.error){await sb.from('inventarios').delete().eq('id',r.data.id);return alert('Inventário criado, mas os itens não puderam ser incluídos: '+r2.error.message)}
-  await carregar();ativarAba('inventario');abrirInventario(r.data.id);
-}
-function abrirInventario(id){
-  const inv=inventarios.find(x=>x.id===id);if(!inv)return;const its=itensDoInventario(id).slice().sort((a,b)=>(a.produto_nome||'').localeCompare(b.produto_nome||'','pt-BR'));
-  openModal(`<h2>📋 Inventário de ${formatarData(inv.data_inventario)}</h2><p class="muted">${inv.status==='finalizado'?'Inventário finalizado.':'Digite a quantidade contada fisicamente para cada produto.'}</p><div style="max-height:60vh;overflow:auto"><table class="inv-table"><thead><tr><th>Produto</th><th>Sistema</th><th>Contado</th><th>Diferença</th><th>Motivo</th><th>Ajuste</th></tr></thead><tbody>${its.map(i=>`<tr><td><b>${esc(i.produto_nome||'Produto')}</b></td><td>${num(i.estoque_sistema)}</td><td>${inv.status==='finalizado'?num(i.estoque_contado):`<input id="invCnt_${i.id}" type="number" min="0" step="0.01" value="${i.estoque_contado??''}" style="width:90px" oninput="previewItemInventario('${i.id}')">`}</td><td id="invDif_${i.id}" class="inv-diff ${num(i.diferenca)>0?'pos':num(i.diferenca)<0?'neg':'zero'}">${i.estoque_contado==null?'—':num(i.diferenca)}</td><td>${inv.status==='finalizado'?esc(i.motivo_ajuste||'—'):`<input id="invMot_${i.id}" value="${esc(i.motivo_ajuste||'')}" placeholder="Opcional">`}</td><td>${i.ajuste_aplicado?'✅ Aplicado':inv.status==='finalizado'?'—':'⏳'}</td></tr>`).join('')}</tbody></table></div><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="soft" onclick="closeModal()">Fechar</button>${inv.status!=='finalizado'?`<button class="primary" onclick="salvarContagemInventario('${inv.id}')">💾 Salvar contagem</button>`:''}</div>`);
-}
-function previewItemInventario(itemId){
-  const i=itensInventario.find(x=>x.id===itemId),el=document.getElementById('invCnt_'+itemId),d=document.getElementById('invDif_'+itemId);if(!i||!el||!d)return;
-  if(el.value===''){d.textContent='—';d.className='inv-diff zero';return}
-  const dif=num(el.value)-num(i.estoque_sistema);d.textContent=dif;d.className='inv-diff '+(dif>0?'pos':dif<0?'neg':'zero');
-}
-async function salvarContagemInventario(id){
-  const its=itensDoInventario(id);let falhas=[];
-  for(const i of its){
-    const el=document.getElementById('invCnt_'+i.id);if(!el||el.value==='')continue;
-    const contado=Math.max(0,num(el.value)),dif=contado-num(i.estoque_sistema),mot=document.getElementById('invMot_'+i.id)?.value.trim()||null;
-    const r=await sb.from('itens_inventario').update({estoque_contado:contado,diferenca:dif,motivo_ajuste:mot,updated_at:new Date().toISOString()}).eq('id',i.id).eq('user_id',user.id);if(r.error)falhas.push(i.produto_nome);
-  }
-  if(falhas.length)return alert('Alguns itens não puderam ser salvos: '+falhas.join(', '));
-  closeModal();await carregar();ativarAba('inventario');alert('✅ Contagem salva.');
-}
-async function finalizarInventario(id){
-  const inv=inventarios.find(x=>x.id===id);if(!inv)return;const its=itensDoInventario(id);
-  if(its.some(i=>i.estoque_contado==null))return alert('Conte todos os produtos antes de finalizar.');
-  if(!confirm('Finalizar este inventário e aplicar os ajustes ao estoque?'))return;
-  for(const i of its){
-    const dif=num(i.diferenca);if(Math.abs(dif)<0.0001)continue;
-    const p=produtos.find(x=>x.id===i.produto_id);if(!p)continue;
-    const r=await sb.from('produtos').update({estoque:num(i.estoque_contado),updated_at:new Date().toISOString()}).eq('id',p.id).eq('user_id',user.id);if(r.error)return alert('Erro ao ajustar '+(i.produto_nome||'produto')+': '+r.error.message);
-    await sb.from('itens_inventario').update({ajuste_aplicado:true,ajustado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',i.id).eq('user_id',user.id);
-  }
-  const r=await sb.from('inventarios').update({status:'finalizado',finalizado_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
-  if(r.error)return alert('Os ajustes foram aplicados, mas não foi possível finalizar o inventário: '+r.error.message);
-  await carregar();ativarAba('inventario');alert('✅ Inventário finalizado e estoque ajustado.');
-}
-async function excluirInventario(id){
-  const inv=inventarios.find(x=>x.id===id);if(!inv)return;
-  if(inv.status==='finalizado')return alert('Por segurança, inventários finalizados não podem ser excluídos.');
-  if(!confirm('Excluir este inventário em andamento?'))return;
-  const r=await sb.from('inventarios').delete().eq('id',id).eq('user_id',user.id);if(r.error)return alert('Não foi possível excluir: '+r.error.message);
-  await carregar();ativarAba('inventario');
 }
 
 function renderProdutos(){
@@ -1144,7 +1358,7 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const promoTab=document.querySelector('.tab[data-v="promocoes"]');if(promoTab&&meuPerfil&&meuPerfil.papel!=='administrador'&&!pode('pode_editar_produtos'))promoTab.style.display='none';
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',inventario:'pode_editar_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',precificacao:'pode_editar_produtos',inventario:'pode_editar_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -1233,7 +1447,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderInventarios();renderCatalogo();renderCupons();renderNotificacoes();
+  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderPrecificacoes();renderInventarios();renderCatalogo();renderCupons();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
