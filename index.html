@@ -153,18 +153,18 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
   </div>
   <div class="dashboard-kpis">
     <div class="dashboard-kpi"><span>Faturamento do mês</span><b id="dashFatMes">R$ 0,00</b><small id="dashVendasMes">0 vendas</small></div>
-    <div class="dashboard-kpi"><span>A receber</span><b id="qRec">R$ 0,00</b><small>Valores ainda em aberto</small></div>
-    <div class="dashboard-kpi"><span>Resultado do mês</span><b id="dashResultadoMes">R$ 0,00</b><small>Faturamento menos despesas</small></div>
+    <div class="dashboard-kpi" id="dashCardReceber"><span>A receber</span><b id="qRec">R$ 0,00</b><small>Valores ainda em aberto</small></div>
+    <div class="dashboard-kpi" id="dashCardResultado"><span>Resultado do mês</span><b id="dashResultadoMes">R$ 0,00</b><small>Faturamento menos despesas</small></div>
     <div class="dashboard-kpi"><span>Produtos</span><b id="qProd">0</b><small id="dashEstoqueBaixo">0 com estoque baixo</small></div>
     <div class="dashboard-kpi"><span>Clientes</span><b id="qCli">0</b><small id="dashClientesNovos">0 recentes</small></div>
-    <div class="dashboard-kpi"><span>Lucro estimado do mês</span><b id="dashLucroMes">R$ 0,00</b><small>Vendas menos custo dos produtos</small></div>
+    <div class="dashboard-kpi" id="dashCardLucro"><span>Lucro estimado do mês</span><b id="dashLucroMes">R$ 0,00</b><small>Vendas menos custo dos produtos</small></div>
   </div>
   <div class="quick-actions">
     <button class="primary" onclick="ativarAba('vendas');novaVenda()">🧾 Nova venda</button>
     <button class="soft" onclick="ativarAba('produtos');novoProduto()">🛍️ Novo produto</button>
     <button class="soft" onclick="ativarAba('clientes');novoCliente()">👥 Novo cliente</button>
-    <button class="soft" onclick="ativarAba('compras');novaCompra()">📥 Nova compra</button>
-    <button class="soft" onclick="ativarAba('fornecedores');novoFornecedor()">🚚 Novo fornecedor</button>
+    <button id="atalhoNovaCompra" class="soft" onclick="ativarAba('compras');novaCompra()">📥 Nova compra</button>
+    <button id="atalhoNovoFornecedor" class="soft" onclick="ativarAba('fornecedores');novoFornecedor()">🚚 Novo fornecedor</button>
   </div>
   <div class="dashboard-grid">
     <div class="dashboard-stack">
@@ -176,7 +176,7 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
       <div class="panel"><b>🔗 Status do sistema</b><p id="status" class="muted">Conectando...</p></div>
     </div>
   </div>
-  <div class="panel" style="margin-top:14px"><div class="top" style="margin-bottom:0"><div><b>🎯 Meta do mês</b><p class="muted" style="margin:4px 0 0" id="dashMetaTexto">Defina uma meta mensal para acompanhar seu progresso.</p></div><button class="soft" onclick="ativarAba('equipe')">Ver metas</button></div><div class="goal-progress"><span id="dashMetaBarra" style="width:0%"></span></div><div class="goal-meta"><span id="dashMetaRealizado">R$ 0,00 de R$ 0,00</span><b id="dashMetaPct">0%</b></div></div>
+  <div id="dashMetaBox" class="panel" style="margin-top:14px"><div class="top" style="margin-bottom:0"><div><b>🎯 Meta do mês</b><p class="muted" style="margin:4px 0 0" id="dashMetaTexto">Defina uma meta mensal para acompanhar seu progresso.</p></div><button class="soft" onclick="ativarAba('equipe')">Ver metas</button></div><div class="goal-progress"><span id="dashMetaBarra" style="width:0%"></span></div><div class="goal-meta"><span id="dashMetaRealizado">R$ 0,00 de R$ 0,00</span><b id="dashMetaPct">0%</b></div></div>
   <div class="dashboard-grid" style="margin-top:14px">
     <div class="dashboard-stack">
       <div class="panel"><div class="top" style="margin-bottom:0"><div><b>📈 Vendas dos últimos 7 dias</b><p class="muted" style="margin:4px 0 0">Faturamento diário para acompanhar o ritmo das vendas.</p></div></div><div id="dashGraficoVendas" class="chart-wrap"></div></div>
@@ -184,7 +184,7 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
     </div>
     <div class="dashboard-stack">
       <div class="panel"><div class="top" style="margin-bottom:0"><div><b>👑 Clientes que mais compram</b><p class="muted" style="margin:4px 0 0">Ranking pelo valor total comprado.</p></div></div><div id="dashTopClientes" class="rank-list"></div></div>
-      <div class="panel"><div class="top" style="margin-bottom:0"><div><b>💳 Contas a receber</b><p class="muted" style="margin:4px 0 0">Resumo das parcelas e valores pendentes.</p></div><button class="soft" onclick="ativarAba('financeiro')">Ver financeiro</button></div><div id="dashReceberResumo" class="receivable-summary"></div><div id="dashProximosRecebimentos" class="dash-list"></div></div>
+      <div id="dashReceberBox" class="panel"><div class="top" style="margin-bottom:0"><div><b>💳 Contas a receber</b><p class="muted" style="margin:4px 0 0">Resumo das parcelas e valores pendentes.</p></div><button class="soft" onclick="ativarAba('financeiro')">Ver financeiro</button></div><div id="dashReceberResumo" class="receivable-summary"></div><div id="dashProximosRecebimentos" class="dash-list"></div></div>
     </div>
   </div>
   <div id="dashAlertasBox" class="panel home-alert" style="margin-top:14px;display:none"><div class="top" style="margin-bottom:0"><div><b>🔔 Alertas que precisam de atenção</b><p id="dashAlertasTexto" class="muted" style="margin:4px 0 0"></p></div><button class="primary" onclick="ativarAba('alertas')">Ver alertas</button></div></div>
@@ -747,8 +747,23 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
-  document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];if(perm&&!pode(perm))b.style.display='none'});
-  if(!pode('pode_ver_lucro'))['dashLucroMes'].forEach(id=>{const e=document.getElementById(id);if(e)e.closest('.dashboard-kpi')?.style.setProperty('display','none')});
+  document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
+
+  const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
+  // Atalhos rápidos seguem as permissões do perfil.
+  mostrar('atalhoNovaCompra',pode('pode_ver_fornecedores'));
+  mostrar('atalhoNovoFornecedor',pode('pode_ver_fornecedores'));
+
+  // Informações financeiras e de lucro não aparecem para quem não tem acesso.
+  mostrar('dashCardReceber',pode('pode_ver_financeiro'));
+  mostrar('dashCardResultado',pode('pode_ver_financeiro'));
+  mostrar('dashReceberBox',pode('pode_ver_financeiro'));
+  mostrar('dashAlertasBox',pode('pode_ver_financeiro') && document.getElementById('dashAlertasBox')?.dataset?.temAlerta==='1');
+  mostrar('dashCardLucro',pode('pode_ver_lucro'));
+
+  // Metas só aparecem para perfis autorizados.
+  mostrar('dashMetaBox',pode('pode_ver_metas'));
+
   const ativa=document.querySelector('.tabs .tab.active');if(ativa&&ativa.style.display==='none'){const p=[...document.querySelectorAll('.tabs .tab')].find(x=>x.style.display!=='none');if(p)ativarAba(p.dataset.v)}
 }
 async function recarregarPerfis(){const {data,error}=await sb.from('perfis').select('*').order('nome',{ascending:true});if(error)return alert('Não foi possível carregar os usuários: '+error.message);perfisAcesso=data||[];renderUsuarios()}
