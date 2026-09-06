@@ -293,12 +293,28 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 .fee-alert{margin-top:10px;padding:10px 12px;border-radius:12px;background:#fff3cd;color:#7a5b00;font-size:12px}
 @media(max-width:900px){.fee-grid{grid-template-columns:1fr 1fr}}
 
+
+/* Reposição automática */
+.rep-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.rep-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.rep-kpi span{display:block;font-size:11px;color:#777}.rep-kpi b{display:block;font-size:20px;margin-top:5px;color:var(--cor-principal)}
+.rep-table-wrap{overflow:auto}
+.rep-table{width:100%;border-collapse:separate;border-spacing:0 8px;min-width:1050px}
+.rep-table th{font-size:11px;color:#777;text-align:left;padding:0 8px;white-space:nowrap}
+.rep-table td{padding:9px 8px;background:#00000004;border-top:1px solid #00000008;border-bottom:1px solid #00000008;vertical-align:middle}
+.rep-table td:first-child{border-radius:11px 0 0 11px}.rep-table td:last-child{border-radius:0 11px 11px 0}
+.rep-prio{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.rep-prio.urgente{background:#fde8e8;color:#9a2d2d}.rep-prio.atencao{background:#fff3cd;color:#7a5b00}.rep-prio.normal{background:#e8f7ec;color:#26743b}
+.rep-actions{display:flex;gap:5px;flex-wrap:wrap}
+.rep-info{font-size:11px;color:#777}
+@media(max-width:900px){.rep-kpis{grid-template-columns:1fr 1fr}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="precificacao">💲 Precificação</button><button class="tab" data-v="inventario">🧮 Inventário</button><button class="tab" data-v="reposicao">📦 Reposição</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="caixa">💰 Caixa</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -427,6 +443,64 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
       <select id="invFiltroStatus" onchange="renderInventarios()"><option value="">Todos</option><option value="em_andamento">Em andamento</option><option value="finalizado">Finalizado</option></select>
     </div>
     <div id="listaInventarios" class="inv-list"></div>
+  </div>
+</section>
+
+
+<section id="reposicao" class="view">
+  <div class="top">
+    <div>
+      <h2>📦 Reposição Automática</h2>
+      <p class="muted">Veja o que precisa ser comprado novamente com base no estoque mínimo e nas vendas dos últimos 30 dias.</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="soft" onclick="limparReposicoesConcluidas()">🧹 Limpar concluídas</button>
+      <button class="primary" onclick="gerarSugestoesReposicao()">✨ Gerar sugestões</button>
+    </div>
+  </div>
+
+  <div class="rep-kpis">
+    <div class="rep-kpi"><span>Pendentes</span><b id="repPendentes">0</b></div>
+    <div class="rep-kpi"><span>Urgentes</span><b id="repUrgentes">0</b></div>
+    <div class="rep-kpi"><span>Quantidade sugerida</span><b id="repQtdTotal">0</b></div>
+    <div class="rep-kpi"><span>Concluídas</span><b id="repConcluidas">0</b></div>
+  </div>
+
+  <div class="panel">
+    <div class="product-filters">
+      <input id="repBusca" placeholder="🔎 Buscar produto ou fornecedor" oninput="renderReposicoes()">
+      <select id="repStatusFiltro" onchange="renderReposicoes()">
+        <option value="pendente">Pendentes</option>
+        <option value="">Todas</option>
+        <option value="concluido">Concluídas</option>
+      </select>
+      <select id="repPrioridadeFiltro" onchange="renderReposicoes()">
+        <option value="">Todas as prioridades</option>
+        <option value="urgente">Urgente</option>
+        <option value="atencao">Atenção</option>
+        <option value="normal">Normal</option>
+      </select>
+    </div>
+
+    <div class="rep-table-wrap">
+      <table class="rep-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Estoque atual</th>
+            <th>Estoque mínimo</th>
+            <th>Vendas 30d</th>
+            <th>Média/dia</th>
+            <th>Sugestão</th>
+            <th>Prioridade</th>
+            <th>Fornecedor</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="repTabela"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -782,9 +856,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[],precificacoes=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},precificacao:{label:'Precificação',icone:'💲'},inventario:{label:'Inventário',icone:'🧮'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','precificacao','inventario','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[],caixas=[],movimentacoesCaixa=[],inventarios=[],itensInventario=[],precificacoes=[],reposicoesSugeridas=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},precificacao:{label:'Precificação',icone:'💲'},inventario:{label:'Inventário',icone:'🧮'},reposicao:{label:'Reposição',icone:'📦'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},caixa:{label:'Caixa',icone:'💰'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','precificacao','inventario','reposicao','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','caixa','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -866,7 +940,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc,inv,ii,px]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('inventarios').select('*').eq('user_id',user.id).order('data_inventario',{ascending:false}),sb.from('itens_inventario').select('*').eq('user_id',user.id),sb.from('precificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error||inv.error||ii.error||px.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];inventarios=inv.data||[];itensInventario=ii.data||[];precificacoes=px.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr,cx,mc,inv,ii,px,rs]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false}),sb.from('caixas').select('*').eq('user_id',user.id).order('data_caixa',{ascending:false}),sb.from('movimentacoes_caixa').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('inventarios').select('*').eq('user_id',user.id).order('data_inventario',{ascending:false}),sb.from('itens_inventario').select('*').eq('user_id',user.id),sb.from('precificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('reposicoes_sugeridas').select('*').eq('user_id',user.id).order('gerado_em',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error||cx.error||mc.error||inv.error||ii.error||px.error||rs.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];caixas=cx.data||[];movimentacoesCaixa=mc.data||[];inventarios=inv.data||[];itensInventario=ii.data||[];precificacoes=px.data||[];reposicoesSugeridas=rs.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -1300,6 +1374,152 @@ async function excluirInventario(id){
   await carregar();ativarAba('inventario');
 }
 
+
+function vendasProduto30d(produtoId){
+  const limite=Date.now()-30*24*60*60*1000;
+  const vendaIds=new Set(vendas.filter(v=>new Date(dataVenda(v)).getTime()>=limite).map(v=>v.id));
+  return itensVenda.filter(i=>i.produto_id===produtoId&&vendaIds.has(i.venda_id)).reduce((s,i)=>s+num(i.quantidade),0);
+}
+function fornecedorNome(id){return fornecedores.find(f=>f.id===id)?.nome||'Não definido'}
+function prioridadeReposicao(produto,vendas30){
+  const atual=num(produto.estoque),min=num(produto.estoque_minimo),vend=vendas30;
+  if(atual<=0 || (min>0 && atual<=Math.max(1,min*0.5)) || vend>=Math.max(1,atual*2))return 'urgente';
+  if(min>0 && atual<=min)return 'atencao';
+  return 'normal';
+}
+function qtdSugeridaReposicao(produto,vendas30){
+  const atual=Math.max(0,num(produto.estoque)),min=Math.max(0,num(produto.estoque_minimo));
+  const demanda30=Math.max(0,num(vendas30));
+  // Sugere cobrir o mínimo + aproximadamente 30 dias de demanda.
+  const alvo=Math.max(min, min+demanda30);
+  return Math.max(0,Math.ceil(alvo-atual));
+}
+function renderReposicoes(){
+  const body=document.getElementById('repTabela');if(!body)return;
+  const busca=String(document.getElementById('repBusca')?.value||'').toLowerCase().trim(),st=document.getElementById('repStatusFiltro')?.value??'pendente',pr=document.getElementById('repPrioridadeFiltro')?.value||'';
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  const pend=reposicoesSugeridas.filter(r=>r.status==='pendente'),urg=pend.filter(r=>r.prioridade==='urgente'),conc=reposicoesSugeridas.filter(r=>r.status==='concluido');
+  set('repPendentes',pend.length);set('repUrgentes',urg.length);set('repQtdTotal',Math.ceil(pend.reduce((s,r)=>s+num(r.quantidade_sugerida),0)));set('repConcluidas',conc.length);
+
+  let lista=reposicoesSugeridas.filter(r=>{
+    if(st && r.status!==st)return false;
+    if(pr && r.prioridade!==pr)return false;
+    const p=produtos.find(x=>x.id===r.produto_id),fn=fornecedorNome(r.fornecedor_id);
+    const txt=[p?.nome,fn,r.observacoes].join(' ').toLowerCase();
+    return !busca||txt.includes(busca);
+  });
+  const peso={urgente:3,atencao:2,normal:1};
+  lista.sort((a,b)=>(peso[b.prioridade]||0)-(peso[a.prioridade]||0)||num(b.quantidade_sugerida)-num(a.quantidade_sugerida));
+
+  body.innerHTML=lista.length?lista.map(r=>{
+    const p=produtos.find(x=>x.id===r.produto_id),v30=num(r.media_vendas_30d)*30;
+    return `<tr>
+      <td><b>${esc(p?.nome||'Produto removido')}</b>${p?.sku?`<div class="rep-info">SKU: ${esc(p.sku)}</div>`:''}</td>
+      <td><b>${num(r.estoque_atual)}</b></td>
+      <td>${num(r.estoque_minimo)}</td>
+      <td>${Math.round(v30*100)/100}</td>
+      <td>${num(r.media_vendas_30d).toFixed(2).replace('.',',')}</td>
+      <td><b>${Math.ceil(num(r.quantidade_sugerida))}</b></td>
+      <td><span class="rep-prio ${r.prioridade}">${r.prioridade==='urgente'?'Urgente':r.prioridade==='atencao'?'Atenção':'Normal'}</span></td>
+      <td>${esc(fornecedorNome(r.fornecedor_id))}</td>
+      <td>${r.status==='concluido'?'✅ Concluída':'⏳ Pendente'}</td>
+      <td><div class="rep-actions">
+        ${r.status==='pendente'?`<button class="soft" onclick="editarReposicao('${r.id}')">✏️ Editar</button><button class="primary" onclick="criarCompraDaReposicao('${r.id}')">🛒 Criar compra</button><button class="soft" onclick="concluirReposicao('${r.id}')">✅ Concluir</button>`:`<button class="soft" onclick="reabrirReposicao('${r.id}')">↩️ Reabrir</button>`}
+        <button class="danger" onclick="excluirReposicao('${r.id}')">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join(''):`<tr><td colspan="10"><div class="empty-state"><div class="icon">📦</div><h3>Nenhuma sugestão</h3><p class="muted">Clique em “Gerar sugestões” para analisar estoque mínimo e vendas recentes.</p></div></td></tr>`;
+}
+async function gerarSugestoesReposicao(){
+  const candidatos=produtos.filter(p=>p.ativo!==false).map(p=>{
+    const vendas30=vendasProduto30d(p.id),min=num(p.estoque_minimo),atual=num(p.estoque),qtd=qtdSugeridaReposicao(p,vendas30);
+    return {p,vendas30,min,atual,qtd,prio:prioridadeReposicao(p,vendas30)};
+  }).filter(x=>x.qtd>0 || (x.min>0&&x.atual<=x.min));
+
+  if(!candidatos.length)return alert('✅ Nenhum produto precisa de reposição neste momento.');
+
+  let novos=0,atualizados=0;
+  for(const x of candidatos){
+    const existente=reposicoesSugeridas.find(r=>r.produto_id===x.p.id&&r.status==='pendente');
+    const media=x.vendas30/30;
+    // Tenta aproveitar o fornecedor da última compra do produto.
+    let fornecedor_id=null;
+    const itemCompras=itensCompra.filter(i=>i.produto_id===x.p.id);
+    if(itemCompras.length){
+      const compraIds=itemCompras.map(i=>i.compra_id);
+      const compra=ComprasOrdenadasDesc().find(c=>compraIds.includes(c.id));
+      if(compra)fornecedor_id=compra.fornecedor_id||null;
+    }
+    const obj={user_id:user.id,produto_id:x.p.id,fornecedor_id:existente?.fornecedor_id||fornecedor_id,estoque_atual:x.atual,estoque_minimo:x.min,media_vendas_30d:media,quantidade_sugerida:Math.max(1,x.qtd),prioridade:x.prio,status:'pendente',gerado_em:new Date().toISOString(),updated_at:new Date().toISOString()};
+    if(existente){
+      const r=await sb.from('reposicoes_sugeridas').update(obj).eq('id',existente.id).eq('user_id',user.id);
+      if(r.error)return alert('Erro ao atualizar sugestão: '+r.error.message);
+      atualizados++;
+    }else{
+      const r=await sb.from('reposicoes_sugeridas').insert(obj);
+      if(r.error)return alert('Erro ao gerar sugestão: '+r.error.message);
+      novos++;
+    }
+  }
+  await carregar();ativarAba('reposicao');alert(`✅ Sugestões atualizadas. ${novos} nova(s) e ${atualizados} atualizada(s).`);
+}
+function ComprasOrdenadasDesc(){
+  return compras.slice().sort((a,b)=>new Date(b.data_compra||b.created_at)-new Date(a.data_compra||a.created_at));
+}
+function editarReposicao(id){
+  const r=reposicoesSugeridas.find(x=>x.id===id);if(!r)return;
+  const p=produtos.find(x=>x.id===r.produto_id);
+  const opts=`<option value="">Não definido</option>`+fornecedores.filter(f=>f.ativo!==false).sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(f=>`<option value="${f.id}" ${f.id===r.fornecedor_id?'selected':''}>${esc(f.nome)}</option>`).join('');
+  openModal(`<h2>✏️ Editar reposição</h2><p class="muted">${esc(p?.nome||'Produto')}</p><div class="form-grid">
+    <div><label>Quantidade sugerida</label><input id="repQtdEdit" type="number" min="1" step="1" value="${Math.max(1,Math.ceil(num(r.quantidade_sugerida)))}"></div>
+    <div><label>Prioridade</label><select id="repPrioEdit"><option value="urgente" ${r.prioridade==='urgente'?'selected':''}>Urgente</option><option value="atencao" ${r.prioridade==='atencao'?'selected':''}>Atenção</option><option value="normal" ${r.prioridade==='normal'?'selected':''}>Normal</option></select></div>
+    <div class="full"><label>Fornecedor</label><select id="repFornEdit">${opts}</select></div>
+    <div class="full"><label>Observações</label><textarea id="repObsEdit">${esc(r.observacoes||'')}</textarea></div>
+  </div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarEdicaoReposicao('${r.id}')">Salvar</button></div>`);
+}
+async function salvarEdicaoReposicao(id){
+  const obj={quantidade_sugerida:Math.max(1,Math.ceil(num(document.getElementById('repQtdEdit').value))),prioridade:document.getElementById('repPrioEdit').value,fornecedor_id:document.getElementById('repFornEdit').value||null,observacoes:document.getElementById('repObsEdit').value.trim()||null,updated_at:new Date().toISOString()};
+  const r=await sb.from('reposicoes_sugeridas').update(obj).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível salvar: '+r.error.message);
+  closeModal();await carregar();ativarAba('reposicao');
+}
+async function concluirReposicao(id){
+  const r=await sb.from('reposicoes_sugeridas').update({status:'concluido',concluido_em:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível concluir: '+r.error.message);
+  await carregar();ativarAba('reposicao');
+}
+async function reabrirReposicao(id){
+  const r=await sb.from('reposicoes_sugeridas').update({status:'pendente',concluido_em:null,updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível reabrir: '+r.error.message);
+  await carregar();ativarAba('reposicao');
+}
+async function excluirReposicao(id){
+  if(!confirm('Excluir esta sugestão de reposição?'))return;
+  const r=await sb.from('reposicoes_sugeridas').delete().eq('id',id).eq('user_id',user.id);
+  if(r.error)return alert('Não foi possível excluir: '+r.error.message);
+  await carregar();ativarAba('reposicao');
+}
+async function limparReposicoesConcluidas(){
+  const total=reposicoesSugeridas.filter(r=>r.status==='concluido').length;
+  if(!total)return alert('Não há sugestões concluídas para limpar.');
+  if(!confirm(`Excluir ${total} sugestão(ões) concluída(s) do histórico?`))return;
+  const r=await sb.from('reposicoes_sugeridas').delete().eq('user_id',user.id).eq('status','concluido');
+  if(r.error)return alert('Não foi possível limpar: '+r.error.message);
+  await carregar();ativarAba('reposicao');
+}
+function criarCompraDaReposicao(id){
+  const r=reposicoesSugeridas.find(x=>x.id===id);if(!r)return;
+  const p=produtos.find(x=>x.id===r.produto_id);if(!p)return alert('Produto não encontrado.');
+  if(!r.fornecedor_id)return alert('Defina um fornecedor na sugestão antes de criar a compra.');
+  // Abre o formulário normal de compra e pré-preenche fornecedor e produto.
+  novaCompra();
+  setTimeout(()=>{
+    const f=document.getElementById('compFornecedor');if(f)f.value=r.fornecedor_id;
+    const prodSel=document.getElementById('compProduto');if(prodSel){prodSel.value=p.id;prodSel.dispatchEvent(new Event('change'))}
+    const qtd=document.getElementById('compQtd');if(qtd)qtd.value=Math.max(1,Math.ceil(num(r.quantidade_sugerida)));
+  },150);
+}
+
 function renderCatalogo(){
   const grid=document.getElementById('catalogoGrid');if(!grid)return;preencherCatalogoCategorias();
   const lista=catalogoProdutosFiltrados();const nome=configLoja?.nome_loja||'Essência & Encanto';
@@ -1420,7 +1640,7 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const promoTab=document.querySelector('.tab[data-v="promocoes"]');if(promoTab&&meuPerfil&&meuPerfil.papel!=='administrador'&&!pode('pode_editar_produtos'))promoTab.style.display='none';
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',precificacao:'pode_editar_produtos',inventario:'pode_editar_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',precificacao:'pode_editar_produtos',inventario:'pode_editar_produtos',reposicao:'pode_ver_fornecedores',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',caixa:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -1509,7 +1729,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderPrecificacoes();renderInventarios();renderCatalogo();renderCupons();renderNotificacoes();
+  renderFinanceiro();renderCaixa();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderPrecificacoes();renderInventarios();renderReposicoes();renderCatalogo();renderCupons();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
