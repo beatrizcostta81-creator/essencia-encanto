@@ -219,12 +219,28 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 @media(max-width:900px){.coupon-grid{grid-template-columns:1fr 1fr}.promo-kpis{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.coupon-grid{grid-template-columns:1fr}.coupon-apply{grid-template-columns:1fr}}
 
+
+/* Trocas e devoluções */
+.return-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.return-kpi{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.return-kpi span{display:block;font-size:11px;color:#777}.return-kpi b{display:block;font-size:20px;margin-top:5px;color:var(--cor-principal)}
+.return-list{display:grid;gap:10px}
+.return-card{background:var(--card,#fff);border:1px solid #00000010;border-radius:16px;padding:15px;box-shadow:0 6px 18px #00000008}
+.return-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.return-meta{font-size:12px;color:#777;line-height:1.6;margin-top:7px}
+.return-values{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.return-values div{background:#00000005;border-radius:12px;padding:9px}.return-values small{display:block;color:#777;font-size:10px}.return-values b{font-size:13px}
+.return-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.return-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:900;background:#f0f0f0}
+.return-status.concluido{background:#e8f7ec;color:#26743b}.return-status.aberto{background:#fff3cd;color:#7a5b00}.return-status.em_analise{background:#e7f0ff;color:#245b9b}.return-status.cancelado{background:#fde8e8;color:#9a2d2d}
+@media(max-width:900px){.return-kpis{grid-template-columns:1fr 1fr}.return-values{grid-template-columns:1fr 1fr}}
+
 </style></head><body>
 <section id="login" class="login"><div class="box"><img id="loginLogo" class="login-logo" alt="Logo da loja"><h1 id="loginNomeLoja">Essência & Encanto</h1><p class="muted" style="text-align:center">Acesso online</p><input id="email" type="email" placeholder="E-mail"><input id="senha" type="password" placeholder="Senha"><button class="primary" style="width:100%" onclick="entrar()">Entrar</button>
 <button class="soft" style="width:100%;margin-top:8px" onclick="esqueciSenha()">Esqueci minha senha</button>
 <p id="msg" class="muted"></p></div></section>
 <section id="app" class="app"><header><div class="brand"><img id="headerLogo" alt="Logo"><b id="headerNomeLoja">Essência & Encanto</b></div><div class="header-actions"><div class="notify-wrap"><button id="notifyBtn" class="notify-btn" type="button" onclick="toggleNotificacoes(event)" title="Notificações">🔔<span id="notifyCount" class="notify-count">0</span></button><div id="notifyPanel" class="notify-panel"><div class="notify-head"><h3>🔔 Notificações</h3><button class="soft" type="button" onclick="marcarTodasNotificacoesLidas()">Marcar lidas</button></div><div id="notifyLista"></div></div></div><span id="userEmail" class="muted"></span><button class="soft" onclick="sair()">Sair</button></div></header><main>
-<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
+<div class="tabs"><button class="tab active" data-v="inicio">🏠 Início</button><button class="tab" data-v="produtos">🛍️ Produtos</button><button class="tab" data-v="catalogo">📖 Catálogo</button><button class="tab" data-v="promocoes">🎟️ Promoções</button><button class="tab" data-v="clientes">👥 Clientes</button><button class="tab" data-v="vendas">🧾 Vendas</button><button class="tab" data-v="agenda">📅 Agenda</button><button class="tab" data-v="pedidos">📦 Pedidos</button><button class="tab" data-v="trocas">↩️ Trocas</button><button class="tab" data-v="fornecedores">🚚 Fornecedores</button><button class="tab" data-v="compras">📥 Compras</button><button class="tab" data-v="equipe">🎯 Equipe & Metas</button><button class="tab" data-v="alertas">🔔 Alertas</button><button class="tab" data-v="financeiro">💳 Financeiro</button><button class="tab" data-v="usuarios">🔐 Usuários</button><button class="tab" data-v="configuracoes">⚙️ Configurações</button></div>
 <section id="inicio" class="view active">
   <div class="dashboard-hero">
     <div><img id="dashboardLogo" class="dashboard-logo" alt="Logo da loja"><div id="dashboardLogoPlaceholder" class="dashboard-logo-placeholder">✨</div></div>
@@ -335,6 +351,39 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
       <select id="clienteStatus" onchange="renderClientes()"><option value="">Todos os clientes</option><option value="ativo">Ativos</option><option value="inativo">Inativos</option><option value="devendo">Com valor em aberto</option></select>
     </div>
     <div id="listaClientes"></div>
+  </div>
+</section>
+
+
+<section id="trocas" class="view">
+  <div class="top">
+    <div><h2>↩️ Trocas & Devoluções</h2><p class="muted">Registre trocas, créditos e reembolsos sem perder o controle do estoque.</p></div>
+    <button class="primary" onclick="novaTroca()">+ Nova ocorrência</button>
+  </div>
+  <div class="return-kpis">
+    <div class="return-kpi"><span>Em aberto</span><b id="trocaAberto">0</b></div>
+    <div class="return-kpi"><span>Em análise</span><b id="trocaAnalise">0</b></div>
+    <div class="return-kpi"><span>Concluídas</span><b id="trocaConcluido">0</b></div>
+    <div class="return-kpi"><span>Valor envolvido</span><b id="trocaValor">R$ 0,00</b></div>
+  </div>
+  <div class="panel">
+    <div class="product-filters">
+      <input id="trocaBusca" placeholder="🔎 Cliente, produto ou motivo" oninput="renderTrocas()">
+      <select id="trocaStatusFiltro" onchange="renderTrocas()">
+        <option value="">Todos os status</option>
+        <option value="aberto">Aberto</option>
+        <option value="em_analise">Em análise</option>
+        <option value="concluido">Concluído</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
+      <select id="trocaTipoFiltro" onchange="renderTrocas()">
+        <option value="">Todos os tipos</option>
+        <option value="troca">Troca</option>
+        <option value="credito">Crédito</option>
+        <option value="reembolso">Reembolso</option>
+      </select>
+    </div>
+    <div id="listaTrocas" class="return-list"></div>
   </div>
 </section>
 
@@ -571,9 +620,9 @@ body.menu-estilo-compacto .tab{padding:8px 10px;font-size:13px;border-radius:8px
 </main></section>
 <div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
 <script>
-const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
-const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
-const MENU_PADRAO=['inicio','vendas','pedidos','agenda','produtos','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
+const sb=window.supabase.createClient('https://cxbgjdpmhezuvnlmqrev.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4YmdqZHBtaGV6dXZubG1xcmV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwOTU3NTAsImV4cCI6MjEwMjY3MTc1MH0.EjvfLIZpuQV2SsabOM8Im-kT2DwQidp8sn2reduJaYU');let user,produtos=[],clientes=[],vendas=[],itensVenda=[],parcelasReceber=[],despesas=[],categorias=[],fornecedores=[],compras=[],itensCompra=[],vendedores=[],metasMensais=[],configLoja=null,perfisAcesso=[],meuPerfil=null,notificacoes=[],lembretes=[],pedidos=[],itensPedido=[],cupons=[],trocasDevolucoes=[];let carrinhoVenda=[],carrinhoCompra=[],carrinhoPedido=[],vendaCupom=null,pedidoCupom=null;
+const MENU_INFO={inicio:{label:'Início',icone:'🏠'},produtos:{label:'Produtos',icone:'🛍️'},catalogo:{label:'Catálogo',icone:'📖'},promocoes:{label:'Promoções',icone:'🎟️'},clientes:{label:'Clientes',icone:'👥'},vendas:{label:'Vendas',icone:'🧾'},agenda:{label:'Agenda',icone:'📅'},pedidos:{label:'Pedidos',icone:'📦'},trocas:{label:'Trocas',icone:'↩️'},fornecedores:{label:'Fornecedores',icone:'🚚'},compras:{label:'Compras',icone:'📥'},equipe:{label:'Equipe & Metas',icone:'🎯'},alertas:{label:'Alertas',icone:'🔔'},financeiro:{label:'Financeiro',icone:'💳'},usuarios:{label:'Usuários',icone:'🔐'},configuracoes:{label:'Configurações',icone:'⚙️'}};
+const MENU_PADRAO=['inicio','vendas','pedidos','trocas','agenda','produtos','catalogo','promocoes','clientes','fornecedores','compras','equipe','alertas','financeiro','usuarios','configuracoes'];
 let menuOrdemRascunho=[...MENU_PADRAO],menuOcultosRascunho=[];
 const money=v=>'R$ '+Number(v||0).toFixed(2).replace('.',',');
 
@@ -655,7 +704,7 @@ async function esqueciSenha(){
 async function entrar(){let email=document.getElementById('email').value.trim(),password=document.getElementById('senha').value;document.getElementById('msg').textContent='Entrando...';let r=await sb.auth.signInWithPassword({email,password});if(r.error){document.getElementById('msg').textContent=r.error.message;return}user=r.data.user;await iniciar()}
 async function sair(){await sb.auth.signOut();location.reload()}
 async function iniciar(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('userEmail').textContent=user.email||'';await carregar()}
-async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
+async function carregar(){let [p,c,v,iv,pr,d,cat,f,co,ic,ve,me,cfg,pf,mp,nt,lb,ped,ip,cp,tr]=await Promise.all([sb.from('produtos').select('*').eq('user_id',user.id),sb.from('clientes').select('*').eq('user_id',user.id),sb.from('vendas').select('*').eq('user_id',user.id),sb.from('itens_venda').select('*').eq('user_id',user.id),sb.from('parcelas_receber').select('*').eq('user_id',user.id),sb.from('despesas').select('*').eq('user_id',user.id),sb.from('categorias').select('*').eq('user_id',user.id),sb.from('fornecedores').select('*').eq('user_id',user.id),sb.from('compras').select('*').eq('user_id',user.id),sb.from('itens_compra').select('*').eq('user_id',user.id),sb.from('vendedores').select('*').eq('user_id',user.id),sb.from('metas_mensais').select('*').eq('user_id',user.id),sb.from('configuracoes_loja').select('*').eq('user_id',user.id).maybeSingle(),sb.from('perfis').select('*').order('nome',{ascending:true}),sb.from('perfis').select('*').eq('id',user.id).maybeSingle(),sb.from('notificacoes').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('lembretes').select('*').eq('user_id',user.id).order('data_lembrete',{ascending:true}).order('hora_lembrete',{ascending:true}),sb.from('pedidos').select('*').eq('user_id',user.id).order('data_pedido',{ascending:false}),sb.from('itens_pedido').select('*').eq('user_id',user.id),sb.from('cupons').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),sb.from('trocas_devolucoes').select('*').eq('user_id',user.id).order('data_solicitacao',{ascending:false})]);let e=p.error||c.error||v.error||iv.error||pr.error||d.error||cat.error||f.error||co.error||ic.error||ve.error||me.error||cfg.error||mp.error||nt.error||lb.error||ped.error||ip.error||cp.error||tr.error;if(e){document.getElementById('status').textContent='Erro: '+e.message;return}produtos=p.data||[];clientes=c.data||[];vendas=v.data||[];itensVenda=iv.data||[];parcelasReceber=pr.data||[];despesas=d.data||[];categorias=cat.data||[];fornecedores=f.data||[];compras=co.data||[];itensCompra=ic.data||[];vendedores=ve.data||[];metasMensais=me.data||[];configLoja=cfg.data||{nome_loja:'Essência & Encanto'};perfisAcesso=pf.error?[]:(pf.data||[]);meuPerfil=mp.data||null;notificacoes=nt.data||[];lembretes=lb.data||[];pedidos=ped.data||[];itensPedido=ip.data||[];cupons=cp.data||[];trocasDevolucoes=tr.data||[];aplicarConfiguracoes();aplicarPermissoesAcesso();render();document.getElementById('status').textContent='✅ Conectado ao Supabase. Dados online funcionando.'}
 
 function corValida(v,padrao){return /^#[0-9a-fA-F]{6}$/.test(v||'')?v:padrao}
 function aplicarTemaVisual(cfg){
@@ -952,7 +1001,7 @@ function ehAdmin(){return meuPerfil?.papel==='administrador'}
 function pode(campo){return ehAdmin()||meuPerfil?.[campo]===true}
 function aplicarPermissoesAcesso(){
   const promoTab=document.querySelector('.tab[data-v="promocoes"]');if(promoTab&&meuPerfil&&meuPerfil.papel!=='administrador'&&!pode('pode_editar_produtos'))promoTab.style.display='none';
-  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
+  const mapa={inicio:'pode_ver_inicio',produtos:'pode_ver_produtos',catalogo:'pode_ver_produtos',clientes:'pode_ver_clientes',vendas:'pode_fazer_vendas',pedidos:'pode_fazer_vendas',trocas:'pode_fazer_vendas',fornecedores:'pode_ver_fornecedores',compras:'pode_ver_fornecedores',equipe:'pode_ver_metas',alertas:'pode_ver_financeiro',financeiro:'pode_ver_financeiro',usuarios:'pode_gerenciar_usuarios',configuracoes:'pode_alterar_configuracoes'};
   document.querySelectorAll('.tabs .tab').forEach(b=>{const perm=mapa[b.dataset.v];b.style.display=(perm&&!pode(perm))?'none':''});
 
   const mostrar=(id,sim)=>{const e=document.getElementById(id);if(e)e.style.display=sim?'':'none'};
@@ -1041,7 +1090,7 @@ function render(){
   let r=vendas.reduce((s,x)=>s+num(x.valor_aberto ?? x.valor_pendente),0);document.getElementById('qRec').textContent=money(r);
   preencherFiltroCategorias();atualizarResumoProdutos();renderProdutos();
   atualizarResumoClientes();renderClientes();atualizarResumoVendas();renderVendas();renderFornecedores();renderCompras();renderEquipe();renderDashboard();renderAlertas();
-  renderFinanceiro();renderUsuarios();renderAgenda();renderPedidos();renderCatalogo();renderCupons();renderNotificacoes();
+  renderFinanceiro();renderUsuarios();renderAgenda();renderPedidos();renderTrocas();renderCatalogo();renderCupons();renderNotificacoes();
 }
 
 function alertaDataLocal(v){if(!v)return null;const s=String(v).slice(0,10);const d=new Date(s+'T12:00:00');return isNaN(d)?null:d}
@@ -1210,6 +1259,129 @@ function pedidoDataISO(v){return v?String(v).slice(0,10):''}
 function pedidoHoje(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function pedidoDiasAte(v){if(!v)return null;const a=new Date(pedidoHoje()+'T12:00:00'),b=new Date(pedidoDataISO(v)+'T12:00:00');return Math.round((b-a)/86400000)}
 function pedidoEmAberto(p){return Math.max(0,num(p.valor_aberto ?? (num(p.total)-num(p.valor_pago))))}
+
+function trocaClienteNome(id){return clientes.find(c=>c.id===id)?.nome||'Cliente não informado'}
+function trocaProdutoNome(t){return t.produto_nome||produtos.find(p=>p.id===t.produto_id)?.nome||'Produto'}
+function trocaTipoNome(v){return v==='credito'?'Crédito':v==='reembolso'?'Reembolso':'Troca'}
+function trocaStatusNome(v){return v==='em_analise'?'Em análise':v==='concluido'?'Concluído':v==='cancelado'?'Cancelado':'Aberto'}
+function renderTrocas(){
+  const alvo=document.getElementById('listaTrocas');if(!alvo)return;
+  const busca=String(document.getElementById('trocaBusca')?.value||'').toLowerCase().trim();
+  const st=document.getElementById('trocaStatusFiltro')?.value||'',tipo=document.getElementById('trocaTipoFiltro')?.value||'';
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('trocaAberto',trocasDevolucoes.filter(t=>t.status==='aberto').length);
+  set('trocaAnalise',trocasDevolucoes.filter(t=>t.status==='em_analise').length);
+  set('trocaConcluido',trocasDevolucoes.filter(t=>t.status==='concluido').length);
+  set('trocaValor',money(trocasDevolucoes.filter(t=>t.status!=='cancelado').reduce((s,t)=>s+num(t.valor),0)));
+  const lista=trocasDevolucoes.filter(t=>{
+    if(st&&t.status!==st)return false;if(tipo&&t.tipo!==tipo)return false;
+    const texto=[trocaClienteNome(t.cliente_id),trocaProdutoNome(t),t.motivo,t.observacoes].join(' ').toLowerCase();
+    return !busca||texto.includes(busca);
+  });
+  alvo.innerHTML=lista.length?lista.map(t=>`<article class="return-card">
+    <div class="return-head"><div><h4 style="margin:0">${esc(trocaProdutoNome(t))}</h4><div class="return-meta">${esc(trocaClienteNome(t.cliente_id))} • ${formatarData(t.data_solicitacao)}</div></div><span class="return-status ${esc(t.status||'aberto')}">${esc(trocaStatusNome(t.status))}</span></div>
+    <div class="return-values"><div><small>Tipo</small><b>${esc(trocaTipoNome(t.tipo))}</b></div><div><small>Quantidade</small><b>${num(t.quantidade)}</b></div><div><small>Valor</small><b>${money(t.valor)}</b></div><div><small>Estoque</small><b>${t.devolver_estoque?'Devolvido':'Não alterado'}</b></div></div>
+    <div class="return-meta">${t.motivo?'<b>Motivo:</b> '+esc(t.motivo):'Sem motivo informado'}${t.observacoes?'<br>'+esc(t.observacoes):''}</div>
+    <div class="return-actions"><button class="soft" onclick="editarTroca('${t.id}')">✏️ Editar</button><button class="soft" onclick="detalhesTroca('${t.id}')">👁️ Detalhes</button><button class="danger" onclick="excluirTroca('${t.id}')">🗑️ Excluir</button></div>
+  </article>`).join(''):'<div class="empty-state"><div class="icon">↩️</div><h3>Nenhuma troca ou devolução</h3><p class="muted">As ocorrências registradas aparecerão aqui.</p></div>';
+}
+function novaTroca(){abrirFormTroca(null)}
+function editarTroca(id){const t=trocasDevolucoes.find(x=>x.id===id);if(t)abrirFormTroca(t)}
+function trocaVendaOptions(sel){
+  return `<option value="">Sem venda vinculada</option>`+vendas.slice().sort((a,b)=>new Date(dataVenda(b))-new Date(dataVenda(a))).map(v=>`<option value="${v.id}" ${v.id===sel?'selected':''}>#${v.numero_recibo||String(v.id).slice(0,8)} • ${formatarData(dataVenda(v))} • ${money(v.total)}</option>`).join('');
+}
+function trocaClienteOptions(sel){
+  return `<option value="">Selecione</option>`+clientes.slice().sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(c=>`<option value="${c.id}" ${c.id===sel?'selected':''}>${esc(c.nome)}</option>`).join('');
+}
+function trocaProdutoOptions(sel,vendaId=''){
+  let lista=produtos;
+  if(vendaId){const ids=[...new Set(itensVenda.filter(i=>i.venda_id===vendaId&&i.produto_id).map(i=>i.produto_id))];if(ids.length)lista=produtos.filter(p=>ids.includes(p.id))}
+  return `<option value="">Selecione</option>`+lista.slice().sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','pt-BR')).map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.nome)} • estoque ${num(p.estoque)}</option>`).join('');
+}
+function abrirFormTroca(t){
+  openModal(`<h2>${t?'✏️ Editar ocorrência':'↩️ Nova troca / devolução'}</h2>
+  <div class="form-grid">
+    <div><label>Venda relacionada</label><select id="trVenda" onchange="trocaVendaMudou()">${trocaVendaOptions(t?.venda_id||'')}</select></div>
+    <div><label>Cliente</label><select id="trCliente">${trocaClienteOptions(t?.cliente_id||'')}</select></div>
+    <div class="full"><label>Produto *</label><select id="trProduto">${trocaProdutoOptions(t?.produto_id||'',t?.venda_id||'')}</select></div>
+    <div><label>Quantidade *</label><input id="trQtd" type="number" min="1" step="1" value="${Math.max(1,num(t?.quantidade)||1)}"></div>
+    <div><label>Tipo</label><select id="trTipo"><option value="troca" ${t?.tipo==='troca'||!t?'selected':''}>Troca</option><option value="credito" ${t?.tipo==='credito'?'selected':''}>Crédito</option><option value="reembolso" ${t?.tipo==='reembolso'?'selected':''}>Reembolso</option></select></div>
+    <div><label>Valor envolvido</label><input id="trValor" type="number" min="0" step="0.01" value="${num(t?.valor)}"></div>
+    <div><label>Status</label><select id="trStatus"><option value="aberto" ${t?.status==='aberto'||!t?'selected':''}>Aberto</option><option value="em_analise" ${t?.status==='em_analise'?'selected':''}>Em análise</option><option value="concluido" ${t?.status==='concluido'?'selected':''}>Concluído</option><option value="cancelado" ${t?.status==='cancelado'?'selected':''}>Cancelado</option></select></div>
+    <div class="full"><label>Motivo</label><input id="trMotivo" value="${esc(t?.motivo||'')}" placeholder="Ex.: produto com defeito, cliente desistiu..."></div>
+    <div class="full check-row"><input id="trEstoque" type="checkbox" ${t?.devolver_estoque!==false?'checked':''}><label for="trEstoque">Devolver esta quantidade ao estoque</label></div>
+    <div class="full"><label>Observações</label><textarea id="trObs">${esc(t?.observacoes||'')}</textarea></div>
+  </div>
+  <p class="muted">Se “Devolver ao estoque” estiver marcado, o sistema ajusta o estoque automaticamente e também corrige o estoque se você editar ou excluir esta ocorrência.</p>
+  <div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Cancelar</button><button class="primary" onclick="salvarTroca(${t?.id?`'${t.id}'`:'null'})">Salvar</button></div>`);
+}
+function trocaVendaMudou(){
+  const vendaId=document.getElementById('trVenda')?.value||'',v=vendas.find(x=>x.id===vendaId);
+  if(v?.cliente_id)document.getElementById('trCliente').value=v.cliente_id;
+  const prod=document.getElementById('trProduto'),atual=prod?.value||'';if(prod)prod.innerHTML=trocaProdutoOptions(atual,vendaId);
+}
+async function ajustarEstoqueTroca(produtoId,delta){
+  if(!produtoId||!delta)return {ok:true};
+  const p=produtos.find(x=>x.id===produtoId);if(!p)return {ok:false,erro:'Produto não encontrado para ajustar o estoque.'};
+  const novo=num(p.estoque)+delta;
+  const r=await sb.from('produtos').update({estoque:novo,updated_at:new Date().toISOString()}).eq('id',produtoId).eq('user_id',user.id);
+  return r.error?{ok:false,erro:r.error.message}:{ok:true};
+}
+async function salvarTroca(id=null){
+  const produto_id=document.getElementById('trProduto')?.value||null,quantidade=Math.max(1,parseInt(document.getElementById('trQtd')?.value||'1',10)),devolver=document.getElementById('trEstoque')?.checked===true;
+  if(!produto_id)return alert('Selecione o produto.');
+  const p=produtos.find(x=>x.id===produto_id);
+  const old=id?trocasDevolucoes.find(x=>x.id===id):null;
+  const status=document.getElementById('trStatus').value;
+  const obj={user_id:user.id,venda_id:document.getElementById('trVenda').value||null,cliente_id:document.getElementById('trCliente').value||null,produto_id,produto_nome:p?.nome||null,quantidade,tipo:document.getElementById('trTipo').value,motivo:document.getElementById('trMotivo').value.trim()||null,valor:Math.max(0,num(document.getElementById('trValor').value)),devolver_estoque:devolver,status,observacoes:document.getElementById('trObs').value.trim()||null,data_conclusao:status==='concluido'?(old?.data_conclusao||new Date().toISOString()):null,updated_at:new Date().toISOString()};
+  const q=id?sb.from('trocas_devolucoes').update(obj).eq('id',id).eq('user_id',user.id):sb.from('trocas_devolucoes').insert(obj).select('id').single();
+  const r=await q;if(r.error)return alert('Não foi possível salvar: '+r.error.message);
+
+  // Ajusta apenas a diferença entre o registro antigo e o novo.
+  if(old){
+    const oldQtd=old.devolver_estoque?num(old.quantidade):0,newQtd=devolver?quantidade:0;
+    if(old.produto_id===produto_id){
+      const a=await ajustarEstoqueTroca(produto_id,newQtd-oldQtd);
+      if(!a.ok)return alert('Ocorrência salva, mas não foi possível ajustar o estoque: '+a.erro);
+    }else{
+      if(old.produto_id&&oldQtd){const a=await ajustarEstoqueTroca(old.produto_id,-oldQtd);if(!a.ok)return alert('Ocorrência salva, mas houve erro ao corrigir o estoque antigo: '+a.erro)}
+      if(produto_id&&newQtd){const a=await ajustarEstoqueTroca(produto_id,newQtd);if(!a.ok)return alert('Ocorrência salva, mas houve erro ao ajustar o novo estoque: '+a.erro)}
+    }
+  }else if(devolver){
+    const a=await ajustarEstoqueTroca(produto_id,quantidade);
+    if(!a.ok){await sb.from('trocas_devolucoes').delete().eq('id',r.data?.id).eq('user_id',user.id);return alert('Não foi possível ajustar o estoque: '+a.erro)}
+  }
+  closeModal();await carregar();ativarAba('trocas');alert('✅ Troca/devolução registrada com sucesso.');
+}
+function detalhesTroca(id){
+  const t=trocasDevolucoes.find(x=>x.id===id);if(!t)return;
+  const v=vendas.find(x=>x.id===t.venda_id);
+  openModal(`<h2>↩️ Detalhes da ocorrência</h2><div class="detail-grid">
+    <div><small>Cliente</small><b>${esc(trocaClienteNome(t.cliente_id))}</b></div>
+    <div><small>Produto</small><b>${esc(trocaProdutoNome(t))}</b></div>
+    <div><small>Tipo</small><b>${esc(trocaTipoNome(t.tipo))}</b></div>
+    <div><small>Status</small><b>${esc(trocaStatusNome(t.status))}</b></div>
+    <div><small>Quantidade</small><b>${num(t.quantidade)}</b></div>
+    <div><small>Valor</small><b>${money(t.valor)}</b></div>
+    <div><small>Venda</small><b>${v?'#'+(v.numero_recibo||String(v.id).slice(0,8)):'Não vinculada'}</b></div>
+    <div><small>Estoque</small><b>${t.devolver_estoque?'Quantidade devolvida':'Sem alteração'}</b></div>
+  </div><p><b>Motivo:</b> ${esc(t.motivo||'Não informado')}</p>${t.observacoes?`<p><b>Observações:</b> ${esc(t.observacoes)}</p>`:''}<div style="display:flex;justify-content:flex-end;gap:8px"><button class="soft" onclick="closeModal()">Fechar</button><button class="primary" onclick="closeModal();editarTroca('${t.id}')">✏️ Editar</button></div>`);
+}
+async function excluirTroca(id){
+  const t=trocasDevolucoes.find(x=>x.id===id);if(!t)return;
+  if(!confirm(`Excluir esta ocorrência de ${trocaTipoNome(t.tipo).toLowerCase()}?\n${t.devolver_estoque?'A quantidade devolvida será retirada novamente do estoque.':''}`))return;
+  let retirou=false;
+  if(t.devolver_estoque&&t.produto_id&&num(t.quantidade)>0){
+    const a=await ajustarEstoqueTroca(t.produto_id,-num(t.quantidade));if(!a.ok)return alert('Não foi possível corrigir o estoque antes da exclusão: '+a.erro);retirou=true;
+  }
+  const r=await sb.from('trocas_devolucoes').delete().eq('id',id).eq('user_id',user.id);
+  if(r.error){
+    if(retirou)await ajustarEstoqueTroca(t.produto_id,num(t.quantidade));
+    return alert('Não foi possível excluir: '+r.error.message);
+  }
+  await carregar();ativarAba('trocas');
+}
+
 function renderPedidos(){
   const box=document.getElementById('listaPedidos');if(!box)return;
   const busca=String(document.getElementById('pedidoBusca')?.value||'').toLowerCase().trim(),sf=document.getElementById('pedidoStatusFiltro')?.value||'',ef=document.getElementById('pedidoEntregaFiltro')?.value||'';
